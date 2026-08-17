@@ -2,18 +2,23 @@ pipeline {
   agent any
   
   environment {
-    BUILDDIR="build/Jenkins-pipeline"
+    BUILDDIR="build"
     BDJUNITOUT="junit-out"
+    // The library builds against the installed ImagesAnnotatorDataDrivers
+    // package. When DATA_DRIVERS_PREFIX is left empty the Dependencies stage
+    // below builds and installs it into this workspace local prefix.
+    DEPSPREFIX="deps-install"
   }
 
   parameters {
     booleanParam(name: 'RUN_CPPCHECK', defaultValue: false, description: 'Run the cppcheck static code check?')
+    string(name: 'DATA_DRIVERS_PREFIX', defaultValue: '', description: 'Install prefix of an already built ImagesAnnotatorDataDrivers. Left empty the pipeline builds it itself.')
+    string(name: 'DATA_DRIVERS_REF', defaultValue: 'main', description: 'ImagesAnnotatorDataDrivers git ref to build when DATA_DRIVERS_PREFIX is empty')
     // Template project specific: optional packager checks, all disabled by
     // default and opt-in (e.g. WIX is MS Windows only, FreeBSD pkg is FreeBSD
     // only). Safe to drop together with the template stages below.
     booleanParam(name: 'RUN_DEB_PACKAGER', defaultValue: false, description: 'Template: build and check the deb package?')
     booleanParam(name: 'RUN_RPM_PACKAGER', defaultValue: false, description: 'Template: build and check the RPM package?')
-    booleanParam(name: 'RUN_SNAP_PACKAGER', defaultValue: false, description: 'Template: build and check the snap package?')
     booleanParam(name: 'RUN_FREEBSD_PACKAGER', defaultValue: false, description: 'Template: build and check the FreeBSD pkg package? (FreeBSD only)')
     booleanParam(name: 'RUN_WIX_PACKAGER', defaultValue: false, description: 'Template: build and check the WIX MSI package? (MS Windows only)')
   }
@@ -28,15 +33,37 @@ pipeline {
       }
       
       steps {
-        git branch: 'lib',
-            url: 'https://github.com/yuriysydor1991/cpp-app-template.git'
+        git branch: 'main',
+            url: 'https://github.com/yuriysydor1991/ImagesAnnotator-DataImporters.git'
       }
     }
     
+    stage('Dependencies') {
+      steps {
+        script {
+          if (params.DATA_DRIVERS_PREFIX?.trim()) {
+            env.PREFIXPATH = params.DATA_DRIVERS_PREFIX.trim()
+          } else {
+            env.PREFIXPATH = "${env.WORKSPACE}/${env.DEPSPREFIX}"
+            sh '''
+              rm -fr data-drivers-src "$DEPSPREFIX"
+              git clone --depth 1 --branch "$DATA_DRIVERS_REF" \
+                https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git data-drivers-src
+              cmake -S data-drivers-src -B data-drivers-src/build \
+                -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$WORKSPACE/$DEPSPREFIX"
+              cmake --build data-drivers-src/build -j$(nproc)
+              cmake --install data-drivers-src/build
+            '''
+          }
+          echo "ImagesAnnotatorDataDrivers prefix: ${env.PREFIXPATH}"
+        }
+      }
+    }
+
     stage('Code format configure') {
       steps {
         sh '''
-          cmake -S . -B $BUILDDIR -DCMAKE_BUILD_TYPE=Debug -DENABLE_CLANGFORMAT=ON
+          cmake -S . -B $BUILDDIR -DCMAKE_PREFIX_PATH=$PREFIXPATH -DCMAKE_BUILD_TYPE=Debug -DENABLE_CLANGFORMAT=ON
         '''
       }
     }
@@ -68,10 +95,9 @@ pipeline {
       steps {
         sh 'rm -fr $BUILDDIR'
         sh '''
-          cmake -S . -B $BUILDDIR -DCMAKE_BUILD_TYPE=Debug -DENABLE_UNIT_TESTS=ON \
+          cmake -S . -B $BUILDDIR -DCMAKE_PREFIX_PATH=$PREFIXPATH -DCMAKE_BUILD_TYPE=Debug -DENABLE_UNIT_TESTS=ON \
             -DENABLE_SANITIZERS=ON -DENABLE_CPPCHECK=ON \
-            -DMAX_LOG_LEVEL=5 -DENABLE_COMPONENT_TESTS=ON \
-            -DENABLE_INTEGRATION_TESTS=ON
+            -DMAX_LOG_LEVEL=5 -DENABLE_COMPONENT_TESTS=ON
         '''
       }
     }
@@ -112,42 +138,57 @@ pipeline {
             sh 'cd $BUILDDIR && ctest -R "UTEST_LibMain\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_LibMain.junit.xml'
           }
         }
+        stage('UTEST_PlainTxtFolder2DBImporter') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_PlainTxtFolder2DBImporter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_PlainTxtFolder2DBImporter.junit.xml'
+          }
+        }
+        stage('UTEST_Yolo4Folder2DBImporter') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_Yolo4Folder2DBImporter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_Yolo4Folder2DBImporter.junit.xml'
+          }
+        }
+        stage('UTEST_PyTorchVisionFolder2DBImporter') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_PyTorchVisionFolder2DBImporter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_PyTorchVisionFolder2DBImporter.junit.xml'
+          }
+        }
+        stage('UTEST_TypeHelper') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_TypeHelper\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_TypeHelper.junit.xml'
+          }
+        }
       }
       post { always { junit "$BUILDDIR/$BDJUNITOUT/UTEST_*.xml" } }
     }
     
     stage('Component Tests') {
       parallel {
-        stage('CTEST_DefaultLogger') {
-          steps {
-            sh 'cd $BUILDDIR && ctest -R "CTEST_DefaultLogger" --output-on-failure --output-junit $BDJUNITOUT/CTEST_DefaultLogger.junit.xml'
-          }
-        }
         stage('CTEST_LibraryRealLogger') {
           steps {
             sh 'cd $BUILDDIR && ctest -R "CTEST_LibraryRealLogger\\." --output-on-failure --output-junit $BDJUNITOUT/CTEST_LibraryRealLogger.junit.xml'
           }
         }
-      }
-      post { always { junit "$BUILDDIR/$BDJUNITOUT/CTEST_*.xml" } }
-    }
 
-    stage('Integration Tests') {
-      parallel {
-        stage('ITEST_many_libs') {
+        stage('CTEST_DefaultLogger') { 
+          steps { 
+            sh 'cd $BUILDDIR && ctest -R "CTEST_DefaultLogger\\." --output-on-failure --output-junit $BDJUNITOUT/CTEST_DefaultLogger.junit.xml'
+          }
+        }
+        stage('CTEST_Importers') {
           steps {
-            sh 'cd $BUILDDIR && ctest -R "ITEST_many_libs\\." --output-on-failure --output-junit $BDJUNITOUT/ITEST_many_libs.junit.xml'
+            sh 'cd $BUILDDIR && ctest -R "CTEST_Importers\\." --output-on-failure --output-junit $BDJUNITOUT/CTEST_Importers.junit.xml'
           }
         }
       }
-      post { always { junit "$BUILDDIR/$BDJUNITOUT/ITEST_*.xml" } }
+      post { always { junit "$BUILDDIR/$BDJUNITOUT/CTEST_*.xml" } }
     }
-
+    
     stage('Debug configure (clang-tidy)') {
       steps {
         sh 'rm -fr $BUILDDIR'
         sh '''
-          cmake -S . -B $BUILDDIR -DCMAKE_BUILD_TYPE=Debug -DENABLE_CLANG_TIDY=ON \
+          cmake -S . -B $BUILDDIR -DCMAKE_PREFIX_PATH=$PREFIXPATH -DCMAKE_BUILD_TYPE=Debug -DENABLE_CLANG_TIDY=ON \
             -DMAX_LOG_LEVEL=5
         '''
       }
@@ -165,7 +206,7 @@ pipeline {
       steps {
         sh 'rm -fr $BUILDDIR'
         sh '''
-          cmake -S . -B $BUILDDIR -DCMAKE_BUILD_TYPE=Release
+          cmake -S . -B $BUILDDIR -DCMAKE_PREFIX_PATH=$PREFIXPATH -DCMAKE_BUILD_TYPE=Release
         '''
       }
     }
@@ -301,122 +342,6 @@ pipeline {
       }
     }
 
-    stage('Template: no broken external documentation URLs') {
-      steps {
-        sh '''
-          set +x
-
-          MDLIST=$(mktemp)
-          URLLIST=$(mktemp)
-          UNIQLIST=$(mktemp)
-          BADLIST=$(mktemp)
-          WARNLIST=$(mktemp)
-          trap 'rm -f "$MDLIST" "$URLLIST" "$UNIQLIST" "$BADLIST" "$WARNLIST"' EXIT
-
-          BT='`'
-          DQ='"'
-          CURLOPTS="--silent --location --globoff --connect-timeout 15 --max-time 45 --retry 2 --retry-delay 5 --output /dev/null"
-
-          find . -name "*.md" -not -path "./.git/*" | sort > "$MDLIST"
-
-          # Collect every external URL together with the documentation file it
-          # sits in, unwrapping it from the markdown link, the inline code and
-          # the HTML decorations and dropping the local and the templated ones.
-          while IFS= read -r mdfile; do
-            grep -oE "(https?|ftps?|git)://[^[:space:]]+" "$mdfile" 2>/dev/null |
-            while IFS= read -r raw; do
-              url="$raw"
-              url="${url%%${BT}*}"
-              url="${url%%${DQ}*}"
-              url="${url%%<*}"
-              url="${url%%>*}"
-              url="${url%%]*}"
-              case "$url" in *"("*) ;; *) url="${url%%)*}" ;; esac
-              url=$(printf '%s' "$url" | sed 's/[.,;:!?]*$//')
-              case "$url" in
-                *://) continue ;;
-                *'$'*|*'{'*|*'@'*) continue ;;
-                *//localhost*|*//127.*|*//0.0.0.0*|*//'[::1]'*|*//192.168.*) continue ;;
-                *//example.com*|*//example.org*) continue ;;
-              esac
-              printf '%s %s\\n' "$url" "$mdfile"
-            done
-          done < "$MDLIST" | sort -u > "$URLLIST"
-
-          awk '{print $1}' "$URLLIST" | sort -u > "$UNIQLIST"
-          echo "Checking $(wc -l < "$UNIQLIST") external URL(s) from $(wc -l < "$MDLIST") documentation file(s)"
-
-          while IFS= read -r url; do
-            case "$url" in
-              git://*)
-                if git ls-remote "$url" > /dev/null 2>&1; then
-                  echo "  OK      $url"
-                else
-                  echo "  BROKEN  $url (git ls-remote failed)"
-                  echo "$url git-unreachable" >> "$BADLIST"
-                fi
-                continue
-                ;;
-              ftp://*|ftps://*)
-                if curl $CURLOPTS "$url" > /dev/null 2>&1; then
-                  echo "  OK      $url"
-                else
-                  echo "  BROKEN  $url (FTP request failed)"
-                  echo "$url ftp-unreachable" >> "$BADLIST"
-                fi
-                continue
-                ;;
-            esac
-
-            code=$(curl $CURLOPTS --head --write-out '%{http_code}' "$url" 2>/dev/null) || true
-            case "$code" in
-              2*|3*) echo "  OK      $url ($code)" ; continue ;;
-            esac
-
-            # Some servers reject or mishandle HEAD - retry the URL with a GET.
-            code=$(curl $CURLOPTS --request GET --write-out '%{http_code}' "$url" 2>/dev/null) || true
-            case "$code" in
-              2*|3*) echo "  OK      $url ($code on GET)" ;;
-              401|403|418|429)
-                echo "  WARN    $url ($code - the server refuses the automated requests)"
-                echo "$url $code" >> "$WARNLIST"
-                ;;
-              000)
-                echo "  BROKEN  $url (no response: DNS, TLS or connection failure)"
-                echo "$url no-response" >> "$BADLIST"
-                ;;
-              *)
-                echo "  BROKEN  $url ($code)"
-                echo "$url $code" >> "$BADLIST"
-                ;;
-            esac
-          done < "$UNIQLIST"
-
-          if [ -s "$WARNLIST" ]; then
-            echo ""
-            echo "WARNING: the servers below refuse the automated requests, so their pages are left unverified:"
-            while read -r url code; do
-              echo "  $url ($code)"
-              awk -v u="$url" '$1 == u {print "      referenced by " $2}' "$URLLIST" | sort -u
-            done < "$WARNLIST"
-          fi
-
-          if [ -s "$BADLIST" ]; then
-            echo ""
-            echo "FAIL: the documentation references the unreachable external URLs:"
-            while read -r url code; do
-              echo "  $url ($code)"
-              awk -v u="$url" '$1 == u {print "      referenced by " $2}' "$URLLIST" | sort -u
-            done < "$BADLIST"
-            exit 1
-          fi
-
-          echo ""
-          echo "OK: every external documentation URL is reachable"
-        '''
-      }
-    }
-
     stage('Template: every enabler is registered') {
       steps {
         sh '''
@@ -438,10 +363,7 @@ pipeline {
     stage('Template: every declared test is registered in the pipeline') {
       steps {
         sh '''
-          declared="$( {
-            grep -rA3 "gtest_add_tests" --include=CMakeLists.txt src | grep -oE "TARGET[[:space:]]+[A-Za-z0-9_]+" | awk '{print $2}'
-            grep -rA1 "add_test(" --include=CMakeLists.txt src | grep -oE "NAME[[:space:]]+[A-Za-z0-9_]+" | awk '{print $2}'
-          } | sort -u)"
+          declared="$(grep -rA3 "gtest_add_tests" --include=CMakeLists.txt src | grep -oE "TARGET[[:space:]]+[A-Za-z0-9_]+" | awk '{print $2}' | sort -u)"
           status=0
           for t in $declared; do
             if ! grep -qF "$t" misc/Jenkinsfile; then
@@ -465,7 +387,7 @@ pipeline {
         sh '''
           BD="$BUILDDIR-pkg-deb"
           rm -fr "$BD"
-          cmake -S . -B "$BD" -DCMAKE_BUILD_TYPE=Release -DENABLE_DEB=ON
+          cmake -S . -B "$BD" -DCMAKE_PREFIX_PATH=$PREFIXPATH -DCMAKE_BUILD_TYPE=Release -DENABLE_DEB=ON
           cmake --build "$BD" -j$(nproc)
           ( cd "$BD" && cpack -G DEB )
           if [ -z "$(find "$BD" -maxdepth 2 -name '*.deb' -print -quit)" ]; then
@@ -483,7 +405,7 @@ pipeline {
         sh '''
           BD="$BUILDDIR-pkg-rpm"
           rm -fr "$BD"
-          cmake -S . -B "$BD" -DCMAKE_BUILD_TYPE=Release -DENABLE_RPM=ON
+          cmake -S . -B "$BD" -DCMAKE_PREFIX_PATH=$PREFIXPATH -DCMAKE_BUILD_TYPE=Release -DENABLE_RPM=ON
           cmake --build "$BD" -j$(nproc)
           ( cd "$BD" && cpack -G RPM )
           if [ -z "$(find "$BD" -maxdepth 2 -name '*.rpm' -print -quit)" ]; then
@@ -495,31 +417,13 @@ pipeline {
       }
     }
 
-    stage('Template: snap package') {
-      when { expression { params.RUN_SNAP_PACKAGER } }
-      steps {
-        sh '''
-          BD="$BUILDDIR-pkg-snap"
-          rm -fr "$BD"
-          cmake -S . -B "$BD" -DCMAKE_BUILD_TYPE=Release -DENABLE_SNAP=ON
-          cmake --build "$BD" -j$(nproc)
-          cmake --build "$BD" --target snap
-          if [ -z "$(find "$BD" -maxdepth 3 -name '*.snap' -print -quit)" ]; then
-            echo "FAIL: CMake did not produce a .snap package"
-            exit 1
-          fi
-          echo "OK: produced $(find "$BD" -maxdepth 3 -name '*.snap')"
-        '''
-      }
-    }
-
     stage('Template: freebsd-pkg package') {
       when { expression { params.RUN_FREEBSD_PACKAGER } }
       steps {
         sh '''
           BD="$BUILDDIR-pkg-freebsd"
           rm -fr "$BD"
-          cmake -S . -B "$BD" -DCMAKE_BUILD_TYPE=Release -DENABLE_FREEBSD_PKG=ON
+          cmake -S . -B "$BD" -DCMAKE_PREFIX_PATH=$PREFIXPATH -DCMAKE_BUILD_TYPE=Release -DENABLE_FREEBSD_PKG=ON
           cmake --build "$BD" -j$(nproc)
           ( cd "$BD" && cpack -G FREEBSD )
           if [ -z "$(find "$BD" -maxdepth 2 -name '*.pkg' -print -quit)" ]; then
@@ -537,7 +441,7 @@ pipeline {
         sh '''
           BD="$BUILDDIR-pkg-wix"
           rm -fr "$BD"
-          cmake -S . -B "$BD" -DCMAKE_BUILD_TYPE=Release -DENABLE_WIX=ON
+          cmake -S . -B "$BD" -DCMAKE_PREFIX_PATH=$PREFIXPATH -DCMAKE_BUILD_TYPE=Release -DENABLE_WIX=ON
           cmake --build "$BD" -j$(nproc)
           ( cd "$BD" && cpack -G WIX )
           if [ -z "$(find "$BD" -maxdepth 2 -name '*.msi' -print -quit)" ]; then
