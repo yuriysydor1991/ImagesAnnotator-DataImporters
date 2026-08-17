@@ -1,116 +1,144 @@
-**Your neat C++ library template project**
+**The ImagesAnnotator annotations dataset importers library**
 
-# Goal of the template project
+# What is it
 
-Project is designed to increase the speed of the library creation process at the project startup by providing templated library structure. So developer may just jump straight into implementing a particular library with no or minimum project start structure set up.
+The `ImagesAnnotatorDataImporters` is a C++17 shared library which reads the training dataset layouts the machine learning frameworks use back into the annotations of the [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git) application - the annotated images with the named rectangles drawn over them.
 
-Helps you go beyond raw code — build a complete, ready-to-ship **software product** fast!
+It is the exact counterpart of the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library: what that one writes, this one reads. A dataset that was exported may be brought back into a project, a dataset produced by some other tool may be brought into one for the first time, and the ImagesAnnotator application together with **any other tool** shares a single implementation of that reading.
 
-Enables rapid creation of a complete **software product** — not just raw code or a simple program.
-
-**Just fork it and implement your library straight away!**
-
-The template project **is not a framework** in traditional means so infrastructure implementation items may be altered to fit needs or even erased in case of redundancy.
+Everything a consuming project touches is hidden behind the abstract interfaces of the [src/lib/facade/public](/src/lib/facade/public) headers, so no implementation class, and none of the library third party dependencies, leak into the downstream code.
 
 See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 💵 Donate at [http://kytok.org.ua/page/pozertvy](http://kytok.org.ua/page/pozertvy)
 
-# The template project flavors
+# Features
 
-Examine available branches to find your most applicable variant of the template or combine multiple branches by merging them to assemble the best suited template structure for your needs:
+- **Three dataset layouts into one database** - selected by the `LibraryContext` descendant instantiated and implemented by one importer class each:
+  - `PlainTxtImportLibraryContext` - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles in the pixels of that image;
+  - `Yolo4ImportLibraryContext` - the whole darknet training directory of the YOLO v4 detector: the class names of `data/obj.names`, the image list of `data/train.txt` and the normalised `.txt` label file of every image, with the `data/obj.data` descriptor followed when it is there, so that a directory laid out by some other tool is read the way that tool named it;
+  - `PyTorchImportLibraryContext` - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the cropped images, each of which comes back as an image record whose single rectangle covers it whole.
+- **A one shot entry point** - fill the `LibraryContext` descendant of the wanted layout with the source directory and the destination database, and `ILib::perform_import()` builds the right importer and runs it. `LibraryFacade::create_importer()` gives the same result with a finer grained control.
+- **Nothing is overwritten** - an import is a read only pass over its directory. The recovered records point at the image files where they already lie, and they are merged into the database through `IAnnotationsDB::add_images_db()`, which keeps an image the database already holds. So a dataset may be imported into a project being edited, and importing the same dataset twice adds its images once.
+- **Robust over a partial dataset** - a malformed line, an image file the dataset names but does not hold, a label naming an unknown class, a picture that cannot be measured: each is logged and skipped, the import run itself carries on.
+- **No image codec of its own** - the layouts which do not store their rectangles in the pixels of their image ask the consuming project to measure the pictures through the `IImageSizeFacility` interface, over whatever imaging stack that project already links. A build which found OpenCV ships such a reader itself, so a consumer with no imaging stack still gets those imports.
+- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.11` major and minor pair, so two minor releases install side by side.
 
-## Basic application infrastructure
+# Usage example
 
-- `main` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template)] just the clear `main` function and all available CMake integrations with no additional app infrastructure classes.
-- `app` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/app), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/app)] with just general application related classes to generate a single binary executable.
-- `applib` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/applib), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/applib)] for the application binary with additional separate library binary and header files (available for the installation) in order to provide library's code reusability across multiple applications.
-- `lib` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/lib), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/lib)] (**current**) for the library with the headers include files (and documentation) without target binary.
-- `appMeson` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appMeson), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appMeson)] with just general application related classes to generate a single binary executable with the [Meson](https://mesonbuild.com/) build system.
-- `applibMeson` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/applibMeson), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/applibMeson)] for the application binary with additional separate library binary and header files (available for the installation) in order to provide library's code reusability across multiple applications, built with the [Meson](https://mesonbuild.com/) build system and detectable by downstream Meson projects via `dependency()` (pkg-config) with optional CMake `find_package()` support.
-- `libMeson` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/libMeson), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/libMeson)] for the library with the headers include files (and documentation) without target binary, built with the [Meson](https://mesonbuild.com/) build system and detectable by downstream Meson projects via `dependency()` (pkg-config) with optional CMake `find_package()` support.
+The library is consumed through a CMake package. The following program was compiled, linked and run against the installed library:
 
-## Logging messages
+```cmake
+cmake_minimum_required(VERSION 3.13)
+project(MyTool LANGUAGES CXX)
 
-- `appLog4Cpp5` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appLog4Cpp5), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appLog4Cpp5)] the template infrastructure to fast start the application development with the [log4cpp](https://log4cpp.sourceforge.net/) extended logging library.
-- `appBoostLog` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appBoostLog), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appBoostLog)] the template infrastructure to fast start the application development with the [Boost.Log](https://www.boost.org/doc/libs/latest/libs/log/doc/html/index.html) extended logging library.
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-## Windowing / GUI
+find_package(ImagesAnnotatorDataImporters-0.11 REQUIRED)
 
-- `appQt6` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appQt6), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appQt6)] for the application general classes with additional defined structure for the [Qt6](https://www.qt.io/development/qt-framework/qt6) [QML](https://doc.qt.io/qt-6/qtqml-index.html) window application development.
-- `appGtkmm3` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appGtkmm3), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appGtkmm3)] for the application general classes with additional defined structure for the [Gtkmm](https://gtkmm.gnome.org/en/index.html)-3.0 with C++ window application development.
-- `appGtkmm3Glade` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appGtkmm3Glade), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appGtkmm3Glade)] for the application general classes with additional defined structure for the C++ application development with [Gtkmm](https://gtkmm.gnome.org/en/index.html)-3.0 and [Glade](https://en.wikipedia.org/wiki/Glade_Interface_Designer) application with XML UI creation.
-- `appGtkmm4` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4)] for the application general classes with additional defined structure for the [Gtkmm-4](https://gtkmm.gnome.org/en/index.html) with C++ window application development.
-- `appwxWidgets` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appwxWidgets), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appwxWidgets)] for the application general classes with additional defined structure for the [wxWidgets](https://www.wxwidgets.org/) cross-platform C++ window application development, provided through CMake FetchContent.
+add_executable(mytool main.cpp)
+target_link_libraries(mytool ImagesAnnotatorDataImporters-0.11::ImagesAnnotatorDataImporters-0.11)
+```
 
-## 3D / OpenGL / Vulkan
+```cpp
+#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
+#include <ImagesAnnotatorDataImporters-0.11/LibraryFacade.h>
 
-- `appSDL2` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appSDL2), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appSDL2)] with just general application related classes to generate a single binary executable with a [SDL2](https://en.wikipedia.org/wiki/Simple_DirectMedia_Layer) library for the [OpenGL](https://www.opengl.org/) 3D development and more!
-- `appGtkmm4GLArea` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4GLArea), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4GLArea)] with general application related classes to generate a single binary executable that embeds raw [OpenGL](https://www.opengl.org/) rendering inside a [Gtkmm-4](https://gtkmm.gnome.org/en/index.html) window with the native [Gtk::GLArea](https://docs.gtk.org/gtk4/class.GLArea.html) widget.
-- `appQt6GLArea` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appQt6GLArea), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appQt6GLArea)] with general application related classes to generate a single binary executable that embeds raw [OpenGL](https://www.opengl.org/) rendering inside a [Qt6](https://www.qt.io/development/qt-framework/qt6) [QML](https://doc.qt.io/qt-6/qtqml-index.html) window with a [QQuickFramebufferObject](https://doc.qt.io/qt-6/qquickframebufferobject.html) scene-graph item.
-- `appSFML` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appSFML), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appSFML)] with just general application related classes to generate a single binary executable with the [SFML](https://www.sfml-dev.org/) multimedia library (2D graphics, windowing, input and [OpenGL](https://www.opengl.org/) access) provided through the system package or the CMake FetchContent fallback.
-- `appFreeGlut` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appFreeGlut), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appFreeGlut)] with just general application related classes to generate a single binary executable with a [FreeGlut](https://freeglut.sourceforge.net/) library for the [OpenGL](https://www.opengl.org/) 3D development.
-- `appQt6Vulkan` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appQt6Vulkan), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appQt6Vulkan)] with general application related classes to generate a single binary executable that creates a [Vulkan](https://www.vulkan.org/) instance through the native [Qt6](https://www.qt.io/development/qt-framework/qt6) [QVulkanInstance](https://doc.qt.io/qt-6/qvulkaninstance.html) (`Qt6::Gui`), enumerates the available physical devices (GPUs), logs their properties via the application logger and shows a blank, black, Vulkan rendered window (a [QVulkanWindow](https://doc.qt.io/qt-6/qvulkanwindow.html) cleared to black) for the duration of the Qt event loop (the Qt6 framework counterpart of the app based appVulkan branch).
-- `appGtkmm4Vulkan` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4Vulkan), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4Vulkan)] with general application related classes to generate a single binary executable that creates a [Vulkan](https://www.vulkan.org/) instance through the raw Vulkan loader, enumerates the available physical devices (GPUs) and logs their properties via the application logger, then renders a black frame with Vulkan into an off-screen image and shows it in a [Gtkmm-4](https://gtkmm.gnome.org/en/index.html) window through a Linux dma-buf ([Gdk::DmabufTexture](https://docs.gtk.org/gdk4/class.DmabufTexture.html)), since GTK4 has no native Vulkan rendering widget (the Gtkmm-4 counterpart of the app based appVulkan branch).
+#include <iostream>
+#include <memory>
 
-## Web / HTTP / Net
+namespace iadd = ImagesAnnotatorDataDrivers011;
+namespace iadi = ImagesAnnotatorDataImporters011;
 
-- `appWt4` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appWt4), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appWt4)] the template infrastructure to fast start Web application developing based on the [Wt C++](https://www.webtoolkit.eu/wt) full stack framework.
-- `appBoostBeast` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appBoostBeast), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appBoostBeast)] the template infrastructure for the Web application fast start development with the [Boost Beast](https://www.boost.org/libs/beast) HTTP server.
-- `appCURL` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appCURL), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appCURL)] the template infrastructure to fast start the application development with the [CURL](https://en.wikipedia.org/wiki/CURL) multi protocol client library (including the [HTTP](https://uk.wikipedia.org/wiki/HTTP)) to download data from the network.
+int main(int argc, char** argv)
+{
+  if (argc < 3) { return 1; }
 
-## Database Management systems (DBMS) / SQL / NoSQL
+  auto db = iadd::LibraryFacade::create_annotations_db();
 
-- `appPgSQLxx` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appPgSQLxx), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appPgSQLxx)] the template infrastructure to fast start application development with the [PostgreSQL DBMS](https://en.wikipedia.org/wiki/PostgreSQL) usage.
-- `appFirebird` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appFirebird), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appFirebird)] the template infrastructure to fast start application development with the [Firebird DBMS](https://firebirdsql.org/) usage through the native client library (fbclient).
-- `appMySQLCppConn` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appMySQLCppConn), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appMySQLCppConn)] the template infrastructure to fast start application development with the [MySQL DBMS](https://en.wikipedia.org/wiki/MySQL) usage.
-- `appSQLiteCpp3` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appSQLiteCpp3), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appSQLiteCpp3)] the template infrastructure to fast start application development with the [SQLite DBMS](https://en.wikipedia.org/wiki/SQLite) and [SQLiteCpp C++ bind](https://github.com/SRombauts/SQLiteCpp) usage.
-- `appMongoDBCpp4` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appMongoDBCpp4), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appMongoDBCpp4)] the template infrastructure to fast start application development with the [MongoDB NoSQL DBMS](https://en.wikipedia.org/wiki/MongoDB) usage.
+  if (db == nullptr) { return 1; }
 
-## Data Visualization / Plots / Graphs
+  auto ctx = iadi::LibraryFacade::create_yolo4_library_context();
 
-- `appMatPlotxx` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appMatPlotxx), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appMatPlotxx)] the template infrastructure to fast start application development with the [MatPlot++](https://alandefreitas.github.io/matplotplusplus/) usage - a nice plot library with required [gnuplot](http://www.gnuplot.info/) application and [Qt6](https://www.qt.io/development/qt-framework/qt6).
-- `appPLplot` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appPLplot), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appPLplot)] the template infrastructure to fast start application development with the [PLplot](https://plplot.sourceforge.net/) usage - a powerful plotting library used in scientific applications with a lot of windowing and language bindings and export capabilities (PNG, SVG, JPEG, GIF, PDF and more).
-- `appPGPLOT` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appPGPLOT), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appPGPLOT)] the template infrastructure to fast start application development with the [PGPLOT](https://sites.astro.caltech.edu/~tjp/pgplot/) usage - a classic scientific graphics subroutine library widely used in the astronomy field, integrated through it's C (cpgplot) binding and supporting both the original library and it's free [giza](https://danieljprice.github.io/giza/) drop-in replacement.
-- `appQt6ChartView` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appQt6ChartView), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appQt6ChartView)] the template infrastructure to fast start data visualization and plotting right inside a [Qt6](https://www.qt.io/development/qt-framework/qt6) [QML](https://doc.qt.io/qt-6/qtqml-index.html) window with the native [ChartView](https://doc.qt.io/qt-6/qml-qtcharts-chartview.html) element from the [QtCharts](https://doc.qt.io/qt-6/qtcharts-index.html) module.
+  ctx->set_import_path(argv[1]);
+  ctx->set_db(db);
 
-## Maps
+  auto lib = iadi::LibraryFacade::create_default_lib();
 
-- `appGtkmm4LeafLet` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4LeafLet), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4LeafLet)] with general application related classes to generate a single binary executable with usage of [Gtkmm-4](https://gtkmm.gnome.org/en/index.html) with [WebKitGtk](https://webkitgtk.org/) and [LeafLet](https://leafletjs.com/) maps.
-- `appQt6LeafLet` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appQt6LeafLet), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appQt6LeafLet)] with general application related classes to generate a single binary executable with usage of [Qt6](https://www.qt.io/development/qt-framework/qt6) and [QML](https://doc.qt.io/qt-6/qtqml-index.html) with [WebView QML](https://doc.qt.io/qt-6/qml-qtwebview-webview.html) and [LeafLet](https://leafletjs.com/) maps.
-- `appQt6QtLocation` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appQt6QtLocation), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appQt6QtLocation)] with general application related classes to generate a single binary executable that renders [OpenStreetMap](https://www.openstreetmap.org/) tiles natively inside a [Qt6](https://www.qt.io/development/qt-framework/qt6) [QML](https://doc.qt.io/qt-6/qtqml-index.html) window with the native [Map](https://doc.qt.io/qt-6/qml-qtlocation-map.html) element from the [Qt Location](https://doc.qt.io/qt-6/qtlocation-index.html) module (the native counterpart of the [WebView](https://doc.qt.io/qt-6/qml-qtwebview-webview.html) based appQt6LeafLet branch).
+  if (lib == nullptr || !lib->perform_import(ctx)) {
+    std::cerr << "the import has failed\n";
+    return 1;
+  }
 
-## Computer Vision / Image Processing
+  if (!db->store_db(argv[2])) {
+    std::cerr << "fail to store the project file\n";
+    return 1;
+  }
 
-- `appOpenCV` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appOpenCV), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appOpenCV)] the template infrastructure to fast start application development with the [OpenCV](https://opencv.org/) computer vision library.
+  std::cout << "imported " << ctx->get_imported_records() << " records with "
+            << iadi::LibraryFacade::library_version() << "\n";
 
-## Artificial intelligence / LLM
+  return 0;
+}
+```
 
-- `appCURLClaude` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appCURLClaude), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appCURLClaude)] with general application related classes to generate a single binary executable that asks [Claude](https://www.claude.com/) a question given in the command line over the [Anthropic API](https://platform.claude.com/docs/en/api/overview) and prints the received answer. Anthropic ships no official C++ SDK, so the branch talks to the API directly with the [libcurl](https://curl.se/libcurl/) and the [nlohmann JSON](https://github.com/nlohmann/json) libraries and carries no third party API wrapper.
-- `appCURLChatGPT` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appCURLChatGPT), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appCURLChatGPT)] with general application related classes to generate a single binary executable that asks [ChatGPT](https://chatgpt.com/) a question given in the command line over the [OpenAI API](https://developers.openai.com/api/docs) responses endpoint and prints the received answer. OpenAI ships no official C++ SDK, so the branch talks to the API directly with the [libcurl](https://curl.se/libcurl/) and the [nlohmann JSON](https://github.com/nlohmann/json) libraries and carries no third party API wrapper.
+The `ImagesAnnotatorDataImporters011` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
 
-## System / DBus
+Both `#include <ImagesAnnotatorDataImporters-0.11/LibraryFacade.h>` and a plain `#include <LibraryFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: header names like `LibraryFacade.h`, `LibraryContext.h` or `ILib.h` are generic enough to collide in a busy include path - both the data drivers and the exporters libraries of this family install headers of exactly those names.
 
-- `appSDBusCxxClient` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appSDBusCxxClient), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appSDBusCxxClient)] with just general application related classes to generate a single binary executable with the usage of [Kistler-Group's sdbus-c++](https://github.com/Kistler-Group/sdbus-cpp.git) library as a [DBus](https://en.wikipedia.org/wiki/D-Bus) services client.
-- `appSDBusCxxServer` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appSDBusCxxServer), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appSDBusCxxServer)] with just general application related classes to generate a single binary executable with the usage of [Kistler-Group's sdbus-c++](https://github.com/Kistler-Group/sdbus-cpp.git) library as a server on the [DBus](https://en.wikipedia.org/wiki/D-Bus).
-- `appQt6QtDBusClient` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appQt6QtDBusClient), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appQt6QtDBusClient)] with general application related classes to generate a single binary executable that reads the general system information from [systemd-hostnamed](https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.hostname1.html) over the [DBus](https://en.wikipedia.org/wiki/D-Bus) with the native [Qt6](https://www.qt.io/development/qt-framework/qt6) [QtDBus](https://doc.qt.io/qt-6/qtdbus-index.html) module and shows it in the [QML](https://doc.qt.io/qt-6/qtqml-index.html) window (the Qt6 framework counterpart of the sdbus-c++ based appSDBusCxxClient branch).
-- `appGtkmm4GDBusClient` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4GDBusClient), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4GDBusClient)] with general application related classes to generate a single binary executable that reads the general system information from [systemd-hostnamed](https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.hostname1.html) over the [DBus](https://en.wikipedia.org/wiki/D-Bus) with the native GLib [GDBus](https://docs.gtk.org/gio/) stack through the [Gtkmm-4](https://gtkmm.gnome.org/en/index.html)/giomm `Gio::DBus` API and logs it via the application logger (the gtkmm4 framework counterpart of the sdbus-c++ based appSDBusCxxClient branch).
+The program above reads the YOLO v4 layout, whose rectangles are stored divided by the size of their image, so it needs a library built with OpenCV. Give an `IImageSizeFacility` of your own to `ctx->set_image_sizer()` otherwise, or start from the plain text layout, which needs none.
 
-## Data compression / decompression
+More on the API and on the read datasets is in the [dataset importers API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-importers-api.md), the [read dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-read-dataset-layouts.md) and the [using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) documentation sections.
 
-- `appZlib` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appZlib), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appZlib)] with general application related classes to generate a single binary executable that wraps the [zlib](https://www.zlib.net/) compression library in a small controller exposing simple compress / uncompress methods (in memory and to / from gzip `.gz` files), and demonstrates a compress + uncompress round-trip from the Application.
-- `appLZMA` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appLZMA), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appLZMA)] with general application related classes to generate a single binary executable that wraps the [liblzma](https://tukaani.org/xz/) (XZ Utils) compression library in a small controller exposing simple in-memory compress / uncompress methods over the `.xz` (LZMA2) container, and demonstrates a compress + uncompress round-trip from the Application.
+# Dependencies
 
+| CMake option | Library | Why it is needed |
+| --- | --- | --- |
+| (always on) | [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) | it defines the annotations database the importers fill and the image records they build |
+| `ENABLE_OPENCV` | [OpenCV](https://opencv.org/) | optional: with it the library ships an image size reader of its own, so that a consumer with no imaging stack still gets the layouts which need one |
 
-Alter current `README.md` and a `CHANGELOG.md` files to match your implementation introduced into the destination new project. Examine the `doc` directory for possible translations of a current md document:
+The data drivers library is **mandatory**. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.11 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its database type. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
+
+OpenCV is **optional** and `ENABLE_OPENCV=ON` means *probe*, not *require*: a system without it configures and builds just the same, only without the built-in image size reader. It is linked **privately**: no public header exposes an OpenCV type, so a consuming project needs no OpenCV of its own. See the [enabling the OpenCV image size reader](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md) section.
+
+The logging component is compiled straight into the shared library, so no logger implementation has to be supplied by the consumer.
+
+# Build and test
+
+The plain build, against a data drivers install in `$HOME/iadd-install`:
+
+```
+cmake -S . -B build -DCMAKE_PREFIX_PATH=$HOME/iadd-install
+cmake --build build -j$(nproc)
+```
+
+The tests are off by default. To build and run them:
+
+```
+cmake -S . -B build -DCMAKE_PREFIX_PATH=$HOME/iadd-install \
+  -DENABLE_UNIT_TESTS=ON -DENABLE_COMPONENT_TESTS=ON
+cmake --build build -j$(nproc)
+cd build && ctest --output-on-failure
+```
+
+With both options on the suite holds 90 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Importers` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
+
+Installing is a usual `sudo cmake --install build`, described in detail in the [installing](/doc/sections/en_US/7-installing/7-installing.md) section.
+
+# Where the code came from
+
+The repository started life as the `lib` branch of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) project and was filled with the importers written against the layouts the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library writes, so that the two halves of the pair round trip. The [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git) application is to consume this library rather than to grow an import of its own.
+
+The annotations database itself - the project file parser, the serializer and the merging rules - is **not** a part of this library. It lives in the sibling [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) project, which this one builds its records through.
+
+Examine the `doc` directory for possible translations of a current md document:
 - `uk_UA` at [doc/README.uk_UA.md](doc/README.uk_UA.md)
 
 # Documentation contents
 
 **Document is under the refinement**
 
-1. [Cloning the C++ template project](/doc/sections/en_US/1-cloning-the-cxx-template-project/1-cloning-the-cxx-template-project.md)
-1. [Forking and replacing the origin](/doc/sections/en_US/2-forking-and-replacing-the-origin/2-forking-and-replacing-the-origin.md)
 1. [Requirements](/doc/sections/en_US/3-requirements/3-requirements.md)
     1. [Required tools for the GNU/Linux based OS](/doc/sections/en_US/3-requirements/3-1-required-tools-for-the-GNU-Linux-based-OS.md)
     1. [Required tools for the MS Windows based OS](/doc/sections/en_US/3-requirements/3-2-required-tools-for-the-MS-Windows-based-OS.md)
@@ -121,54 +149,39 @@ Alter current `README.md` and a `CHANGELOG.md` files to match your implementatio
     1. [Optional for the code analyzer with clang-tidy](/doc/sections/en_US/3-requirements/3-7-optional-for-the-code-analyzer-with-clang-tidy.md)
 1. [Project structure](/doc/sections/en_US/4-project-structure/4-project-structure.md)
     1. [Project diagrams](/doc/sections/en_US/4-project-structure/4-0-project-diagrams.md)
-    1. [Implement code straight away!](/doc/sections/en_US/4-project-structure/4-1-implement-code-straight-away.md)
+    1. [Where the importers implementation lives](/doc/sections/en_US/4-project-structure/4-1-implement-code-straight-away.md)
     1. [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md)
-    1. [Changing the project and executable name](/doc/sections/en_US/4-project-structure/4-2-changing-the-project-and-executable-name.md)
+    1. [The dataset importers API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-importers-api.md)
+    1. [The read dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-read-dataset-layouts.md)
     1. [Version tracking and other project parameters](/doc/sections/en_US/4-project-structure/4-3-version-tracking-and-other-project-parameters.md)
-    1. [Minimal possible versions](/doc/sections/en_US/4-project-structure/4-6-minimal-possible-versions.md)
     1. [Project tests](/doc/sections/en_US/4-project-structure/4-4-project-tests.md)
         1. [Google Test](/doc/sections/en_US/4-project-structure/4-4-1-google-test.md)
-    1. [Extensions](/doc/sections/en_US/4-project-structure/4-5-extensions.md)
 1. [Project build](/doc/sections/en_US/5-project-build/5-project-build.md)
     1. [IDE build](/doc/sections/en_US/5-project-build/5-1-IDE-build.md)
     1. [Command line build](/doc/sections/en_US/5-project-build/5-2-command-line-build.md)
-    1. [Quick build scripts](/doc/sections/en_US/5-project-build/5-36-quick-build-scripts.md)
+    1. [Quick build scripts](/doc/sections/en_US/5-project-build/5-38-quick-build-scripts.md)
+    1. [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md)
     1. Enabling testing
         1. [Enabling unit testing](/doc/sections/en_US/5-project-build/testing/5-3-1-enabling-unit-testing.md)
         1. [Disabling system GTest probe](/doc/sections/en_US/5-project-build/testing/5-3-2-disabling-system-GTest-probe.md)
     1. [Documentation build](/doc/sections/en_US/5-project-build/documentation/5-4-documentation-build.md)
     1. [Configuring the documentation install support](/doc/sections/en_US/5-project-build/documentation/5-5-configuring-the-documentation-install-support.md)
-    1. [Customizing the installable library name segments](/doc/sections/en_US/5-project-build/compression/5-23-customizing-library-name-segments.md)
+    1. [Customizing the installable library name segments](/doc/sections/en_US/5-project-build/5-23-customizing-library-name-segments.md)
     1. Code quality & sanitizers
         1. [Enabling and performing code formatting target](/doc/sections/en_US/5-project-build/code-quality/5-6-enabling-and-performing-code-formatting-target.md)
         1. [Enabling the static code analyzer target with cppcheck](/doc/sections/en_US/5-project-build/code-quality/5-7-enabling-the-static-code-analyzer-target-with-cppcheck.md)
         1. [Enabling the static code analyzer with clang-tidy](/doc/sections/en_US/5-project-build/code-quality/5-8-enabling-static-code-analyzer-with-clang-tidy.md)
+    1. Containers & CI
+        1. [Enabling Jenkins pipeline inside Docker container](/doc/sections/en_US/5-project-build/containers-ci/5-17-enabling-Jenkins-pipeline-inside-Docker-container.md)
     1. Packagers
         1. [Enabling DEB package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-10-enabling-DEB-package-generation-with-cpack.md)
         1. [Enabling FreeBSD pkg package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-20-enabling-FreeBSD-pkg-package-generation-with-cpack.md)
         1. [Enabling WIX MSI package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-21-enabling-WIX-MSI-package-generation-with-cpack.md)
         1. [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
     1. Libraries
-        1. [Enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md)
-        1. [Enabling the nlohmann json library](/doc/sections/en_US/5-project-build/5-18-enabling-the-nlohmann-json-library.md)
-    1. Security / Cryptography
-        1. [Enabling the OpenSSL library](/doc/sections/en_US/5-project-build/security/5-35-enabling-the-openssl-library.md)
-    1. Compression
-        1. [Enabling the zlib library](/doc/sections/en_US/5-project-build/compression/5-23-enabling-the-zlib-library.md)
-        1. [Enabling the liblzma library](/doc/sections/en_US/5-project-build/compression/5-34-enabling-the-liblzma-library.md)
-    1. Images
-        1. [Enabling the libpng library](/doc/sections/en_US/5-project-build/image-libraries/5-24-enabling-the-libpng-library.md)
-        1. [Enabling the libjpeg library](/doc/sections/en_US/5-project-build/image-libraries/5-25-enabling-the-libjpeg-library.md)
-        1. [Enabling the libwebp library](/doc/sections/en_US/5-project-build/image-libraries/5-26-enabling-the-libwebp-library.md)
-        1. [Enabling the lunasvg library (SVG)](/doc/sections/en_US/5-project-build/image-libraries/5-27-enabling-the-lunasvg-library.md)
-        1. [Enabling the giflib library (GIF)](/doc/sections/en_US/5-project-build/image-libraries/5-28-enabling-the-giflib-library.md)
-        1. [Enabling the libtiff library (TIFF)](/doc/sections/en_US/5-project-build/image-libraries/5-29-enabling-the-libtiff-library.md)
-        1. [Enabling the OpenEXR library (EXR / HDR)](/doc/sections/en_US/5-project-build/image-libraries/5-30-enabling-the-openexr-library.md)
-        1. [Enabling the OpenJPEG library (JPEG 2000)](/doc/sections/en_US/5-project-build/image-libraries/5-31-enabling-the-openjpeg-library.md)
-        1. [Enabling the libavif library (AVIF)](/doc/sections/en_US/5-project-build/image-libraries/5-32-enabling-the-libavif-library.md)
-        1. [Enabling the libheif library (HEIF/HEIC)](/doc/sections/en_US/5-project-build/image-libraries/5-33-enabling-the-libheif-library.md)
-1. [Run available executables](/doc/sections/en_US/6-run-the-executable/6-run-avaialble-executables.md)
-    1. Tests run
-        1. [Run tests by the ctest](/doc/sections/en_US/6-run-the-executable/6-3-1-run-tests-by-the-ctest.md)
-        1. [Manual tests run](/doc/sections/en_US/6-run-the-executable/6-3-2-manual-tests-run.md)
+        1. [Enabling the OpenCV image size reader](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md)
+1. Running the tests
+    1. [Run tests by the ctest](/doc/sections/en_US/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)
+    1. [Manual tests run](/doc/sections/en_US/6-running-the-tests/6-3-2-manual-tests-run.md)
 1. [Installing](/doc/sections/en_US/7-installing/7-installing.md)
+1. [Using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md)
