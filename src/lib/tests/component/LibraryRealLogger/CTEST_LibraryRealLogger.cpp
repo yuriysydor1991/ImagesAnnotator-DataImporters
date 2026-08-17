@@ -6,16 +6,13 @@
 #include <string>
 #include <vector>
 
-#include "LibraryContext.h"
 #include "LibraryFacade.h"
-#include "project-lib-decls.h"
 #include "src/log/ILogger.h"
 #include "src/log/default-logger/real-default-logger/RealDefaultLogger.h"
-#include "src/log/log.h"
 #include "src/log/severity-macro-consts.h"
 
 using namespace testing;
-using namespace TEMPLATE_LIB_NAMESPACE;
+using namespace ImagesAnnotatorDataImporters011;
 using namespace default_logger;
 
 namespace
@@ -93,9 +90,9 @@ class RecordingLogger : public logger::ILogger
  * @brief Component test which checks that a real logger instance created and
  * owned by the library user is really used by the library code itself.
  *
- * The library is driven through the public LibraryFacade only and the logger
- * is handed over through the public LOG_INIT_REAL_LOGGER macro, so the test
- * stays valid for the branches which swap the underlying logger.
+ * The test links the produced shared library and drives it through the public
+ * LibraryFacade only, so the logger crosses the very same boundary it crosses
+ * inside a consuming application.
  */
 class CTEST_LibraryRealLogger : public Test
 {
@@ -103,19 +100,29 @@ class CTEST_LibraryRealLogger : public Test
   inline static const std::string app_log_file =
       CTEST_LibraryRealLogger_DATA_DIR "/CTEST_LibraryRealLogger.log";
 
+  inline static const std::string no_context_msg =
+      "No library context of a known dataset layout given";
+
   CTEST_LibraryRealLogger() { clear_log_file(); }
 
   ~CTEST_LibraryRealLogger()
   {
-    LOG_INIT_REAL_LOGGER(originalRealLogger);
+    // The instance adopted by the shared library can not be read back through
+    // its public interface, so a fresh default logger is handed over instead
+    // to keep the tests independent of each other.
+    LibraryFacade::accept_real_logger(std::make_shared<RealDefaultLogger>());
     clear_log_file();
   }
 
   /**
-   * @brief Creates the library the very same way its user does and lets the
-   * library perform its own logging initialization.
+   * @brief Asks the library for an importer without a context the very same
+   * way its user does: the library reports the
+   * CTEST_LibraryRealLogger::no_context_msg error and returns a nullptr.
    */
-  ILibPtr create_library() { return LibraryFacade::create_default_lib(); }
+  IImporterPtr create_no_context_importer()
+  {
+    return LibraryFacade::create_importer({});
+  }
 
   std::string log_contents()
   {
@@ -140,127 +147,53 @@ class CTEST_LibraryRealLogger : public Test
 
     log.close();
   }
-
-  const DefaultLogger::RealLoggerPtr originalRealLogger{LOG_REAL_LOGGER()};
 };
 
-TEST_F(CTEST_LibraryRealLogger, given_real_logger_is_adopted)
+TEST_F(CTEST_LibraryRealLogger, library_logs_reach_the_given_real_logger)
 {
   const auto appLogger = std::make_shared<RecordingRealLogger>();
 
-  LOG_INIT_REAL_LOGGER(appLogger);
+  LibraryFacade::accept_real_logger(appLogger);
 
-  EXPECT_EQ(LOG_REAL_LOGGER(), appLogger);
+  EXPECT_EQ(create_no_context_importer(), nullptr);
+
+  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(no_context_msg)));
+  EXPECT_THAT(appLogger->lvls, Contains(logger::ILogger::LVL_ERROR));
 }
 
 TEST_F(CTEST_LibraryRealLogger, null_real_logger_leaves_the_previous_one)
 {
   const auto appLogger = std::make_shared<RecordingRealLogger>();
 
-  LOG_INIT_REAL_LOGGER(appLogger);
-  LOG_INIT_REAL_LOGGER(nullptr);
+  LibraryFacade::accept_real_logger(appLogger);
+  LibraryFacade::accept_real_logger(nullptr);
 
-  EXPECT_EQ(LOG_REAL_LOGGER(), appLogger);
-}
+  EXPECT_EQ(create_no_context_importer(), nullptr);
 
-TEST_F(CTEST_LibraryRealLogger, library_logs_reach_the_given_real_logger)
-{
-  static const std::string expect = "Your library implementation goes here!";
-
-  const auto appLogger = std::make_shared<RecordingRealLogger>();
-
-  LOG_INIT_REAL_LOGGER(appLogger);
-
-  const auto lib = create_library();
-
-  ASSERT_NE(lib, nullptr);
-
-  EXPECT_TRUE(lib->libcall(LibraryFacade::create_library_context()));
-
-  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(expect)));
-  EXPECT_THAT(appLogger->lvls, Contains(DefaultLogger::LVL_INFO));
-}
-
-TEST_F(CTEST_LibraryRealLogger, library_error_logs_reach_the_given_real_logger)
-{
-  static const std::string expect = "No valid library context pointer provided";
-
-  const auto appLogger = std::make_shared<RecordingRealLogger>();
-
-  LOG_INIT_REAL_LOGGER(appLogger);
-
-  const auto lib = create_library();
-
-  ASSERT_NE(lib, nullptr);
-
-  EXPECT_FALSE(lib->libcall(nullptr));
-
-  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(expect)));
-  EXPECT_THAT(appLogger->lvls, Contains(DefaultLogger::LVL_ERROR));
-}
-
-TEST_F(CTEST_LibraryRealLogger, given_interface_logger_is_adopted)
-{
-  const auto appLogger = std::make_shared<RecordingLogger>();
-
-  LOG_INIT_REAL_LOGGER(appLogger);
-
-  EXPECT_EQ(LOG_REAL_LOGGER(), appLogger);
+  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(no_context_msg)));
 }
 
 TEST_F(CTEST_LibraryRealLogger, library_logs_reach_the_given_interface_logger)
 {
-  static const std::string expect = "Your library implementation goes here!";
-
   const auto appLogger = std::make_shared<RecordingLogger>();
 
-  LOG_INIT_REAL_LOGGER(appLogger);
+  LibraryFacade::accept_real_logger(appLogger);
 
-  const auto lib = create_library();
+  EXPECT_EQ(create_no_context_importer(), nullptr);
 
-  ASSERT_NE(lib, nullptr);
-
-  EXPECT_TRUE(lib->libcall(LibraryFacade::create_library_context()));
-
-  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(expect)));
-  EXPECT_THAT(appLogger->lvls, Contains(DefaultLogger::LVL_INFO));
-}
-
-TEST_F(CTEST_LibraryRealLogger,
-       library_error_logs_reach_the_given_interface_logger)
-{
-  static const std::string expect = "No valid library context pointer provided";
-
-  const auto appLogger = std::make_shared<RecordingLogger>();
-
-  LOG_INIT_REAL_LOGGER(appLogger);
-
-  const auto lib = create_library();
-
-  ASSERT_NE(lib, nullptr);
-
-  EXPECT_FALSE(lib->libcall(nullptr));
-
-  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(expect)));
-  EXPECT_THAT(appLogger->lvls, Contains(DefaultLogger::LVL_ERROR));
+  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(no_context_msg)));
+  EXPECT_THAT(appLogger->lvls, Contains(logger::ILogger::LVL_ERROR));
 }
 
 TEST_F(CTEST_LibraryRealLogger, library_logs_land_in_the_application_log_file)
 {
-  static const std::string expect = "No valid library context pointer provided";
-
   const auto appLogger = std::make_shared<RealDefaultLogger>();
 
   appLogger->init(app_log_file, MACRO_LVL_ERROR, false);
 
-  LOG_INIT_REAL_LOGGER(appLogger);
+  LibraryFacade::accept_real_logger(appLogger);
 
-  const auto lib = create_library();
+  EXPECT_EQ(create_no_context_importer(), nullptr);
 
-  ASSERT_NE(lib, nullptr);
-  EXPECT_EQ(LOG_REAL_LOGGER(), appLogger);
-
-  EXPECT_FALSE(lib->libcall(nullptr));
-
-  EXPECT_THAT(log_contents(), HasSubstr(expect));
+  EXPECT_THAT(log_contents(), HasSubstr(no_context_msg));
 }

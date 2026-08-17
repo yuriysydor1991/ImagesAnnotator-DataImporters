@@ -1,5 +1,5 @@
-#ifndef YOUR_CPP_APP_TEMPLATE_PROJECT_GLOBAL_DECLS_H
-#define YOUR_CPP_APP_TEMPLATE_PROJECT_GLOBAL_DECLS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_GLOBAL_DECLS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_GLOBAL_DECLS_H
 
 #include <string>
 
@@ -7,7 +7,7 @@
 namespace project_decls
 {
 
-  /// @brief Global project' binary name
+  /// @brief Global project' library name
   const std::string PROJECT_NAME = "${PROJECT_LIBRARY_NAME}";
   /// @brief Global project' build version
   const std::string PROJECT_BUILD_VERSION = "${PROJECT_VERSION}";
@@ -18,4 +18,4 @@ namespace project_decls
 
 } // namespace project_decls
 
-#endif // YOUR_CPP_APP_TEMPLATE_PROJECT_GLOBAL_DECLS_H
+#endif // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_GLOBAL_DECLS_H

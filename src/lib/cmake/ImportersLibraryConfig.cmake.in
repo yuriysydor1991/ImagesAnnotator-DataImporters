@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+# The library public headers name the ImagesAnnotatorDataDrivers record types,
+# so the dependency has to be resolved before the exported targets are read.
+include(CMakeFindDependencyMacro)
+find_dependency(@IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE@ CONFIG)
+
+include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_MODULE_TARGETS_FILE@")

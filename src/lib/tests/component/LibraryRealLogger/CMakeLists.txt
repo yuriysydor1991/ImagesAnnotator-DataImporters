@@ -1,19 +1,13 @@
 cmake_minimum_required(VERSION 3.13)
 
-# disabling the asserts to let the library error paths be reachable
-add_compile_options(-DNDEBUG=1)
-
 # The library is expected to log into the real logger instance handed over by
-# its user, so the whole library implementation is linked together with the
-# real log.h facilities instead of the log mock and is driven through the
-# public LibraryFacade only.
+# its user, so the test links the produced shared library itself and drives it
+# through the public LibraryFacade only - the very shape a consuming
+# application sees. The RealDefaultLogger source below is the test own copy of
+# the application side logger the instances are created from.
 add_executable(
   CTEST_LibraryRealLogger
   CTEST_LibraryRealLogger.cpp
-  ${CMAKE_SOURCE_DIR}/src/lib/facade/LibraryFacade.cpp
-  ${CMAKE_SOURCE_DIR}/src/lib/libmain/LibFactory.cpp
-  ${CMAKE_SOURCE_DIR}/src/lib/libmain/LibMain.cpp
-  ${CMAKE_SOURCE_DIR}/src/log/default-logger/DefaultLogger.cpp
   ${CMAKE_SOURCE_DIR}/src/log/default-logger/real-default-logger/RealDefaultLogger.cpp
 )
 
@@ -27,11 +21,12 @@ target_include_directories(
   PRIVATE
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}
-    ${PROJECT_LIB_PUBLIC_INCLUDE_DIR}/${PROJECT_LIBRARY_NAME}
+    ${IADI_PUBLIC_INCLUDE_DIR}
 )
 
 target_link_libraries(
   CTEST_LibraryRealLogger
+  ${PROJECT_LIBRARY_NAME}
   GTest::gtest_main GTest::gmock
 )
 

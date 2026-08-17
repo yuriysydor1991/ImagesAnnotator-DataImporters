@@ -2,10 +2,16 @@ cmake_minimum_required(VERSION 3.13)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# ON by default: the public API namespace carries the major and the minor
+# version (ImagesAnnotatorDataImporters011), so the installable names track the
+# same pair. Two minor versions then install completely side by side - their
+# binaries, their header directories and their CMake packages all differ. This
+# is also what the ImagesAnnotatorDataDrivers library this project fills its
+# databases through does, so both halves of the pair are named alike.
 option(
   LIB_INCLUDE_MINOR_IN_NAME
   "Append .<minor> to the installable library name (binary, headers subdir, CMake package dir)"
-  OFF
+  ON
 )
 
 option(
@@ -52,29 +58,15 @@ unset(_lib_name)
 
 message(STATUS "PROJECT_LIBRARY_NAME: ${PROJECT_LIBRARY_NAME}")
 
-# The library public C++ namespace. It is derived from the top level project
-# name, so every project derived from this template owns a unique one and an
-# application may depend on many derived libraries at once. Two libraries
-# sharing a namespace share their symbols too, and the loader then silently
-# binds every call of both of them into whichever library it resolved first.
-string(MAKE_C_IDENTIFIER "${CMAKE_PROJECT_NAME}" _lib_namespace)
-
+# The directory holding the installable public headers. Unlike in the project
+# template these are written by hand rather than generated, since the public
+# namespace of this library is a fixed ImagesAnnotatorDataImporters011 instead
+# of one derived from the project name. The variable is declared here and not
+# in the src/lib subdirectory, because the analyzer targets are created before
+# that subdirectory is added and have to reach those headers too.
 set(
-  PROJECT_LIB_NAMESPACE "${_lib_namespace}_${CMAKE_PROJECT_VERSION_MAJOR}"
-  CACHE STRING "The library public C++ namespace, unique per derived project"
-  FORCE
-)
-
-unset(_lib_namespace)
-
-message(STATUS "PROJECT_LIB_NAMESPACE: ${PROJECT_LIB_NAMESPACE}")
-
-# The directory the public headers are generated into. It is declared here and
-# not in the src/lib subdirectory, because the analyzer targets are created
-# before that subdirectory is added and have to reach those headers too.
-set(
-  PROJECT_LIB_PUBLIC_INCLUDE_DIR "${CMAKE_BINARY_DIR}/include"
-  CACHE PATH "The generated library public headers include directory"
+  IADI_PUBLIC_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/src/lib/facade/public"
+  CACHE PATH "The library public headers include directory"
   FORCE
 )
 

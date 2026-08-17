@@ -1,5 +1,5 @@
-#ifndef YOUR_CPP_APP_TEMPLATE_PROJECT_LIBRARYMAIN_CLASS_H
-#define YOUR_CPP_APP_TEMPLATE_PROJECT_LIBRARYMAIN_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYMAIN_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYMAIN_CLASS_H
 
 #include <gmock/gmock.h>
 
@@ -7,27 +7,26 @@
 
 #include "ILib.h"
 #include "LibraryContext.h"
-#include "project-lib-decls.h"
 
-namespace TEMPLATE_LIB_IMPL_NAMESPACE
+namespace iadi0impl
 {
 
-class LibMain : public TEMPLATE_LIB_NAMESPACE::ILib
+class LibMain : public ImagesAnnotatorDataImporters011::ILib
 {
  public:
   using LibMainPtr = std::shared_ptr<LibMain>;
-  using LibraryContextPtr = TEMPLATE_LIB_NAMESPACE::LibraryContextPtr;
+  using LibraryContextPtr = ImagesAnnotatorDataImporters011::LibraryContextPtr;
 
-  ~LibMain() override = default;
+  virtual ~LibMain() = default;
   LibMain() = default;
 
-  MOCK_METHOD(bool, libcall, (LibraryContextPtr ctx), (override));
+  MOCK_METHOD(bool, perform_import, (LibraryContextPtr ctx), (override));
 
   inline static LibMainPtr create() { return std::make_shared<LibMain>(); }
 };
 
 using LibMainPtr = LibMain::LibMainPtr;
 
-}  // namespace TEMPLATE_LIB_IMPL_NAMESPACE
+}  // namespace iadi0impl
 
-#endif  // YOUR_CPP_APP_TEMPLATE_PROJECT_LIBRARYMAIN_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYMAIN_CLASS_H

@@ -1,3 +1,10 @@
 nullPointer:assert.cpp
 missingIncludeSystem
 unusedStructMember
+# Every class of this library and of the two sibling ones spells its destructor
+# out as `virtual ~X() = default;`, the base classes included, so the whole
+# family reads alike. Marking the derived ones `override` instead would change
+# nothing but that.
+missingOverride
+# Informational note about the analysis depth, not a finding about the code.
+normalCheckLevelMaxBranches

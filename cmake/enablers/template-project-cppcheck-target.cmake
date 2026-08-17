@@ -26,14 +26,11 @@ endif()
 
 message(STATUS "cppcheck: ${CPPCHECK_EXEC}")
 
-# The library public headers are generated, so the analyzed sources reach them
-# through the generated include directory only. The branches which build no
-# library declare none of those variables and add no include of their own.
-if(PROJECT_LIB_PUBLIC_INCLUDE_DIR AND PROJECT_LIBRARY_NAME)
-  set(
-    CPPCHECK_LIB_PUBLIC_INCLUDE
-    -I${PROJECT_LIB_PUBLIC_INCLUDE_DIR}/${PROJECT_LIBRARY_NAME}
-  )
+# The implementation sources include the public headers unprefixed, exactly as
+# the library target compiles them, so the analyzer needs that directory on its
+# include path as well.
+if(IADI_PUBLIC_INCLUDE_DIR)
+  set(CPPCHECK_LIB_PUBLIC_INCLUDE -I${IADI_PUBLIC_INCLUDE_DIR})
 endif()
 
 add_custom_target (
