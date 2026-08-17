@@ -1,0 +1,25 @@
+#ifndef @PROJECT_LIB_NAMESPACE@_LIBRARYCONTEXT_CLASS_H
+#define @PROJECT_LIB_NAMESPACE@_LIBRARYCONTEXT_CLASS_H
+
+#include <gmock/gmock.h>
+
+namespace @PROJECT_LIB_NAMESPACE@
+{
+
+class LibraryContext
+{
+ public:
+  using LibraryContextPtr = std::shared_ptr<LibraryContext>;
+
+  virtual ~LibraryContext() = default;
+  LibraryContext() = default;
+
+  // Introduce here the library required data fields.
+  // Add some fields to pass data from it's users.
+};
+
+using LibraryContextPtr = LibraryContext::LibraryContextPtr;
+
+}  // namespace @PROJECT_LIB_NAMESPACE@
+
+#endif  // @PROJECT_LIB_NAMESPACE@_LIBRARYCONTEXT_CLASS_H

@@ -1,0 +1,63 @@
+#ifndef YOUR_CPP_APP_TEMPLATE_PROJECT_LIBFACTORY_CLASS_H
+#define YOUR_CPP_APP_TEMPLATE_PROJECT_LIBFACTORY_CLASS_H
+
+#include <memory>
+
+#include "ILib.h"
+#include "LibraryContext.h"
+#include "project-lib-decls.h"
+
+namespace TEMPLATE_LIB_IMPL_NAMESPACE
+{
+
+/**
+ * The library main factory to operate with the implementation.
+ * Create appropriate instances in accordance of provided data
+ * by the given context or by simply calling appropriate method.
+ */
+class LibFactory
+{
+ public:
+  using LibFactoryPtr = std::shared_ptr<LibFactory>;
+  using ILibPtr = TEMPLATE_LIB_NAMESPACE::ILibPtr;
+  using LibraryContextPtr = TEMPLATE_LIB_NAMESPACE::LibraryContextPtr;
+  using LibraryContext = TEMPLATE_LIB_NAMESPACE::LibraryContext;
+
+  virtual ~LibFactory() = default;
+  LibFactory() = default;
+
+  /**
+   * @brief Creates the default library implementation. May be overriden
+   * in descendants.
+   *
+   * @return Returns the default library implementation. Currently returns
+   * the LibMain class instance.
+   */
+  virtual ILibPtr create_default_lib();
+
+  /**
+   * @brief Creates the default context to use in libraries implementation
+   * in order to provide all necessary data.
+   *
+   * @return Returns empty library context instance.
+   */
+  virtual LibraryContextPtr create_default_context();
+
+  /**
+   * @brief Creates appropriate library implementation instance
+   * with accordance of provided data in the given context.
+   *
+   * @return Returns the appropriate library implementation if any
+   * or a nullptr in case of any error. Currently returns the LibMain class
+   * instance only.
+   */
+  virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx);
+
+  static LibFactoryPtr create_factory();
+};
+
+using LibFactoryPtr = LibFactory::LibFactoryPtr;
+
+}  // namespace TEMPLATE_LIB_IMPL_NAMESPACE
+
+#endif  // YOUR_CPP_APP_TEMPLATE_PROJECT_LIBFACTORY_CLASS_H
