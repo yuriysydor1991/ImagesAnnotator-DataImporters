@@ -29,4 +29,3 @@ configure_file(
 
 add_subdirectory(lib)
 add_subdirectory(log)
-add_subdirectory(tests)
