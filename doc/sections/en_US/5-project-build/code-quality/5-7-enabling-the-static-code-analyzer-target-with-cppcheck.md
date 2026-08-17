@@ -5,7 +5,7 @@ In order to make the cppcheck target available for the execution, configure proj
 ```
 # inside the project root directory 
 
-cmake -B build -S . -DENABLE_CPPCHECK=ON
+cmake -B build -S . -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_CPPCHECK=ON
 ```
 
 And to perform the actual static code analysis by itself run the `cppcheck` target for the build:
@@ -16,4 +16,4 @@ And to perform the actual static code analysis by itself run the `cppcheck` targ
 cmake --build build --target cppcheck
 ```
 
-The `cppcheck` target details may be examined and/or altered in the `cmake/template-project-cppcheck-target.cmake` CMake submodule file.
+The `cppcheck` target details may be examined and/or altered in the [cmake/enablers/template-project-cppcheck-target.cmake](/cmake/enablers/template-project-cppcheck-target.cmake) CMake submodule file.

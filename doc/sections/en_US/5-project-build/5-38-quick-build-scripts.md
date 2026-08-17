@@ -4,6 +4,10 @@ The [scripts/build](/scripts/build) directory holds the shell scripts which perf
 
 Every script keeps its build tree under the project `build` directory: the `Release` one at `build/release` and the `Debug` one at `build/debug`.
 
+This project does not configure without the [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, which it resolves with a `find_package()` and never fetches (see the [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section), so that library is to be installed once before any of the scripts below is started.
+
+This project is a library too, so its build produces nothing to start: the step which makes the result usable is the install one, which publishes the `find_package()` package the [Using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) section consumes. That step runs only when the `--install` parameter of the [Accepted parameters](#accepted-parameters) below is given.
+
 ### Entry point scripts
 
 Each of the scripts below performs the configure, the build and the install steps in a row:
@@ -56,6 +60,14 @@ scripts/build/release.sh -DENABLE_DEB=ON
 # the same build reusing the already configured build directory,
 # followed by the installation into the /usr prefix
 scripts/build/release.sh --no-reconfigure --install
+```
+
+A data drivers installation outside of the default CMake search prefixes is named the very same way, since `CMAKE_PREFIX_PATH` is a CMake variable as well:
+
+```
+# inside the project root directory
+
+scripts/build/release.sh -DCMAKE_PREFIX_PATH="$HOME/.local"
 ```
 
 The rest of the arguments are passed to the build and the install steps, so a CMake option which belongs to a single step is to be given to that stage script rather than to an entry point script:

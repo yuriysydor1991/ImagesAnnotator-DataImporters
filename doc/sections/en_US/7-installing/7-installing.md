@@ -1,24 +1,24 @@
-
 # Installing
 
-Execute available install commands from the project's build directory.
+Execute the install command from the project's build directory. The project
+installs no executable: what lands in the prefix is the shared library, its
+public headers and the CMake package that lets other projects find them.
 
 ## Default installation
 
-In order to install generated executable (as shown previous) file into yours system binary default folder, execute next command in the command line (GNU/Linux based):
+Without an explicit prefix CMake uses the platform default, usually
+`/usr/local` on the Unix-like systems, which needs the administrator rights
+(GNU/Linux based):
 
 ```
-# installs generated library under the /usr/local/lib/ for example
-# and installs header include files under the /usr/local/include/libCppAppTemplateLib
+# from the project build directory
 
 sudo cmake --install .
 ```
 
-Usually it's the `/usr/local/lib` directory for the library (on the Unix-like OS) which may be inaccessible from the `PATH` environment variable (e.g. can not be started as a regular command).
-
 ## Installation by the quick build scripts
 
-The scripts of the [Quick build scripts](/doc/sections/en_US/5-project-build/5-36-quick-build-scripts.md) section perform the install step themselves when the `--install` parameter is given, so the whole configure, build and install cycle takes the single command:
+The scripts of the [Quick build scripts](/doc/sections/en_US/5-project-build/5-38-quick-build-scripts.md) section perform the install step themselves when the `--install` parameter is given, so the whole configure, build and install cycle takes the single command:
 
 ```
 # inside the project root directory
@@ -38,20 +38,97 @@ Both of them install into the `/usr` prefix by the `sudo cmake --install` call, 
 
 ## Custom installation path
 
-To install binary into the system globally available directory add the `--prefix` parameter to the command above as next:
+Add the `--prefix` parameter to install elsewhere. Any writable path will do,
+which is the convenient way to test the package before installing it system
+wide:
 
 ```
-# replace the /usr path with our own if needed
+# replace the /usr path with your own if needed
 # run from the project's build directory
 
 sudo cmake --install . --prefix "/usr"
 ```
 
-Examine the `PATH` environment variable to chose directory best suited for your current OS (execute `echo $PATH` in the terminal). Alternatively, any path may be specified.
+## What gets installed
+
+For the default `ImagesAnnotatorDataImporters-0.11` library name a prefix receives
+exactly the following files:
+
+```
+<prefix>/lib/libImagesAnnotatorDataImporters-0.11.so.0.11.0
+<prefix>/lib/libImagesAnnotatorDataImporters-0.11.so.0
+<prefix>/lib/libImagesAnnotatorDataImporters-0.11.so
+
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/ImportersAPI.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/IImporter.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/IImageSizeFacility.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/ILib.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/LibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/LibraryFacade.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/PlainTxtImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/PyTorchImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/Yolo4ImportLibraryContext.h
+
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.11/ImagesAnnotatorDataImporters-0.11Config.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.11/ImagesAnnotatorDataImporters-0.11ConfigVersion.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.11/ImagesAnnotatorDataImporters-0.11Targets.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.11/ImagesAnnotatorDataImporters-0.11Targets-<config>.cmake
+```
+
+The `.so.0.11.0` file is the library itself, `.so.0` is the `SONAME` link the
+dynamic linker resolves and the bare `.so` link is the development one the
+compiler follows. The headers are the nine public ones of the
+[src/lib/facade/public](/src/lib/facade/public) directory, described in
+[The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md).
+
+The four CMake files form the package that answers
+`find_package(ImagesAnnotatorDataImporters-0.11 0.11 REQUIRED)`. The `Config` one
+pulls the public `ImagesAnnotatorDataDrivers-0.11` dependency in before including
+the exported targets, the `ConfigVersion` one makes the version request
+succeed, and the `Targets` pair defines the
+`ImagesAnnotatorDataImporters-0.11::ImagesAnnotatorDataImporters-0.11` imported
+target. The `<config>` part of the last file name follows the build type, and
+is `noconfig` when no `CMAKE_BUILD_TYPE` was set.
+
+The library name is composed from the project name and its major and minor
+version, so
+all four path segments above change together if the name is customised, see
+[Customizing library name segments](/doc/sections/en_US/5-project-build/5-23-customizing-library-name-segments.md).
+
+## Install components
+
+The installed files are split into two components. `Runtime` holds what a
+program needs to run, that is the `.so.0.11.0` file and its `SONAME` link.
+`Development` holds what a project needs to build against the library, that is
+the bare `.so` link, the headers and the CMake package files. Either one may be
+installed alone:
+
+```
+# from the project build directory
+
+cmake --install . --component Runtime
+cmake --install . --component Development
+```
+
+## Using the installed library
+
+The library keeps the `ImagesAnnotatorDataDrivers-0.11` dependency public, so both
+packages must be visible to the consuming project. Pass their prefixes through
+`CMAKE_PREFIX_PATH`:
+
+```
+cmake -S . -B build -DCMAKE_PREFIX_PATH="<importers prefix>;<data drivers prefix>"
+```
+
+If the library was installed outside the loader's default search path, refresh
+the cache with `sudo ldconfig` or export `LD_LIBRARY_PATH=<prefix>/lib` before
+starting the program that links it. The full walk-through is in
+[Using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md).
 
 ## Documentation install
 
-If project was configured to support the documentation install by the command which looks like next:
+If the project was configured to support the documentation install by a command
+which looks like next:
 
 ```
 # inside the project build directory
@@ -59,4 +136,8 @@ If project was configured to support the documentation install by the command wh
 cmake ../ -DENABLE_DOC_DOXYGEN=ON -DDOXYGEN_DO_INSTALL=ON
 ```
 
-The installation command (for example, described in the [Default installation](#default-installation) section) will install the generated HTML documentation files into appropriate directories.
+then the generated HTML files are installed under `<prefix>/share/docs` as the
+`Documentation` component by the same install command described in the
+[Default installation](#default-installation) section. See
+[Configuring the documentation install support](/doc/sections/en_US/5-project-build/documentation/5-5-configuring-the-documentation-install-support.md)
+for the details.

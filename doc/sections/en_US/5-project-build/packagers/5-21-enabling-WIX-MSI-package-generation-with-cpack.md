@@ -5,7 +5,7 @@ In order to be able to generate the Microsoft Windows `.msi` installer file conf
 ```
 # inside the project root directory
 
-cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DENABLE_WIX=ON
+cmake -B build -S . -DCMAKE_PREFIX_PATH=<data drivers prefix> -DCMAKE_BUILD_TYPE=Release -DENABLE_WIX=ON
 ```
 
 Next, build all available targets required for the `.msi` package:
@@ -16,7 +16,7 @@ Next, build all available targets required for the `.msi` package:
 cmake --build build
 ```
 
-Finally, execute the `cpack` command inside the template project build directory:
+Finally, execute the `cpack` command inside the project build directory:
 
 ```
 # inside the project build directory
@@ -24,7 +24,7 @@ Finally, execute the `cpack` command inside the template project build directory
 cpack -C Release
 ```
 
-The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.12.0` the package name may look like `CppAppTemplate-0.12.0-win64.msi` (the exact architecture suffix depends on the build host).
+The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.11.0` the package name may look like `ImagesAnnotatorDataImporters-0.11.0-win64.msi` (the exact architecture suffix depends on the build host).
 
 In order to examine details of the WIX MSI package configuration visit the [cmake/enablers/packagers/template-project-wix-enabler.cmake](/cmake/enablers/packagers/template-project-wix-enabler.cmake) file.
 
@@ -33,7 +33,7 @@ The integration depends solely on `cmake` and `cpack` - no third-party applicati
 The following cache variables may optionally be overridden in order to tune the generated installer:
 
 - `TEMPLATE_PROJECT_WIX_UPGRADE_GUID` - stable GUID that uniquely identifies the product across versions (default: a placeholder `12345678-1234-1234-1234-123456789012`). **For a real release you must replace it with a project-unique GUID**, otherwise upgrade detection will collide with any other project still using the placeholder. A new GUID can be produced with PowerShell `[guid]::NewGuid()` or any GUID generator.
-- `TEMPLATE_PROJECT_WIX_PROGRAM_MENU_FOLDER` - Windows Start Menu folder name where the installer creates shortcuts (default: project name).
+- `TEMPLATE_PROJECT_WIX_PROGRAM_MENU_FOLDER` - Windows Start Menu folder name used by the installer (default: project name). The project installs a library, its headers and its CMake package files, so no shortcut is created there.
 - `TEMPLATE_PROJECT_WIX_CULTURES` - Semicolon-separated list of UI cultures used by the installer (default: `en-US`, e.g. `en-US;uk-UA`).
 - `TEMPLATE_PROJECT_WIX_LICENSE_RTF` - Optional absolute path to a RTF or TXT license file shown by the installer.
 - `TEMPLATE_PROJECT_WIX_PRODUCT_ICON` - Optional absolute path to a `.ico` file used as the MSI product icon.

@@ -5,7 +5,7 @@ In order to be able to generate the `deb` package file configure project to supp
 ```
 # inside the project root directory 
 
-cmake -B build -S . -DENABLE_DEB=ON
+cmake -B build -S . -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_DEB=ON
 ```
 
 Next, build all available targets required for the `deb` package
@@ -16,7 +16,7 @@ Next, build all available targets required for the `deb` package
 cmake --build build --target all
 ```
 
-Finally, execute the `cpack` command inside the template project build directory:
+Finally, execute the `cpack` command inside the project build directory:
 
 ```
 # inside the project build directory
@@ -24,6 +24,8 @@ Finally, execute the `cpack` command inside the template project build directory
 cpack
 ```
 
-The package file should be generated inside the project build root directory. For example, if project name was't change and it's version is 0.8.0 so the package name may look like `CppAppTemplate-0.8.0-Linux.deb`.
+The package file should be generated inside the project build root directory. For example, if project name wasn't changed and it's version is 0.11.0 so the package name may look like `ImagesAnnotatorDataImporters-0.11.0-Linux.deb`.
 
-In order to examine details of the `deb` package configuration visit the `cmake/template-project-deb-enabler.cmake` file.
+The `CPACK_DEBIAN_PACKAGE_SHLIBDEPS` option is set to `ON`, so `dpkg-shlibdeps` reads the run time dependencies of the produced `libImagesAnnotatorDataImporters-0.11.so` out of the binary itself - the `ImagesAnnotatorDataDrivers` shared object it links, and the OpenCV ones when the build found them, end up in the package `Depends` field without any distribution package name being spelled out in the CMake files.
+
+In order to examine details of the `deb` package configuration visit the [cmake/enablers/packagers/template-project-deb-enabler.cmake](/cmake/enablers/packagers/template-project-deb-enabler.cmake) file.

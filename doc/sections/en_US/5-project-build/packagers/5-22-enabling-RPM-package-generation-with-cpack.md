@@ -5,7 +5,7 @@ In order to be able to generate the `.rpm` package file configure the project to
 ```
 # inside the project root directory
 
-cmake -B build -S . -DENABLE_RPM=ON
+cmake -B build -S . -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_RPM=ON
 ```
 
 Next, build all available targets required for the `.rpm` package:
@@ -16,7 +16,7 @@ Next, build all available targets required for the `.rpm` package:
 cmake --build build --target all
 ```
 
-Finally, execute the `cpack` command inside the template project build directory:
+Finally, execute the `cpack` command inside the project build directory:
 
 ```
 # inside the project build directory
@@ -24,7 +24,7 @@ Finally, execute the `cpack` command inside the template project build directory
 cpack
 ```
 
-The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.12.0` the package name may look like `CppAppTemplate-0.12.0-1.x86_64.rpm`.
+The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.11.0` the package name may look like `ImagesAnnotatorDataImporters-0.11.0-1.x86_64.rpm`.
 
 In order to examine details of the `.rpm` package configuration visit the [cmake/enablers/packagers/template-project-rpm-enabler.cmake](/cmake/enablers/packagers/template-project-rpm-enabler.cmake) file.
 
@@ -33,7 +33,7 @@ The integration depends solely on `cmake` and `cpack` - no third-party applicati
 The following cache variables may optionally be overridden in order to tune the generated package metadata:
 
 - `TEMPLATE_PROJECT_RPM_LICENSE` - SPDX-style license tag (default: `BSD-2-Clause`). Common values are `BSD-2-Clause`, `BSD-3-Clause`, `GPLv3`, `MIT`, `Apache-2.0`.
-- `TEMPLATE_PROJECT_RPM_GROUP` - package group (default: `Applications/System`). Other typical values are `Development/Libraries`, `Development/Tools`, `Applications/Internet`.
+- `TEMPLATE_PROJECT_RPM_GROUP` - package group (default: `Applications/System`). `Development/Libraries` is the fitting value for this project, other typical ones are `Development/Tools` and `Applications/Internet`.
 - `TEMPLATE_PROJECT_RPM_RELEASE` - package release number (default: `1`). Bump it for rebuilds of the same upstream version.
 - `TEMPLATE_PROJECT_RPM_PACKAGE_ARCHITECTURE` - architecture tag (default: `x86_64`). Other typical values are `aarch64`, `armv7hl`, `noarch`.
 

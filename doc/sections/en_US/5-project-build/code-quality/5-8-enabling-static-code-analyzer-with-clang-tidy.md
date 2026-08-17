@@ -5,7 +5,7 @@ In order to enable the static code check for the each translation unit or each `
 ```
 # inside the project root directory
 
-cmake -B build -S . -DENABLE_CLANG_TIDY=ON
+cmake -B build -S . -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_CLANG_TIDY=ON
 ```
 
 And to perform the actual static code analysis by itself build any target of interest and the `clang-tidy` command will perform check on each of the compilation target:
@@ -16,7 +16,7 @@ And to perform the actual static code analysis by itself build any target of int
 cmake --build build --target all
 ```
 
-For more information about the `clang-tidy` examine the `cmake/template-project-clang-tidy-target.cmake`, `misc/.clang-tidy` files
+For more information about the `clang-tidy` examine the [cmake/enablers/template-project-clang-tidy-target.cmake](/cmake/enablers/template-project-clang-tidy-target.cmake), `misc/.clang-tidy` files
 and the `clang-tidy` application documentation of a used version.
 
 **Warning!** The `clang-tidy` static code analysis may dramatically increase the code compilation time.

@@ -5,7 +5,7 @@ In order to make `clang-format` target available set the `ENABLE_CLANGFORMAT` va
 ```
 # inside the project root directory 
 
-cmake -B build -S . -DENABLE_CLANGFORMAT=ON
+cmake -B build -S . -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_CLANGFORMAT=ON
 ```
 
 To perform the whole project code format in accordance with available `misc/.clang-format` code formatter configuration execute next building command:
@@ -16,4 +16,4 @@ To perform the whole project code format in accordance with available `misc/.cla
 cmake --build build --target clang-format
 ```
 
-The `clang-format` target details may be examined and/or altered in the `cmake/template-project-clang-format-target.cmake` CMake submodule file.
+The `clang-format` target details may be examined and/or altered in the [cmake/enablers/template-project-clang-format-target.cmake](/cmake/enablers/template-project-clang-format-target.cmake) CMake submodule file.

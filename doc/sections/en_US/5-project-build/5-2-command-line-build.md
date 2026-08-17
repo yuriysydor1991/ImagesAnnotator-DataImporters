@@ -1,13 +1,47 @@
 ## Command line build
 
-The project uses the CMake build system so a build command should be familiar to the most of the C++ developers around the world!
+The project uses the CMake build system, so the build commands are the ones
+every C++ developer already knows.
 
-Of course, project needs to be `git clone`-ed and it's root directory must be opened in the terminal or in your IDE first. After that you may execute next commands:
+Clone the repository and open its root directory in a terminal first. The only
+project specific addition is `-DCMAKE_PREFIX_PATH`: the library resolves its
+mandatory
+[ImagesAnnotatorDataDrivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md)
+with `find_package(... REQUIRED CONFIG)`, so CMake has to be told where that
+library is installed.
 
 ```
 # from the project root
 
-cmake -B build -S . && cmake --build build
+cmake -S . -B build -DCMAKE_PREFIX_PATH=/path/to/data-drivers-install-prefix
+cmake --build build -j$(nproc)
 ```
 
-Which effectively will create a directory named `build` (it's already added to the `.gitignore` list), configure project using the CMake available in the system (see the [Requirements](/doc/sections/en_US/3-requirements/3-requirements.md) section of this `README.md` file) and finally builds all the targets available in the project.
+This creates the `build` directory (already listed in `.gitignore`), configures
+the project with the CMake found in the system (see the
+[Requirements](/doc/sections/en_US/3-requirements/3-requirements.md) section)
+and builds every target of the project, which for a default configure means the
+`libImagesAnnotatorDataImporters-0.11.so` shared library alone.
+
+`-DCMAKE_PREFIX_PATH` may be dropped only when the data drivers library is
+installed into a prefix CMake searches by default, such as `/usr` or
+`/usr/local`.
+
+A release build with the tests and a trial install into a local prefix:
+
+```
+# from the project root
+
+cmake -S . -B build \
+  -DCMAKE_PREFIX_PATH=/path/to/data-drivers-install-prefix \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DENABLE_UNIT_TESTS=ON \
+  -DENABLE_COMPONENT_TESTS=ON
+cmake --build build -j$(nproc)
+cd build && ctest --output-on-failure
+```
+
+See [Installing](/doc/sections/en_US/7-installing/7-installing.md) for the
+install step and
+[Using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md)
+for the downstream `find_package` usage.

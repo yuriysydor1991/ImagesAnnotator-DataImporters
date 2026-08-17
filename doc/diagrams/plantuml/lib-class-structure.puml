@@ -1,51 +1,172 @@
 @startuml
 
-package Library-Facade {
-  abstract class ILib {
-    +{abstract} bool libcall(LibraryContextPtr ctx)
+package "ImagesAnnotatorDataDrivers011 (dependency)" #EEEEEE {
+  abstract class "IAnnotationsDB" as IDB {
+    +{abstract} void add_images_db(const ImageRecordsSet& andb)
+    +{abstract} ImageRecordsSet& get_images_db()
+    +{abstract} bool store_db(const std::string& fpath)
   }
 
-  class LibraryContext {
-  }
-
-  class LibraryFacade {
-    +{static} LibraryContextPtr create_library_context();
-    +{static} ILibPtr create_default_lib();
-    +{static} ILibPtr create_library(LibraryContextPtr ctx);
+  class ImageRecord {
+    +ImageRecordRectSet rects
+    +int iwidth
+    +int iheight
+    +{static} ImageRecordPtr create(const std::string& npath, const std::string& nabspath)
   }
 }
 
-package Library-Implementation {
+package "ImagesAnnotatorDataImporters011 (installed interface)" {
+  abstract class IImporter {
+    +{abstract} bool import_db(LibraryContextPtr ictx)
+  }
+
+  abstract class IImageSizeFacility {
+    +{abstract} bool read_image_size(const std::string& imagePath, int& width, int& height)
+    +{abstract} IImageSizeFacilityPtr clone()
+  }
+
+  class LibraryContext {
+    -std::string import_path
+    -IAnnotationsDBPtr db
+    -IImageSizeFacilityPtr imageSizer
+    -IImporterPtr importer
+    -std::size_t importedRecords
+    +const std::string& get_import_path()
+    +void set_import_path(const std::string&)
+    +const IAnnotationsDBPtr& get_db()
+    +void set_db(const IAnnotationsDBPtr&)
+    +const IImageSizeFacilityPtr& get_image_sizer()
+    +void set_image_sizer(const IImageSizeFacilityPtr&)
+    +const IImporterPtr& get_importer()
+    +void set_importer(const IImporterPtr&)
+    +const std::size_t& get_imported_records()
+    +void set_imported_records(const std::size_t&)
+  }
+
+  class PlainTxtImportLibraryContext
+  class Yolo4ImportLibraryContext
+  class PyTorchImportLibraryContext
+
+  abstract class ILib {
+    +{abstract} bool perform_import(LibraryContextPtr ctx)
+  }
+
+  class LibraryFacade {
+    +{static} PlainTxtImportLibraryContextPtr create_plain_txt_library_context()
+    +{static} Yolo4ImportLibraryContextPtr create_yolo4_library_context()
+    +{static} PyTorchImportLibraryContextPtr create_pytorch_library_context()
+    +{static} ILibPtr create_default_lib()
+    +{static} ILibPtr create_library(LibraryContextPtr ctx)
+    +{static} IImporterPtr create_importer(const LibraryContextPtr& ctx)
+    +{static} IImageSizeFacilityPtr create_image_sizer()
+    +{static} std::string library_version()
+  }
+}
+
+package "Implementation (hidden symbols)" #F8F8F8 {
   class LibMain {
-    +{abstract} bool libcall(LibraryContextPtr ctx)
+    +bool perform_import(LibraryContextPtr ctx)
     +{static} LibMainPtr create()
   }
 
   class LibFactory {
-    +{abstract} ILibPtr create_default_lib()
-    +{abstract} LibraryContextPtr create_default_context()
-    +{abstract} ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
+    +ILibPtr create_default_lib()
+    +PlainTxtImportLibraryContextPtr create_plain_txt_library_context()
+    +Yolo4ImportLibraryContextPtr create_yolo4_library_context()
+    +PyTorchImportLibraryContextPtr create_pytorch_library_context()
+    +ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
+    +IImporterPtr create_importer(const LibraryContextPtr& ctx)
+    +IImageSizeFacilityPtr create_image_sizer()
     +{static} LibFactoryPtr create_factory()
+  }
+
+  abstract class Folder2DBImporter {
+    +bool import_db(LibraryContextPtr ictx)
+    #{abstract} bool read_dataset(const std::filesystem::path& importDir, ImageRecordsSet& records)
+    #virtual bool needs_image_sizer() const
+    #bool measure_image(const std::filesystem::path& imagePath, int& width, int& height)
+    #{static} ImageRecordPtr create_record(const std::filesystem::path& imagePath)
+    #{static} std::vector<std::string> read_lines(const std::filesystem::path& fpath)
+  }
+
+  class PlainTxtFolder2DBImporter
+  class Yolo4Folder2DBImporter
+  class PyTorchVisionFolder2DBImporter
+
+  class OpenCVImageSizer {
+    +bool read_image_size(const std::string& imagePath, int& width, int& height)
+    +IImageSizeFacilityPtr clone()
   }
 }
 
-note Left of LibraryFacade : The facade for\nthe library implementation.\nCreates instances\nof LibMain through the LibFactory
+note right of IImageSizeFacility
+  Implemented by the consuming project.
+  The library decodes no image format
+  of its own.
+end note
 
-note Left of LibraryContext : Possible required\ndata placeholder\nto execute some libcalls
-note Bottom of ILib: The particular library\nimplementation interface declearer
+note bottom of LibraryFacade
+  The only entry point a consuming
+  project needs. Everything else stays
+  behind these abstract interfaces.
+end note
 
-note Right of LibMain : The particular library implementation.\nIs created by LibFactory to return\nby LibraryFacade to the end user.
-note Bottom of LibFactory: The factory to create library implementations objects.
+note bottom of Folder2DBImporter
+  Everything an import does around the
+  reading of its one layout: the guards,
+  the image measuring, the merge into
+  the database and the count.
+end note
 
-ILib <|-- LibMain : Particular implementation
+note bottom of Yolo4Folder2DBImporter
+  The one layout whose boxes are stored
+  divided by the size of their image, so
+  the one which can not be read without
+  measuring every picture.
+end note
 
-LibraryContext <-- ILib
-LibraryContext <-- LibMain
+note bottom of PyTorchVisionFolder2DBImporter
+  The crop is the annotation: one record
+  per file, the rectangle covering it
+  whole. The one layout which does not
+  round trip.
+end note
 
-LibraryFacade ..> LibraryContext : implicitly creates with LibraryFacade
-LibraryFacade ..> LibMain : Implicitly creates with LibraryFacade
-LibraryFacade --> LibFactory : Creates
+note bottom of OpenCVImageSizer
+  Compiled only into a build which found
+  OpenCV. A reader the consumer sets
+  always wins over it.
+end note
 
-LibMain --> LibFactory
+ILib <|-- LibMain
+IImporter <|-- Folder2DBImporter
+IImageSizeFacility <|-- OpenCVImageSizer
+
+Folder2DBImporter <|-- PlainTxtFolder2DBImporter
+Folder2DBImporter <|-- Yolo4Folder2DBImporter
+Folder2DBImporter <|-- PyTorchVisionFolder2DBImporter
+
+LibraryFacade --> LibFactory : creates
+LibMain --> LibFactory : creates
+LibFactory ..> LibMain : creates
+LibFactory ..> PlainTxtFolder2DBImporter : creates
+LibFactory ..> Yolo4Folder2DBImporter : creates
+LibFactory ..> PyTorchVisionFolder2DBImporter : creates
+LibFactory ..> OpenCVImageSizer : creates
+
+LibraryContext <|-- PlainTxtImportLibraryContext
+LibraryContext <|-- Yolo4ImportLibraryContext
+LibraryContext <|-- PyTorchImportLibraryContext
+
+LibFactory ..> PlainTxtImportLibraryContext : creates and casts to pick
+LibFactory ..> Yolo4ImportLibraryContext : creates and casts to pick
+LibFactory ..> PyTorchImportLibraryContext : creates and casts to pick
+
+LibraryContext --> IDB : fills
+LibraryContext --> IImageSizeFacility : uses
+IImporter --> LibraryContext : driven with
+
+IDB --> ImageRecord
+Folder2DBImporter ..> ImageRecord : builds
 
 @enduml

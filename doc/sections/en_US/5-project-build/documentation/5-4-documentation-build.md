@@ -1,18 +1,25 @@
 ## Documentation build
 
-Currently it's possible to auto-generate the project documentation by the Doxygen tool from the available sources comments.
+Besides the hand written sections under `doc/sections`, the project can
+auto-generate an API reference with the Doxygen tool from the comments of the
+sources and of the installable public headers.
 
-To enable Doxygen documentation CMake-target during the project configure process call a command that sets the `ENABLE_DOC_DOXYGEN` CMake variable to the `ON` value (GNU/Linux based):
+To add the Doxygen CMake target during the configure stage set the
+`ENABLE_DOC_DOXYGEN` CMake variable to `ON` (GNU/Linux based):
 
 ```
-# inside the project root directory 
+# inside the project root directory
 
-cmake -B build -S . -DENABLE_DOC_DOXYGEN=ON
+cmake -S . -B build \
+  -DCMAKE_PREFIX_PATH=/path/to/data-drivers-install-prefix \
+  -DENABLE_DOC_DOXYGEN=ON
 ```
 
-Which effectively will create a directory named `build` inside the project root directory, enters it by a `cd` command and configures project to enable Doxygen documentation build.
+The configure fails when no Doxygen is installed, because
+[doc/CMakeLists.txt](/doc/CMakeLists.txt) resolves it with
+`find_package(Doxygen REQUIRED)` once the option is on.
 
-Finally build the documentation by executing the command:
+Then build the documentation with:
 
 ```
 # inside the project root directory
@@ -20,6 +27,33 @@ Finally build the documentation by executing the command:
 cmake --build build --target Doxygen-doc
 ```
 
-Which in turn will generate the `doc/CppAppTemplate-html` directory (already added to the `.gitignore` file) which will contain the HTML-type documentation. In order to open and examine generated documentation open the `doc/CppAppTemplate-html/index.html` file. The `CppAppTemplate-html` directory name will change if changed default executable name for the project by setting a new value for the `PROJECT_NAME` in the `CMakeLists.txt` file or `PROJECT_LIBRARY_NAME` variable in the `template-project-misc-variables-declare.cmake` file or the `DOXYGEN_OUT_HTML_NAME` variable which in turn set the whole name for the directory.
+That generates the `doc/ImagesAnnotatorDataImporters-0.11-html` directory (the
+`doc/*-html` pattern is already in `.gitignore`) holding the HTML
+documentation; open its `index.html` file to examine the result.
 
-The `doc/Doxyfile.in` file contains all available Doxygen configuration parameters which may be changed in order to change the documentation output.
+The directory name is `<PROJECT_LIBRARY_NAME>-html`, so it follows the
+installable library name: a configure with
+`-DLIB_INCLUDE_MINOR_IN_NAME=ON` produces
+`doc/ImagesAnnotatorDataImporters-0.11-html` instead - see
+[Customizing the installable library name segments](/doc/sections/en_US/5-project-build/5-23-customizing-library-name-segments.md).
+The name can also be set directly with the `DOXYGEN_OUT_HTML_NAME` cache
+variable, and the parent directory with `DOXYGEN_OUTPUT_DIR` (it defaults to
+the `doc` directory of the source tree).
+
+The output language is selected with `DOXYGEN_OUTPUT_LANGUAGE`, which defaults
+to `English`. Setting it to `Ukrainian` also switches the documentation home
+page to `doc/README.uk_UA.md`; otherwise the page is taken from the file named
+by `DOXYGEN_MAIN_PAGE_MD`, by default the top level `README.md`.
+
+```
+# inside the project root directory
+
+cmake -S . -B build \
+  -DCMAKE_PREFIX_PATH=/path/to/data-drivers-install-prefix \
+  -DENABLE_DOC_DOXYGEN=ON \
+  -DDOXYGEN_OUTPUT_LANGUAGE=Ukrainian
+cmake --build build --target Doxygen-doc
+```
+
+The [doc/Doxyfile.in](/doc/Doxyfile.in) template holds every remaining Doxygen
+parameter and may be edited to change the generated output.
