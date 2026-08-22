@@ -11,7 +11,7 @@
 #include "LibraryFacade.h"
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters011;
+namespace iadi = ImagesAnnotatorDataImporters012;
 
 namespace
 {

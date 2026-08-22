@@ -21,7 +21,7 @@ This creates the `build` directory (already listed in `.gitignore`), configures
 the project with the CMake found in the system (see the
 [Requirements](/doc/sections/en_US/3-requirements/3-requirements.md) section)
 and builds every target of the project, which for a default configure means the
-`libImagesAnnotatorDataImporters-0.11.so` shared library alone.
+`libImagesAnnotatorDataImporters-0.12.so` shared library alone.
 
 `-DCMAKE_PREFIX_PATH` may be dropped only when the data drivers library is
 installed into a prefix CMake searches by default, such as `/usr` or

@@ -37,7 +37,7 @@
  * @brief The implementation part of the library.
  * Hides all the guts of particular implementation code.
  */
-namespace ImagesAnnotatorDataImporters011
+namespace ImagesAnnotatorDataImporters012
 {
 
 /**
@@ -78,6 +78,6 @@ class IADI_API ILib
 
 using ILibPtr = ILib::ILibPtr;
 
-}  // namespace ImagesAnnotatorDataImporters011
+}  // namespace ImagesAnnotatorDataImporters012
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ILIB_ABSTRACT_CLASS_H

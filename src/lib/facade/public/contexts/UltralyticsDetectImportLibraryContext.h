@@ -33,7 +33,7 @@
 #include "../ImportersAPI.h"
 #include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters011
+namespace ImagesAnnotatorDataImporters012
 {
 
 /**
@@ -59,6 +59,6 @@ using UltralyticsDetectImportLibraryContextPtr =
     UltralyticsDetectImportLibraryContext::
         UltralyticsDetectImportLibraryContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters011
+}  // namespace ImagesAnnotatorDataImporters012
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSDETECTIMPORTLIBRARYCONTEXT_CLASS_H

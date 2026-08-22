@@ -33,7 +33,7 @@
 #include "../ImportersAPI.h"
 #include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters011
+namespace ImagesAnnotatorDataImporters012
 {
 
 /**
@@ -60,6 +60,6 @@ class IADI_API CreateMLImportLibraryContext : public LibraryContext
 using CreateMLImportLibraryContextPtr =
     CreateMLImportLibraryContext::CreateMLImportLibraryContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters011
+}  // namespace ImagesAnnotatorDataImporters012
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_CREATEMLIMPORTLIBRARYCONTEXT_CLASS_H

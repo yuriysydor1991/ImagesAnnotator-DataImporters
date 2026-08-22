@@ -55,7 +55,7 @@
 namespace iadi0impl
 {
 
-using namespace ImagesAnnotatorDataImporters011;
+using namespace ImagesAnnotatorDataImporters012;
 
 LibFactory::ILibPtr LibFactory::create_default_lib()
 {

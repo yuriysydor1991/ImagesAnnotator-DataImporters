@@ -33,7 +33,7 @@
 #include "../ImportersAPI.h"
 #include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters011
+namespace ImagesAnnotatorDataImporters012
 {
 
 /**
@@ -57,6 +57,6 @@ class IADI_API PyTorchImportLibraryContext : public LibraryContext
 using PyTorchImportLibraryContextPtr =
     PyTorchImportLibraryContext::PyTorchImportLibraryContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters011
+}  // namespace ImagesAnnotatorDataImporters012
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PYTORCHIMPORTLIBRARYCONTEXT_CLASS_H

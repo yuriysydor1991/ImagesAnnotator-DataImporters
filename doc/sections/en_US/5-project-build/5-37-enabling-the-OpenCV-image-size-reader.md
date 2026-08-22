@@ -39,7 +39,7 @@ So a new consumer may simply leave the field alone.
 `LibraryFacade::create_image_sizer()` hands out the same reader, or a `nullptr` in a build without OpenCV. It is the way to find out whether a build has one:
 
 ```cpp
-namespace iadi = ImagesAnnotatorDataImporters011;
+namespace iadi = ImagesAnnotatorDataImporters012;
 
 auto ctx = iadi::LibraryFacade::create_yolo4_library_context();
 ctx->set_import_path("/tmp/yolo-dataset");

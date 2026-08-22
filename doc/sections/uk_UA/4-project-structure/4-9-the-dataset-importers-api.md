@@ -1,11 +1,11 @@
 ## API імпортерів наборів даних
 
-Увесь інтерфейс бібліотеки оголошено заголовними файлами під [src/lib/facade/public](/src/lib/facade/public); вони встановлюються до піддиректорії `include/ImagesAnnotatorDataImporters-0.11` обраного префікса встановлення. Ніщо інше не залишає спільного обʼєкта: кожен клас реалізації лишається за абстрактними інтерфейсами, описаними тут.
+Увесь інтерфейс бібліотеки оголошено заголовними файлами під [src/lib/facade/public](/src/lib/facade/public); вони встановлюються до піддиректорії `include/ImagesAnnotatorDataImporters-0.12` обраного префікса встановлення. Ніщо інше не залишає спільного обʼєкта: кожен клас реалізації лишається за абстрактними інтерфейсами, описаними тут.
 
-Усі встановлювані оголошення живуть у просторі імен `ImagesAnnotatorDataImporters011`. Назва несе мажорний і мінорний номери версії бібліотеки (`0.11` дає суфікс `011`), тож дві версії бібліотеки можуть співіснувати в одній одиниці трансляції. Створіть для неї псевдонім один раз у власному коді:
+Усі встановлювані оголошення живуть у просторі імен `ImagesAnnotatorDataImporters012`. Назва несе мажорний і мінорний номери версії бібліотеки (`0.12` дає суфікс `012`), тож дві версії бібліотеки можуть співіснувати в одній одиниці трансляції. Створіть для неї псевдонім один раз у власному коді:
 
 ```cpp
-namespace iadi = ImagesAnnotatorDataImporters011;
+namespace iadi = ImagesAnnotatorDataImporters012;
 ```
 
 Записи, які будують імпортери, тут не визначені. Вони походять із бібліотеки [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git), простір імен інтерфейсу якої - `ImagesAnnotatorDataDrivers011` (нижче з псевдонімом `iadd`). Див. підрозділ [Залежність від драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) щодо збіркової частини цієї залежності.
@@ -135,13 +135,13 @@ virtual IImageSizeFacilityPtr clone() = 0;
 
 ```cpp
 #include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataImporters-0.11/LibraryFacade.h>
+#include <ImagesAnnotatorDataImporters-0.12/LibraryFacade.h>
 
 #include <iostream>
 #include <memory>
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters011;
+namespace iadi = ImagesAnnotatorDataImporters012;
 
 int main(int argc, char** argv)
 {
@@ -196,12 +196,12 @@ int main(int argc, char** argv)
 Ескіз нижче підключає такий читач до графічних процедур, які проект-споживач уже має - підставте власні виклики декодування замість `my_imaging`:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.11/IImageSizeFacility.h>
+#include <ImagesAnnotatorDataImporters-0.12/IImageSizeFacility.h>
 
 #include <memory>
 #include <string>
 
-namespace iadi = ImagesAnnotatorDataImporters011;
+namespace iadi = ImagesAnnotatorDataImporters012;
 
 class MySizer : public iadi::IImageSizeFacility
 {

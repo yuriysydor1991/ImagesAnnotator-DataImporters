@@ -8,7 +8,7 @@
 #include "src/lib/libmain/LibFactory.h"
 #include "src/lib/libmain/LibMain.h"
 
-using namespace ImagesAnnotatorDataImporters011;
+using namespace ImagesAnnotatorDataImporters012;
 using namespace iadi0impl;
 using namespace testing;
 

@@ -15,7 +15,7 @@ package "ImagesAnnotatorDataDrivers011 (dependency)" #EEEEEE {
   }
 }
 
-package "ImagesAnnotatorDataImporters011 (installed interface)" {
+package "ImagesAnnotatorDataImporters012 (installed interface)" {
   abstract class IImporter {
     +{abstract} bool import_db(LibraryContextPtr ictx)
   }

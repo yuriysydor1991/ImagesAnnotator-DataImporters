@@ -11,11 +11,11 @@
 namespace iadi0impl
 {
 
-class LibMain : public ImagesAnnotatorDataImporters011::ILib
+class LibMain : public ImagesAnnotatorDataImporters012::ILib
 {
  public:
   using LibMainPtr = std::shared_ptr<LibMain>;
-  using LibraryContextPtr = ImagesAnnotatorDataImporters011::LibraryContextPtr;
+  using LibraryContextPtr = ImagesAnnotatorDataImporters012::LibraryContextPtr;
 
   virtual ~LibMain() = default;
   LibMain() = default;
