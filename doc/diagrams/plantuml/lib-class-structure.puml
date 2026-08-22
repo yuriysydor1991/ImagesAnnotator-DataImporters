@@ -45,6 +45,12 @@ package "ImagesAnnotatorDataImporters011 (installed interface)" {
 
   class PlainTxtImportLibraryContext
   class Yolo4ImportLibraryContext
+  class UltralyticsDetectImportLibraryContext
+  class UltralyticsObbImportLibraryContext
+  class UltralyticsSegmentImportLibraryContext
+  class CocoImportLibraryContext
+  class PascalVocImportLibraryContext
+  class CreateMLImportLibraryContext
   class PyTorchImportLibraryContext
 
   abstract class ILib {
@@ -54,6 +60,12 @@ package "ImagesAnnotatorDataImporters011 (installed interface)" {
   class LibraryFacade {
     +{static} PlainTxtImportLibraryContextPtr create_plain_txt_library_context()
     +{static} Yolo4ImportLibraryContextPtr create_yolo4_library_context()
+    +{static} UltralyticsDetectImportLibraryContextPtr create_ultralytics_detect_library_context()
+    +{static} UltralyticsObbImportLibraryContextPtr create_ultralytics_obb_library_context()
+    +{static} UltralyticsSegmentImportLibraryContextPtr create_ultralytics_segment_library_context()
+    +{static} CocoImportLibraryContextPtr create_coco_library_context()
+    +{static} PascalVocImportLibraryContextPtr create_pascal_voc_library_context()
+    +{static} CreateMLImportLibraryContextPtr create_createml_library_context()
     +{static} PyTorchImportLibraryContextPtr create_pytorch_library_context()
     +{static} ILibPtr create_default_lib()
     +{static} ILibPtr create_library(LibraryContextPtr ctx)
@@ -73,6 +85,12 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     +ILibPtr create_default_lib()
     +PlainTxtImportLibraryContextPtr create_plain_txt_library_context()
     +Yolo4ImportLibraryContextPtr create_yolo4_library_context()
+    +UltralyticsDetectImportLibraryContextPtr create_ultralytics_detect_library_context()
+    +UltralyticsObbImportLibraryContextPtr create_ultralytics_obb_library_context()
+    +UltralyticsSegmentImportLibraryContextPtr create_ultralytics_segment_library_context()
+    +CocoImportLibraryContextPtr create_coco_library_context()
+    +PascalVocImportLibraryContextPtr create_pascal_voc_library_context()
+    +CreateMLImportLibraryContextPtr create_createml_library_context()
     +PyTorchImportLibraryContextPtr create_pytorch_library_context()
     +ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
     +IImporterPtr create_importer(const LibraryContextPtr& ctx)
@@ -85,17 +103,83 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     #{abstract} bool read_dataset(const std::filesystem::path& importDir, ImageRecordsSet& records)
     #virtual bool needs_image_sizer() const
     #bool measure_image(const std::filesystem::path& imagePath, int& width, int& height)
+    #void measure_unsized(const ImageRecordsSet& records)
     #{static} ImageRecordPtr create_record(const std::filesystem::path& imagePath)
+    #{static} bool read_file(const std::filesystem::path& fpath, std::string& contents)
     #{static} std::vector<std::string> read_lines(const std::filesystem::path& fpath)
+  }
+
+  abstract class JsonDescriptor2DBImporter {
+    #JsonValuePtr read_descriptor(const Paths& candidates, std::filesystem::path& descriptorPath) const
+    #{abstract} bool holds_dataset(const JsonValue& root) const
+    #{static} void collect_descriptors(const std::filesystem::path& dirPath, Paths& candidates)
+  }
+
+  abstract class UltralyticsFolder2DBImporter {
+    #bool read_dataset(const std::filesystem::path& importDir, ImageRecordsSet& records)
+    #bool needs_image_sizer() const
+    #{abstract} bool read_rectangle(const std::vector<double>& values, NormalizedRect& nrect) const
+    #{static} bool read_corners(const std::vector<double>& values, NormalizedRect& nrect)
+  }
+
+  class UltralyticsDataYaml {
+    +bool read(const std::vector<std::string>& lines)
+    +const ClassNames& get_class_names()
+    +const std::string& get_root()
+    +const std::string& get_train()
+    +const std::string& get_val()
   }
 
   class PlainTxtFolder2DBImporter
   class Yolo4Folder2DBImporter
+  class UltralyticsDetectFolder2DBImporter
+  class UltralyticsObbFolder2DBImporter
+  class UltralyticsSegmentFolder2DBImporter
+  class CocoFolder2DBImporter
+  class PascalVocFolder2DBImporter
+  class CreateMLFolder2DBImporter
   class PyTorchVisionFolder2DBImporter
 
   class OpenCVImageSizer {
     +bool read_image_size(const std::string& imagePath, int& width, int& height)
     +IImageSizeFacilityPtr clone()
+  }
+}
+
+package "Document readers (hidden symbols)" #F8F8F8 {
+  abstract class IJsonParser {
+    +{abstract} JsonValuePtr parse(const std::string& document)
+  }
+
+  class JsonParser {
+    +JsonValuePtr parse(const std::string& document)
+    +{static} JsonParserPtr create()
+  }
+
+  class JsonValue {
+    +const Kind& get_kind()
+    +const JsonValue* find(const std::string& key)
+    +bool read_number(const std::string& key, double& value)
+    +bool read_text(const std::string& key, std::string& value)
+    +bool read_numbers(const std::string& key, std::vector<double>& values)
+  }
+
+  abstract class IXmlParser {
+    +{abstract} XmlNodePtr parse(const std::string& document)
+  }
+
+  class XmlParser {
+    +XmlNodePtr parse(const std::string& document)
+    +{static} XmlParserPtr create()
+  }
+
+  class XmlNode {
+    +const std::string& get_name()
+    +const std::string& get_text()
+    +const Children& get_children()
+    +const XmlNode* find(const std::string& name)
+    +bool read_text(const std::string& name, std::string& value)
+    +bool read_number(const std::string& name, double& value)
   }
 }
 
@@ -118,18 +202,25 @@ note bottom of Folder2DBImporter
   the database and the count.
 end note
 
-note bottom of Yolo4Folder2DBImporter
-  The one layout whose boxes are stored
-  divided by the size of their image, so
-  the one which can not be read without
-  measuring every picture.
+note bottom of JsonDescriptor2DBImporter
+  What the two layouts described by a
+  single JSON document share: locating
+  that document among the files such a
+  dataset may arrive with.
 end note
 
-note bottom of PyTorchVisionFolder2DBImporter
-  The crop is the annotation: one record
-  per file, the rectangle covering it
-  whole. The one layout which does not
-  round trip.
+note bottom of UltralyticsFolder2DBImporter
+  The three Ultralytics YOLO layouts
+  differ in one label file line only,
+  which is the one thing the base
+  leaves to its descendants.
+end note
+
+note bottom of IJsonParser
+  The library links no JSON or XML
+  library of its own. Neither reader
+  knows anything of the layouts read
+  through it.
 end note
 
 note bottom of OpenCVImageSizer
@@ -144,27 +235,56 @@ IImageSizeFacility <|-- OpenCVImageSizer
 
 Folder2DBImporter <|-- PlainTxtFolder2DBImporter
 Folder2DBImporter <|-- Yolo4Folder2DBImporter
+Folder2DBImporter <|-- PascalVocFolder2DBImporter
 Folder2DBImporter <|-- PyTorchVisionFolder2DBImporter
+Folder2DBImporter <|-- JsonDescriptor2DBImporter
+Folder2DBImporter <|-- UltralyticsFolder2DBImporter
+
+JsonDescriptor2DBImporter <|-- CocoFolder2DBImporter
+JsonDescriptor2DBImporter <|-- CreateMLFolder2DBImporter
+
+UltralyticsFolder2DBImporter <|-- UltralyticsDetectFolder2DBImporter
+UltralyticsFolder2DBImporter <|-- UltralyticsObbFolder2DBImporter
+UltralyticsFolder2DBImporter <|-- UltralyticsSegmentFolder2DBImporter
+
+IJsonParser <|-- JsonParser
+IXmlParser <|-- XmlParser
+JsonParser ..> JsonValue : builds
+XmlParser ..> XmlNode : builds
 
 LibraryFacade --> LibFactory : creates
 LibMain --> LibFactory : creates
 LibFactory ..> LibMain : creates
 LibFactory ..> PlainTxtFolder2DBImporter : creates
 LibFactory ..> Yolo4Folder2DBImporter : creates
+LibFactory ..> UltralyticsDetectFolder2DBImporter : creates
+LibFactory ..> UltralyticsObbFolder2DBImporter : creates
+LibFactory ..> UltralyticsSegmentFolder2DBImporter : creates
+LibFactory ..> CocoFolder2DBImporter : creates
+LibFactory ..> PascalVocFolder2DBImporter : creates
+LibFactory ..> CreateMLFolder2DBImporter : creates
 LibFactory ..> PyTorchVisionFolder2DBImporter : creates
 LibFactory ..> OpenCVImageSizer : creates
 
 LibraryContext <|-- PlainTxtImportLibraryContext
 LibraryContext <|-- Yolo4ImportLibraryContext
+LibraryContext <|-- UltralyticsDetectImportLibraryContext
+LibraryContext <|-- UltralyticsObbImportLibraryContext
+LibraryContext <|-- UltralyticsSegmentImportLibraryContext
+LibraryContext <|-- CocoImportLibraryContext
+LibraryContext <|-- PascalVocImportLibraryContext
+LibraryContext <|-- CreateMLImportLibraryContext
 LibraryContext <|-- PyTorchImportLibraryContext
 
-LibFactory ..> PlainTxtImportLibraryContext : creates and casts to pick
-LibFactory ..> Yolo4ImportLibraryContext : creates and casts to pick
-LibFactory ..> PyTorchImportLibraryContext : creates and casts to pick
+LibFactory ..> LibraryContext : creates and casts to pick the layout
 
 LibraryContext --> IDB : fills
 LibraryContext --> IImageSizeFacility : uses
 IImporter --> LibraryContext : driven with
+
+UltralyticsFolder2DBImporter ..> UltralyticsDataYaml : reads the descriptor with
+JsonDescriptor2DBImporter ..> IJsonParser : reads the descriptor with
+PascalVocFolder2DBImporter ..> IXmlParser : reads the descriptors with
 
 IDB --> ImageRecord
 Folder2DBImporter ..> ImageRecord : builds

@@ -65,9 +65,15 @@ exactly the following files:
 <prefix>/include/ImagesAnnotatorDataImporters-0.11/ILib.h
 <prefix>/include/ImagesAnnotatorDataImporters-0.11/LibraryContext.h
 <prefix>/include/ImagesAnnotatorDataImporters-0.11/LibraryFacade.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.11/PlainTxtImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.11/PyTorchImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.11/Yolo4ImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/contexts/CocoImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/contexts/CreateMLImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/contexts/PascalVocImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/contexts/PlainTxtImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/contexts/PyTorchImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/contexts/UltralyticsDetectImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/contexts/UltralyticsObbImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/contexts/UltralyticsSegmentImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.11/contexts/Yolo4ImportLibraryContext.h
 
 <prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.11/ImagesAnnotatorDataImporters-0.11Config.cmake
 <prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.11/ImagesAnnotatorDataImporters-0.11ConfigVersion.cmake
@@ -77,7 +83,7 @@ exactly the following files:
 
 The `.so.0.11.0` file is the library itself, `.so.0` is the `SONAME` link the
 dynamic linker resolves and the bare `.so` link is the development one the
-compiler follows. The headers are the nine public ones of the
+compiler follows. The headers are the fifteen public ones of the
 [src/lib/facade/public](/src/lib/facade/public) directory, described in
 [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md).
 

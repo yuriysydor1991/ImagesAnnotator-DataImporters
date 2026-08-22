@@ -18,9 +18,15 @@ The records the importers build are not defined here. They come from the [Images
 | [IImporter.h](/src/lib/facade/public/IImporter.h) | the `IImporter` abstract importer interface |
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | the `IImageSizeFacility` interface the consuming project implements |
 | [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the `LibraryContext` in and out data class both entry points are driven with |
-| [PlainTxtImportLibraryContext.h](/src/lib/facade/public/PlainTxtImportLibraryContext.h) | the `LibraryContext` descendant of the plain text dataset layout |
-| [Yolo4ImportLibraryContext.h](/src/lib/facade/public/Yolo4ImportLibraryContext.h) | the `LibraryContext` descendant of the YOLO v4 (darknet) dataset layout |
-| [PyTorchImportLibraryContext.h](/src/lib/facade/public/PyTorchImportLibraryContext.h) | the `LibraryContext` descendant of the PyTorch Vision dataset layout |
+| [PlainTxtImportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtImportLibraryContext.h) | the `LibraryContext` descendant of the plain text dataset layout |
+| [Yolo4ImportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ImportLibraryContext.h) | the `LibraryContext` descendant of the YOLO v4 (darknet) dataset layout |
+| [UltralyticsDetectImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO detection dataset layout |
+| [UltralyticsObbImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO oriented bounding box dataset layout |
+| [UltralyticsSegmentImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO instance segmentation dataset layout |
+| [CocoImportLibraryContext.h](/src/lib/facade/public/contexts/CocoImportLibraryContext.h) | the `LibraryContext` descendant of the COCO object detection dataset layout |
+| [PascalVocImportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocImportLibraryContext.h) | the `LibraryContext` descendant of the Pascal VOC dataset layout |
+| [CreateMLImportLibraryContext.h](/src/lib/facade/public/contexts/CreateMLImportLibraryContext.h) | the `LibraryContext` descendant of the Create ML object detection dataset layout |
+| [PyTorchImportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchImportLibraryContext.h) | the `LibraryContext` descendant of the PyTorch Vision dataset layout |
 | [ILib.h](/src/lib/facade/public/ILib.h) | the `ILib` abstract library interface with its `perform_import` method |
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` factory class, the entry point of the library |
 
@@ -31,18 +37,24 @@ Including `LibraryFacade.h` pulls in every other header of the list.
 ```cpp
 class PlainTxtImportLibraryContext : public LibraryContext;
 class Yolo4ImportLibraryContext : public LibraryContext;
+class UltralyticsDetectImportLibraryContext : public LibraryContext;
+class UltralyticsObbImportLibraryContext : public LibraryContext;
+class UltralyticsSegmentImportLibraryContext : public LibraryContext;
+class CocoImportLibraryContext : public LibraryContext;
+class PascalVocImportLibraryContext : public LibraryContext;
+class CreateMLImportLibraryContext : public LibraryContext;
 class PyTorchImportLibraryContext : public LibraryContext;
 ```
 
-The three `LibraryContext` descendants name the three dataset layouts the library is able to read. Instantiating one is what picks the layout, and the library maps that type onto the importer which reads it. None of them adds anything to `LibraryContext`, since everything an import needs - the source directory, the destination database and the image measuring instance - is held by the base class. What each of them expects to find on the disk is described in the [The read dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-read-dataset-layouts.md) subsection.
+The nine `LibraryContext` descendants name the nine dataset layouts the library is able to read. Instantiating one is what picks the layout, and the library maps that type onto the importer which reads it. None of them adds anything to `LibraryContext`, since everything an import needs - the source directory, the destination database and the image measuring instance - is held by the base class. What each of them expects to find on the disk is described in the [The read dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-read-dataset-layouts.md) subsection.
 
-The three are the reverse of the first three layouts the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library writes, and the pair round trips: a project exported into any of them and imported back yields the annotations it started with, up to what the layout itself is able to carry.
+The nine are the reverse of the nine layouts the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library writes - one for one, under the very same names - and the pair round trips: a project exported into any of them and imported back yields the annotations it started with, up to what the layout itself is able to carry.
 
-`Yolo4ImportLibraryContext` and `PyTorchImportLibraryContext` are the two which can not be read without knowing how large each image is - see `IImageSizeFacility` below. `PlainTxtImportLibraryContext` needs no measurement at all, since that layout stores its rectangles in the image own pixels, exactly as the internal project format keeps them.
+The five which can not be read without knowing how large each image is - see `IImageSizeFacility` below - are `Yolo4ImportLibraryContext`, the three `Ultralytics*ImportLibraryContext` ones, whose geometry is stored divided by that size, and `PyTorchImportLibraryContext`, whose annotation is the cropped image itself. `CocoImportLibraryContext` and `PascalVocImportLibraryContext` read the dimensions out of their own descriptors, and `PlainTxtImportLibraryContext` and `CreateMLImportLibraryContext` need no measurement at all, since both store their rectangles in the image own pixels, exactly as the internal project format keeps them.
 
 ### LibraryContext
 
-The single data class of the library, the one both of its entry points are driven with: the one shot `ILib::perform_import()` and the `IImporter::import_db()` of an importer built by hand. Create it with the `LibraryFacade` factory method of the wanted layout - `create_plain_txt_library_context()`, `create_yolo4_library_context()` or `create_pytorch_library_context()` - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
+The single data class of the library, the one both of its entry points are driven with: the one shot `ILib::perform_import()` and the `IImporter::import_db()` of an importer built by hand. Create it with the `LibraryFacade` factory method of the wanted layout - the nine `create_*_library_context()` ones listed below - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
 
 The data it carries is private and reached through accessors only. Every getter hands out a `const` reference to what the context holds, every setter copies the given value in:
 
@@ -80,7 +92,9 @@ virtual bool read_image_size(const std::string& imagePath, int& width,
 virtual IImageSizeFacilityPtr clone() = 0;
 ```
 
-The library decodes no image format of its own, and an annotation of the internal project format is a rectangle in the pixels of the image it was drawn over. A dataset which stores its boxes normalised - the YOLO v4 one here - therefore can not be read back without the size of the image each box belongs to, and the PyTorch Vision layout, whose whole annotation is the cropped image itself, can not be read back without it either. So the imports that need such a measurement ask their consumer to take it over whatever imaging stack that project already links.
+The library decodes no image format of its own, and an annotation of the internal project format is a rectangle in the pixels of the image it was drawn over. A dataset which stores its boxes divided by that size - the YOLO v4 one and the three Ultralytics YOLO ones here - therefore can not be read back without the size of the image each box belongs to, and the PyTorch Vision layout, whose whole annotation is the cropped image itself, can not be read back without it either. So the imports that need such a measurement ask their consumer to take it over whatever imaging stack that project already links.
+
+The four remaining layouts are readable without one. The COCO and the Pascal VOC descriptors carry the size of every image they name, and the plain text and the Create ML ones hold their rectangles in the image own pixels, so a reader only fills the `iwidth` and `iheight` of the produced records in - which is worth handing over all the same, since those two fields are what the annotator draws a picture at its own scale with.
 
 A library built with OpenCV ships an implementation of its own, so this interface only has to be implemented by a project that wants its own measuring - or by one consuming a library built without OpenCV. See [Enabling the OpenCV image size reader](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md).
 
@@ -102,6 +116,12 @@ A class of static factory methods only, and the only entry point a consuming pro
 | --- | --- |
 | `create_plain_txt_library_context()` | a new empty `PlainTxtImportLibraryContextPtr` |
 | `create_yolo4_library_context()` | a new empty `Yolo4ImportLibraryContextPtr` |
+| `create_ultralytics_detect_library_context()` | a new empty `UltralyticsDetectImportLibraryContextPtr` |
+| `create_ultralytics_obb_library_context()` | a new empty `UltralyticsObbImportLibraryContextPtr` |
+| `create_ultralytics_segment_library_context()` | a new empty `UltralyticsSegmentImportLibraryContextPtr` |
+| `create_coco_library_context()` | a new empty `CocoImportLibraryContextPtr` |
+| `create_pascal_voc_library_context()` | a new empty `PascalVocImportLibraryContextPtr` |
+| `create_createml_library_context()` | a new empty `CreateMLImportLibraryContextPtr` |
 | `create_pytorch_library_context()` | a new empty `PyTorchImportLibraryContextPtr` |
 | `create_default_lib()` | the default `ILibPtr` implementation |
 | `create_library(LibraryContextPtr ctx)` | the `ILibPtr` implementation appropriate for the given context |
@@ -167,7 +187,7 @@ int main(int argc, char** argv)
 }
 ```
 
-No image size reader is handed over here, so the program above needs a library built with OpenCV. Give one of your own to `ctx->set_image_sizer()` otherwise - the next subsection shows how - or start from the plain text layout, which needs none.
+No image size reader is handed over here, so the program above needs a library built with OpenCV. Give one of your own to `ctx->set_image_sizer()` otherwise - the next subsection shows how - or start from one of the four layouts which need none: the plain text, the COCO, the Pascal VOC and the Create ML ones.
 
 Note that an existing project file may be imported **into**: open it with `iadd::LibraryFacade::open_annotations_db()` instead of creating an empty database, and the import appends the images the project does not hold yet.
 

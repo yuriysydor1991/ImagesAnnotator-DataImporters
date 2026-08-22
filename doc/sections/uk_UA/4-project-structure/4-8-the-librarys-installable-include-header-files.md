@@ -1,18 +1,31 @@
 ## Публічні інтерфейсні файли бібліотеки
 
-Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - девʼять заголовків, усі у просторі імен `ImagesAnnotatorDataImporters011`:
+Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - пʼятнадцять заголовків, усі у просторі імен `ImagesAnnotatorDataImporters011`. Шість із них є власне API і лежать у корені директорії:
 
 | Заголовок | Оголошує |
 |---|---|
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | статичні методи `LibraryFacade`, точку входу бібліотеки |
 | [ILib.h](/src/lib/facade/public/ILib.h) | `ILib::perform_import()` - виконує імпорт, описаний `LibraryContext` |
 | [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | методи доступу до даних `perform_import()` та `import_db()`, разом із вихідними `get_importer()` та `get_imported_records()` |
-| [PlainTxtImportLibraryContext.h](/src/lib/facade/public/PlainTxtImportLibraryContext.h) | `LibraryContext` розкладки простого тексту |
-| [Yolo4ImportLibraryContext.h](/src/lib/facade/public/Yolo4ImportLibraryContext.h) | `LibraryContext` розкладки YOLO v4 (darknet) |
-| [PyTorchImportLibraryContext.h](/src/lib/facade/public/PyTorchImportLibraryContext.h) | `LibraryContext` розкладки PyTorch Vision |
 | [IImporter.h](/src/lib/facade/public/IImporter.h) | `IImporter::import_db()` - окремий імпортер, використаний самостійно |
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | інтерфейс, який реалізує проект-споживач, щоб вимірювати зображення |
 | [ImportersAPI.h](/src/lib/facade/public/ImportersAPI.h) | макрос видимості `IADI_API` |
+
+Решта девʼять є нащадками `LibraryContext`, специфічними для розкладок - по одному на кожну розкладку набору даних, яку читає бібліотека, - і лежать разом у піддиректорії [contexts](/src/lib/facade/public/contexts), а не поруч із шістьма вище; саме таку розкладку має сусідня бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) для власних девʼяти:
+
+| Заголовок | Оголошує |
+|---|---|
+| [contexts/PlainTxtImportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtImportLibraryContext.h) | `LibraryContext` розкладки простого тексту |
+| [contexts/Yolo4ImportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ImportLibraryContext.h) | `LibraryContext` розкладки YOLO v4 (darknet) |
+| [contexts/UltralyticsDetectImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportLibraryContext.h) | `LibraryContext` розкладки виявлення Ultralytics YOLO |
+| [contexts/UltralyticsObbImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportLibraryContext.h) | `LibraryContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
+| [contexts/UltralyticsSegmentImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportLibraryContext.h) | `LibraryContext` розкладки сегментації примірників Ultralytics YOLO |
+| [contexts/CocoImportLibraryContext.h](/src/lib/facade/public/contexts/CocoImportLibraryContext.h) | `LibraryContext` розкладки виявлення обʼєктів COCO |
+| [contexts/PascalVocImportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocImportLibraryContext.h) | `LibraryContext` розкладки Pascal VOC |
+| [contexts/CreateMLImportLibraryContext.h](/src/lib/facade/public/contexts/CreateMLImportLibraryContext.h) | `LibraryContext` розкладки виявлення обʼєктів Create ML |
+| [contexts/PyTorchImportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchImportLibraryContext.h) | `LibraryContext` розкладки PyTorch Vision |
+
+Кожен із тих девʼяти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataImporters-0.11/`, тож звичайне `#include "LibraryContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх девʼяти через `LibraryFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
 
 [src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) встановлює директорію цілком під `include/${PROJECT_LIBRARY_NAME}`, що для поточної назви і версії дає `include/ImagesAnnotatorDataImporters-0.11/`. І ту піддиректорію, і звичайний корінь підключення експортує ціль бібліотеки, тож споживач може писати будь-яку з двох форм:
 
@@ -29,7 +42,7 @@
 
 Сама лише видимість лишає одну дірку. Інстанціація `std::make_shared` називає свій клас у власному спотвореному імені й лишається слабкою та експортованою, якою б не була видимість, тож простір імен реалізації тут - `iadi0impl`, а не `lib0impl`, який використовує шаблон проекту, а разом із ним і бібліотека драйверів даних. Два класи `LibFactory` не поділяють навіть розкладки vtable, і компонувальник інакше міг би звʼязати `std::make_shared<lib0impl::LibFactory>()` однієї бібліотеки з визначенням іншої.
 
-Отже, новий публічний клас належить до [src/lib/facade/public](/src/lib/facade/public) і має бути позначений `IADI_API`; кожен інший компонент під [src](/src) лишається приватним для спільного обʼєкта, і дістатися до нього можна лише через абстрактні інтерфейси вище.
+Отже, новий публічний клас належить до [src/lib/facade/public](/src/lib/facade/public) - новий контекст розкладки набору даних до її піддиректорії [contexts](/src/lib/facade/public/contexts), звідки він дістається заголовків над собою через `../`, - і має бути позначений `IADI_API`; кожен інший компонент під [src](/src) лишається приватним для спільного обʼєкта, і дістатися до нього можна лише через абстрактні інтерфейси вище.
 
 ### Встановлюваний CMake-пакунок
 

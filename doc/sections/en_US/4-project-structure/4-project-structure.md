@@ -12,15 +12,16 @@ The top level layout:
 | [src/lib/facade/LibraryFacade.cpp](/src/lib/facade/LibraryFacade.cpp) | the facade implementation, the entry point of the library |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` and `LibFactory.cpp` - the implementation core |
 | [src/lib/cmake](/src/lib/cmake) | generation of the installable CMake package of the library |
-| [src/importers](/src/importers) | one sub-directory per dataset layout - `PlainTxt`, `Yolo4` and `PyTorch` - each carrying its own `IImporter` implementation, its `CMakeLists.txt` and its unit tests, plus the `ImportersAliases.h` and the `Folder2DBImporter` base they all share |
+| [src/importers](/src/importers) | one sub-directory per dataset layout family - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco`, `PascalVoc`, `CreateML` and `PyTorch` - each carrying its own `IImporter` implementations, its `CMakeLists.txt` and its unit tests, plus the `ImportersAliases.h`, the `Folder2DBImporter` base they all share and the `JsonDescriptor2DBImporter` the two JSON described ones share |
+| [src/parsers](/src/parsers) | the JSON and the XML document readers the descriptor layouts are read through, one sub-component each, tested on their own documents |
 | [src/sizers](/src/sizers) | `create_builtin_image_sizer()` and the optional OpenCV `IImageSizeFacility` behind it |
-| [src/helpers](/src/helpers) | `IHelper.h` and `TypeHelper.h`, both header only |
+| [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `StringHelper.h` and `Utf8Helper.h`, all header only |
 | [src/log](/src/log) | the logging macros and the simple logger compiled into the library |
 | [cmake](/cmake) | the build system: compile options and the dependency enablers |
 | [doc](/doc) | this documentation and the project diagrams |
 | [misc](/misc) | the Jenkins pipeline and the Docker files |
 
-The implementation lives in the `iadi0impl`, `iannotator::importers`, `iannotator::importers::helpers` and `iannotator::importers::sizers` namespaces. None of them is installed - a consuming project only ever sees `ImagesAnnotatorDataImporters011` (an `iadi` alias is recommended).
+The implementation lives in the `iadi0impl`, `iannotator::importers`, `iannotator::importers::helpers`, `iannotator::importers::parsers` and `iannotator::importers::sizers` namespaces. None of them is installed - a consuming project only ever sees `ImagesAnnotatorDataImporters011` (an `iadi` alias is recommended).
 
 1. [Project diagrams](/doc/sections/en_US/4-project-structure/4-0-project-diagrams.md)
 1. [Where the importers implementation lives](/doc/sections/en_US/4-project-structure/4-1-implement-code-straight-away.md)

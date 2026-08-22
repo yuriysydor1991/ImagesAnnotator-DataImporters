@@ -9,7 +9,8 @@ Each `LibraryContext` descendant is implemented by one importer class under [src
 - The library decodes no image format itself. Nothing is copied, moved or rewritten inside the import directory: the produced records point at the image files where they already lie. An import is a read only pass over the dataset.
 - What can not be read is logged and skipped, the run itself carries on. A malformed line, an image file the dataset names but does not hold, a picture that can not be measured - each costs its own entry and nothing else.
 - The records are handed to the database through `IAnnotationsDB::add_images_db()`, which skips an image the database already holds. Importing one and the same dataset twice adds its images once.
-- Two of the three layouts have to know how large each image is, and ask for it through the `IImageSizeFacility` of the context or the one a build with OpenCV ships. The plain text layout needs no measurement, and only fills the image dimensions in when a reader happens to be there.
+- Five of the nine layouts have to know how large each image is, and ask for it through the `IImageSizeFacility` of the context or the one a build with OpenCV ships: the YOLO v4 one and the three Ultralytics YOLO ones store their boxes normalised, and the PyTorch Vision one has the crop itself for an annotation. An import of such a layout with no reader at all fails at once, and a picture it can not measure is skipped whole.
+- The four remaining ones are complete without a measurement. The COCO and the Pascal VOC descriptors carry the size of every image they name, so a reader is only ever asked for the one a foreign tool left it out for; the plain text and the Create ML layouts carry no size anywhere, and their records take the image dimensions from a reader when there is one and stay at zero when there is not. Their rectangles are whole either way, since both layouts hold them in the very pixels the internal format wants them in.
 
 The examples below all describe the very same two record result, which is what the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library was given when it wrote those datasets:
 
@@ -120,6 +121,238 @@ A line naming a class index the names file does not hold, and a line that is not
 
 The `cfg/yolov4-obj.cfg` network descriptor and the empty `backup/` hold nothing of the annotations and are not read at all.
 
+### What the three Ultralytics YOLO layouts share
+
+Three of the contexts read the layout every Ultralytics release trains from - the one YOLO v5 introduced and v8, v11 and the ones after them kept. The directory is the same for all three of them, and so is the `data.yaml` descriptor. What the trained task changes is the single label file line of a rectangle, which is the only thing the three sections below differ in.
+
+```
+import_path/
+|-- data.yaml
+|-- images/
+|   `-- train/
+|       |-- park.jpg
+|       `-- street.png
+`-- labels/
+    `-- train/
+        |-- park.txt
+        `-- street.txt
+```
+
+`data.yaml` is the whole descriptor of the dataset - this layout has no `obj.names` file of the darknet one - and it is looked for under that very name first, then among the other `*.yaml` and `*.yml` files of the import directory, sorted by name. The first of them declaring a class name is the descriptor; a directory where none does is no dataset of this layout, and the import fails leaving the database untouched.
+
+```yaml
+# The Ultralytics YOLO dataset descriptor, written by the ImagesAnnotator
+# annotations dataset exporters library.
+path: '/home/user/dataset'
+train: images/train
+val: images/train
+
+names:
+  0: 'cat'
+  1: 'dog'
+```
+
+- **`names`** maps a class index onto an annotation name, and that index is what the label files carry. All three spellings of the entry are read: the indexed block above, the `- <name>` list block and the inline `['cat', 'dog']` one, the latter two numbering their names by position. A name written in either quoting style comes back unquoted, so a colon, a hash or a doubled quote inside it stays a part of the name.
+- **`train`** and **`val`** name the image directories, each relative to the dataset root or absolute. Both are read, and a directory named by both of them is read once - which is what the exporting side writes, offering the whole set for the validation as well.
+- **`path`** is that dataset root. It is followed only where the import path does not resolve the entry itself: a directory which was moved carries a `path` naming where it no longer is, and dropping that line is what the exporting side documents as the way to move it. A descriptor naming neither part falls back to the `images/train` and the `images` directories of the import path.
+- Everything else the entry set of an Ultralytics release accepts describes a training run rather than a dataset, and is read over.
+
+Every file of such a directory which is not a `.txt` one is an image of it - the layout names no image extension anywhere - and the label file of an image is that very path with its last `images` element swapped for `labels` and its extension for `.txt`, which is the pairing a training run performs. An image lying under no `images` element at all is paired with the `<image stem>.txt` beside it instead.
+
+Every image is measured, and a picture that stays unmeasured is skipped whole: all three layouts store their geometry divided by the size of the image it was drawn over, so there is nothing to place it by. An image with no label file becomes a record with no rectangles, the way a training run reads it as a picture holding none of the classes.
+
+A line naming a class index the descriptor does not declare, a line carrying a number count the implemented task never writes, and a line that is no class index with numbers behind it at all, are each dropped and logged. What the read numbers are turned into is the two corners of the rectangle, and the two guards of the exporting side are undone with them:
+
+- **A coordinate outside the `0..1` range is cut down to the image.** An Ultralytics release refuses a whole image over such a coordinate, so this only ever reaches a dataset written by something else - and a box reaching over an edge is cut there exactly as the exporting side cuts it.
+- A box left with no area inside the image is dropped, and the image and the rest of its rectangles are imported as usual.
+
+### UltralyticsDetectImportLibraryContext
+
+The detection dataset. Every line carries the class index and the box:
+
+```
+<class index> <centre x> <centre y> <width> <height>
+```
+
+which is the very four numbers the darknet layout writes as well. So a `labels/train/street.txt` of
+
+```
+1 0.15625 0.1 0.15625 0.1
+1 0.539062 0.11875 0.140625 0.1125
+```
+
+over a 640 x 400 `street.png` gives the `dog` rectangles (50, 20, 100, 40) and (300, 25, 90, 45) back: the centre and the extent are multiplied by the measured size, the origin is the centre less half of that extent, and each of the four is rounded to the nearest pixel. A line carrying anything other than four numbers behind its class index is dropped.
+
+### UltralyticsObbImportLibraryContext
+
+The oriented bounding box dataset. Every line carries the class index and the four corners of the box, clockwise from the top left one:
+
+```
+<class index> <x1> <y1> <x2> <y2> <x3> <y3> <x4> <y4>
+```
+
+So a `labels/train/street.txt` of
+
+```
+1 0.078125 0.05 0.234375 0.05 0.234375 0.15 0.078125 0.15
+1 0.46875 0.0625 0.609375 0.0625 0.609375 0.175 0.46875 0.175
+```
+
+gives those same two `dog` rectangles back. The annotations database knows axis aligned rectangles only, so **what comes back is the upright rectangle holding the four corners** - which for a box written by the sibling exporters library, whose rotation angle is always zero, is the very rectangle it was drawn as. A box some other tool wrote with a real angle comes back as the upright one holding it, which is wider than the object it marks. A line carrying anything other than eight numbers behind its class index is dropped.
+
+### UltralyticsSegmentImportLibraryContext
+
+The instance segmentation dataset. Every line carries the class index and the points of the polygon which outlines the object, of any three or more of them:
+
+```
+<class index> <x1> <y1> ... <xn> <yn>
+```
+
+**What comes back is the rectangle holding that polygon.** The mask of a rectangle annotation is the rectangle outline itself, which makes these label files identical to the oriented bounding box ones above, and a dataset written by the sibling exporters library therefore round trips through this layout exactly. A polygon of a real shape - one drawn in a tool which draws them - comes back as the box enclosing it, since the annotations database holds no mask.
+
+A line carrying fewer than six numbers behind its class index, or an odd count of them, is dropped: neither is a ring of `x y` pairs of three points or more.
+
+### CocoImportLibraryContext
+
+The COCO object detection dataset: a directory of pictures and the single JSON descriptor over them.
+
+```
+import_path/
+|-- annotations/
+|   `-- instances_default.json
+`-- images/
+    |-- park.jpg
+    `-- street.png
+```
+
+The descriptor is looked for in the order below, and the first file which is a JSON object holding an `images` array is the one - that array is what tells such a descriptor from any other JSON file lying beside it:
+
+1. `annotations/instances_default.json`, the name the sibling exporters library writes;
+2. the other `*.json` files of `annotations/`, sorted by name, which is where the public releases of the format keep theirs;
+3. the `*.json` files of the import directory itself, sorted by name, which is where the tools handing out a single flat directory leave it.
+
+The `file_name` of an image is taken relative to the first of these directories which is there: the `images/` of the exported layout, the one named after the descriptor itself - the `train2017/` beside an `instances_train2017.json` of the public releases - or the import directory, which is where a flat directory holds its pictures.
+
+```json
+{
+"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.11.0"},
+"licenses": [],
+"images": [
+  {"id": 1, "file_name": "street.png", "width": 640, "height": 400},
+  {"id": 2, "file_name": "park.jpg", "width": 640, "height": 480}
+],
+"annotations": [
+  {"id": 1, "image_id": 1, "category_id": 2, "bbox": [50, 20, 100, 40], "area": 4000, "iscrowd": 0, "segmentation": []},
+  {"id": 2, "image_id": 1, "category_id": 2, "bbox": [300, 25, 90, 45], "area": 4050, "iscrowd": 0, "segmentation": []},
+  {"id": 3, "image_id": 2, "category_id": 1, "bbox": [200, 130, 48, 52], "area": 2496, "iscrowd": 0, "segmentation": []},
+  {"id": 4, "image_id": 2, "category_id": 2, "bbox": [12, 8, 64, 64], "area": 4096, "iscrowd": 0, "segmentation": []}
+],
+"categories": [
+  {"id": 1, "name": "cat", "supercategory": ""},
+  {"id": 2, "name": "dog", "supercategory": ""}
+]
+}
+```
+
+That descriptor gives back the two records of the table above, and nothing of a rectangle is computed to do it:
+
+- **`bbox`** is `[x, y, width, height]` of the top left corner, in the image own pixels - the very four fields an `ImageRecordRect` holds. A value written with a fractional part is rounded to the nearest pixel, and a box left with no width or height is dropped.
+- **`categories`** names the annotations, and an annotation naming a `category_id` the descriptor does not declare is dropped: an unnamed rectangle is no annotation. The identifiers themselves are read as they stand, so a descriptor numbering its categories from anywhere is followed.
+- **`images`** carries the `width` and the `height` of every picture, which is why this layout needs no measurement. An image a foreign tool declared without them is measured when a reader is there, and stays at zero when there is not. An image the directory does not hold becomes a record all the same, so that a project whose pictures were moved is repaired by pointing it at them again rather than by importing it once more.
+- **`area`**, **`iscrowd`** and **`segmentation`** are read over: the first is the box multiplied out, and the annotations database holds neither a crowd flag nor a mask.
+- An annotation naming an image the descriptor does not declare, and one carrying no four numbers in its `bbox`, are each dropped and logged. An image no annotation names becomes a record with no rectangles.
+
+### PascalVocImportLibraryContext
+
+The Pascal VOC dataset, in the devkit directory shape: the pictures, one XML descriptor per picture and the image lists naming those.
+
+```
+import_path/
+|-- Annotations/
+|   |-- park.xml
+|   `-- street.xml
+|-- ImageSets/
+|   `-- Main/
+|       |-- train.txt
+|       `-- val.txt
+`-- JPEGImages/
+    |-- park.jpg
+    `-- street.png
+```
+
+Every `*.xml` file of `Annotations/` is read, in the sorted order of the names. A directory carrying no such sub-directory is read as a flat one - its own `*.xml` files are the descriptors then - which is the shape [LabelImg](https://github.com/HumanSignal/labelImg) saves its own work in.
+
+`ImageSets/Main` is not read at all. Its files name a training and a validation part of one and the same set - identical lists, as the exporting side writes them - while a project holds the images themselves and no split of them, so every descriptor of the directory is read whichever list happens to name it.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<annotation>
+  <folder>JPEGImages</folder>
+  <filename>street.png</filename>
+  <source>
+    <database>The ImagesAnnotator annotations dataset</database>
+  </source>
+  <size>
+    <width>640</width>
+    <height>400</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>dog</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>50</xmin>
+      <ymin>20</ymin>
+      <xmax>150</xmax>
+      <ymax>60</ymax>
+    </bndbox>
+  </object>
+</annotation>
+```
+
+- **`bndbox`** is the two corner points the rectangle was drawn between, in the image own pixels, and the record holds the origin and the size: `xmin`/`ymin` is that origin and `xmax` less `xmin` its width. A descriptor of the original VOC devkit, whose coordinates count from one instead of from zero, therefore comes back as the very same box moved by a single pixel - both corners carry that one, so the size of it stays. A box left with no width or height is dropped.
+- **`filename`** names the picture, and it is looked for in the first of these directories which really holds it: the `JPEGImages/` of the devkit shape, the one the `folder` element names, the directory of the descriptor itself and the import directory. A file none of them holds becomes a record pointing at the first of them all the same.
+- **`name`** is the annotation name, read XML unescaped - an `&amp;`, a `&lt;` or a numeric `&#233;` inside it comes back as the symbol it names. An object naming nothing is dropped.
+- **`size`** fills the record dimensions in. A descriptor written without that element is measured when a reader is there.
+- **`truncated`**, **`difficult`**, **`pose`**, **`segmented`** and **`source`** are read over. The first marks a box the image edge cut down, which the annotations database holds nothing of, and a `difficult` rectangle is imported like every other one: a project is edited and not evaluated.
+- A file which is no `annotation` element, and one naming no image, are each skipped whole and logged, while the rest of the directory is imported as usual.
+
+### CreateMLImportLibraryContext
+
+The Create ML object detection dataset: the pictures and the one JSON descriptor beside them, in a single flat directory.
+
+```
+import_path/
+|-- annotations.json
+|-- park.jpg
+`-- street.png
+```
+
+The flatness is the format: this is the `directoryWithImagesAndJsonAnnotation` data source of Apple's `MLObjectDetector`, a directory of images holding exactly one JSON annotation file. That file is looked for under the `annotations.json` name the data source demands first, and then among the other `*.json` files of the directory, sorted by name - which is where an export whose project held an image of that very name left it. The first of them which is an array of elements naming an image file is the descriptor.
+
+```json
+[
+  {"imagefilename": "street.png", "annotation": [
+    {"label": "dog", "coordinates": {"x": 100, "y": 40, "width": 100, "height": 40}},
+    {"label": "dog", "coordinates": {"x": 345, "y": 47.5, "width": 90, "height": 45}}
+  ]},
+  {"imagefilename": "park.jpg", "annotation": [
+    {"label": "cat", "coordinates": {"x": 224, "y": 156, "width": 48, "height": 52}},
+    {"label": "dog", "coordinates": {"x": 44, "y": 40, "width": 64, "height": 64}}
+  ]}
+]
+```
+
+- **`x` and `y` are the centre of the box**, not its corner, counted in the image own pixels from the top left of the image - the one halving this import undoes. The origin an `ImageRecordRect` holds is that centre less half of the size, and the `47.5` of a box of an odd size lands back on the very pixel it was drawn from.
+- **`width` and `height`** are the size of the box in those same pixels, which the record keeps unchanged. A box left with no width or height is dropped.
+- **`label`** is the annotation name, read as it stands. An annotation naming nothing is dropped.
+- **`imagefilename`** is the file name alone, taken relative to the import directory. An image the directory does not hold becomes a record all the same, the way it does in the COCO layout above.
+- **Both spellings of the two keys are read**: the singular `imagefilename` and `annotation` pair Apple documents, and the plural `image` and `annotations` one some converters emit instead.
+- The layout carries no image size anywhere, so the record dimensions are filled in from a reader when the consumer supplied one and stay at zero when they are not. An image whose `annotation` array is empty becomes a record with no rectangles.
+
 ### PyTorchImportLibraryContext
 
 The classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name, holding the images cropped down to the rectangles of that name.
@@ -147,4 +380,4 @@ This layout has lost the pictures the crops were cut out of, so **every crop bec
 
 That extent is the size of the file itself, which is why this import measures every crop and skips the ones it can not: a rectangle of an unknown extent is no annotation.
 
-This is the one layout of the three which does not round trip into the records it was written from. The export cut the rectangles out and dropped everything around them, the original images among it, so what comes back is one image per rectangle rather than one image carrying its rectangles. The class of every crop survives in full, which is what that layout is for.
+This is the one layout of the nine which does not round trip into the records it was written from. The export cut the rectangles out and dropped everything around them, the original images among it, so what comes back is one image per rectangle rather than one image carrying its rectangles. The class of every crop survives in full, which is what that layout is for.

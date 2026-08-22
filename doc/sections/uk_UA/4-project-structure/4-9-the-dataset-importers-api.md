@@ -18,9 +18,15 @@ namespace iadi = ImagesAnnotatorDataImporters011;
 | [IImporter.h](/src/lib/facade/public/IImporter.h) | абстрактний інтерфейс імпортера `IImporter` |
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | інтерфейс `IImageSizeFacility`, який реалізує проект-споживач |
 | [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | клас вхідних та вихідних даних `LibraryContext`, яким керуються обидві точки входу |
-| [PlainTxtImportLibraryContext.h](/src/lib/facade/public/PlainTxtImportLibraryContext.h) | нащадок `LibraryContext` розкладки простого тексту |
-| [Yolo4ImportLibraryContext.h](/src/lib/facade/public/Yolo4ImportLibraryContext.h) | нащадок `LibraryContext` розкладки YOLO v4 (darknet) |
-| [PyTorchImportLibraryContext.h](/src/lib/facade/public/PyTorchImportLibraryContext.h) | нащадок `LibraryContext` розкладки PyTorch Vision |
+| [PlainTxtImportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtImportLibraryContext.h) | нащадок `LibraryContext` розкладки простого тексту |
+| [Yolo4ImportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ImportLibraryContext.h) | нащадок `LibraryContext` розкладки YOLO v4 (darknet) |
+| [UltralyticsDetectImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportLibraryContext.h) | нащадок `LibraryContext` розкладки виявлення Ultralytics YOLO |
+| [UltralyticsObbImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportLibraryContext.h) | нащадок `LibraryContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
+| [UltralyticsSegmentImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportLibraryContext.h) | нащадок `LibraryContext` розкладки сегментації примірників Ultralytics YOLO |
+| [CocoImportLibraryContext.h](/src/lib/facade/public/contexts/CocoImportLibraryContext.h) | нащадок `LibraryContext` розкладки виявлення обʼєктів COCO |
+| [PascalVocImportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocImportLibraryContext.h) | нащадок `LibraryContext` розкладки Pascal VOC |
+| [CreateMLImportLibraryContext.h](/src/lib/facade/public/contexts/CreateMLImportLibraryContext.h) | нащадок `LibraryContext` розкладки виявлення обʼєктів Create ML |
+| [PyTorchImportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchImportLibraryContext.h) | нащадок `LibraryContext` розкладки PyTorch Vision |
 | [ILib.h](/src/lib/facade/public/ILib.h) | абстрактний інтерфейс бібліотеки `ILib` із методом `perform_import` |
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | клас-фабрику `LibraryFacade`, точку входу бібліотеки |
 
@@ -31,18 +37,24 @@ namespace iadi = ImagesAnnotatorDataImporters011;
 ```cpp
 class PlainTxtImportLibraryContext : public LibraryContext;
 class Yolo4ImportLibraryContext : public LibraryContext;
+class UltralyticsDetectImportLibraryContext : public LibraryContext;
+class UltralyticsObbImportLibraryContext : public LibraryContext;
+class UltralyticsSegmentImportLibraryContext : public LibraryContext;
+class CocoImportLibraryContext : public LibraryContext;
+class PascalVocImportLibraryContext : public LibraryContext;
+class CreateMLImportLibraryContext : public LibraryContext;
 class PyTorchImportLibraryContext : public LibraryContext;
 ```
 
-Три нащадки `LibraryContext` називають три розкладки наборів даних, які бібліотека вміє читати. Інстанціація одного з них - це і є вибір розкладки, а бібліотека відображає цей тип на імпортер, який її читає. Жоден із них нічого не додає до `LibraryContext`, бо все, що потрібно імпорту - директорія-джерело, база даних-призначення та засіб вимірювання зображень - зберігається у базовому класі. Що саме кожен із них очікує знайти на диску, описано в підрозділі [Розкладки наборів даних, які читаються](/doc/sections/uk_UA/4-project-structure/4-10-the-read-dataset-layouts.md).
+Девʼять нащадків `LibraryContext` називають девʼять розкладок наборів даних, які бібліотека вміє читати. Інстанціація одного з них - це і є вибір розкладки, а бібліотека відображає цей тип на імпортер, який її читає. Жоден із них нічого не додає до `LibraryContext`, бо все, що потрібно імпорту - директорія-джерело, база даних-призначення та засіб вимірювання зображень - зберігається у базовому класі. Що саме кожен із них очікує знайти на диску, описано в підрозділі [Розкладки наборів даних, які читаються](/doc/sections/uk_UA/4-project-structure/4-10-the-read-dataset-layouts.md).
 
-Ці три є оберненням перших трьох розкладок, які записує споріднена бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git), і пара замикає коло: проект, експортований у будь-яку з них та імпортований назад, дає ті самі анотації, з якими починав - настільки, наскільки сама розкладка здатна їх нести.
+Ці девʼять є оберненням тих самих девʼяти розкладок, які записує споріднена бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) - одна до одної, під тими самими назвами - і пара замикає коло: проект, експортований у будь-яку з них та імпортований назад, дає ті самі анотації, з якими починав - настільки, наскільки сама розкладка здатна їх нести.
 
-`Yolo4ImportLibraryContext` та `PyTorchImportLibraryContext` - це дві розкладки, які неможливо прочитати, не знаючи розміру кожного зображення: див. `IImageSizeFacility` нижче. `PlainTxtImportLibraryContext` не потребує вимірювання взагалі, бо та розкладка зберігає свої прямокутники у власних пікселях зображення, точно так, як їх тримає внутрішній формат проекту.
+Пʼять розкладок, які неможливо прочитати, не знаючи розміру кожного зображення (див. `IImageSizeFacility` нижче), - це `Yolo4ImportLibraryContext`, три `Ultralytics*ImportLibraryContext`, чия геометрія зберігається поділеною на той розмір, та `PyTorchImportLibraryContext`, чиєю анотацією є саме обрізане зображення. `CocoImportLibraryContext` та `PascalVocImportLibraryContext` читають розміри з власних дескрипторів, а `PlainTxtImportLibraryContext` і `CreateMLImportLibraryContext` не потребують вимірювання взагалі, бо обидві зберігають свої прямокутники у власних пікселях зображення, точно так, як їх тримає внутрішній формат проекту.
 
 ### LibraryContext
 
-Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `ILib::perform_import()` та `IImporter::import_db()` імпортера, зібраного вручну. Створіть його фабричним методом `LibraryFacade` потрібної розкладки - `create_plain_txt_library_context()`, `create_yolo4_library_context()` чи `create_pytorch_library_context()` - або інстанціюйте нащадка самостійно, як це робить споживач, шаблонізований за типом розкладки.
+Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `ILib::perform_import()` та `IImporter::import_db()` імпортера, зібраного вручну. Створіть його фабричним методом `LibraryFacade` потрібної розкладки - одним із девʼяти `create_*_library_context()`, перелічених нижче - або інстанціюйте нащадка самостійно, як це робить споживач, шаблонізований за типом розкладки.
 
 Дані, які він несе, є приватними і доступні лише через методи доступу. Кожен геттер віддає `const`-посилання на те, що зберігає контекст, кожен сеттер копіює передане значення всередину:
 
@@ -80,7 +92,9 @@ virtual bool read_image_size(const std::string& imagePath, int& width,
 virtual IImageSizeFacilityPtr clone() = 0;
 ```
 
-Бібліотека не декодує жодного формату зображень власними силами, а анотація внутрішнього формату проекту - це прямокутник у пікселях зображення, над яким його намальовано. Тому набір даних, який зберігає свої рамки нормалізованими - тут це YOLO v4 - неможливо прочитати назад без розміру зображення, якому кожна рамка належить, а розкладку PyTorch Vision, у якій уся анотація і є обрізаним зображенням, - і поготів. Отже, імпорти, яким потрібне таке вимірювання, просять свого споживача виконати його тим графічним стеком, який той проект уже й так лінкує.
+Бібліотека не декодує жодного формату зображень власними силами, а анотація внутрішнього формату проекту - це прямокутник у пікселях зображення, над яким його намальовано. Тому набір даних, який зберігає свої рамки поділеними на той розмір - тут це YOLO v4 та три розкладки Ultralytics YOLO - неможливо прочитати назад без розміру зображення, якому кожна рамка належить, а розкладку PyTorch Vision, у якій уся анотація і є обрізаним зображенням, - і поготів. Отже, імпорти, яким потрібне таке вимірювання, просять свого споживача виконати його тим графічним стеком, який той проект уже й так лінкує.
+
+Чотири розкладки, що лишилися, читаються й без нього. Дескриптори COCO та Pascal VOC несуть розмір кожного зображення, яке називають, а розкладки простого тексту та Create ML тримають свої прямокутники у власних пікселях зображення, тож читач лише заповнює поля `iwidth` та `iheight` створених записів - що варто надати однаково, бо саме ті два поля дозволяють анотатору малювати зображення у власному масштабі.
 
 - `imagePath` - шлях файлової системи до зображення, яке слід виміряти. Інтерфейс навмисно приймає шлях, а не запис зображення: запис - це те, що імпорт саме будує, і поля його розміру заповнює цей виклик.
 - `width` та `height` - вихідні параметри, які слід заповнити власним піксельним розміром того файлу.
@@ -102,6 +116,12 @@ virtual IImageSizeFacilityPtr clone() = 0;
 | --- | --- |
 | `create_plain_txt_library_context()` | новий порожній `PlainTxtImportLibraryContextPtr` |
 | `create_yolo4_library_context()` | новий порожній `Yolo4ImportLibraryContextPtr` |
+| `create_ultralytics_detect_library_context()` | новий порожній `UltralyticsDetectImportLibraryContextPtr` |
+| `create_ultralytics_obb_library_context()` | новий порожній `UltralyticsObbImportLibraryContextPtr` |
+| `create_ultralytics_segment_library_context()` | новий порожній `UltralyticsSegmentImportLibraryContextPtr` |
+| `create_coco_library_context()` | новий порожній `CocoImportLibraryContextPtr` |
+| `create_pascal_voc_library_context()` | новий порожній `PascalVocImportLibraryContextPtr` |
+| `create_createml_library_context()` | новий порожній `CreateMLImportLibraryContextPtr` |
 | `create_pytorch_library_context()` | новий порожній `PyTorchImportLibraryContextPtr` |
 | `create_default_lib()` | типову реалізацію `ILibPtr` |
 | `create_library(LibraryContextPtr ctx)` | реалізацію `ILibPtr`, відповідну до наданого контексту |
