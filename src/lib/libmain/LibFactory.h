@@ -34,9 +34,15 @@
 #include "IImporter.h"
 #include "ILib.h"
 #include "LibraryContext.h"
-#include "PlainTxtImportLibraryContext.h"
-#include "PyTorchImportLibraryContext.h"
-#include "Yolo4ImportLibraryContext.h"
+#include "contexts/CocoImportLibraryContext.h"
+#include "contexts/CreateMLImportLibraryContext.h"
+#include "contexts/PascalVocImportLibraryContext.h"
+#include "contexts/PlainTxtImportLibraryContext.h"
+#include "contexts/PyTorchImportLibraryContext.h"
+#include "contexts/UltralyticsDetectImportLibraryContext.h"
+#include "contexts/UltralyticsObbImportLibraryContext.h"
+#include "contexts/UltralyticsSegmentImportLibraryContext.h"
+#include "contexts/Yolo4ImportLibraryContext.h"
 
 namespace iadi0impl
 {
@@ -59,6 +65,19 @@ class LibFactory
       ImagesAnnotatorDataImporters011::Yolo4ImportLibraryContextPtr;
   using PyTorchImportLibraryContextPtr =
       ImagesAnnotatorDataImporters011::PyTorchImportLibraryContextPtr;
+  using UltralyticsDetectImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::UltralyticsDetectImportLibraryContextPtr;
+  using UltralyticsObbImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::UltralyticsObbImportLibraryContextPtr;
+  using UltralyticsSegmentImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::
+          UltralyticsSegmentImportLibraryContextPtr;
+  using CocoImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::CocoImportLibraryContextPtr;
+  using PascalVocImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::PascalVocImportLibraryContextPtr;
+  using CreateMLImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::CreateMLImportLibraryContextPtr;
   using IImporterPtr = ImagesAnnotatorDataImporters011::IImporterPtr;
   using IImageSizeFacilityPtr =
       ImagesAnnotatorDataImporters011::IImageSizeFacilityPtr;
@@ -88,6 +107,56 @@ class LibFactory
    * @return Returns an empty Yolo4ImportLibraryContext instance.
    */
   virtual Yolo4ImportLibraryContextPtr create_yolo4_library_context();
+
+  /**
+   * @brief Creates an empty context of the Ultralytics YOLO detection dataset
+   * layout.
+   *
+   * @return Returns an empty UltralyticsDetectImportLibraryContext instance.
+   */
+  virtual UltralyticsDetectImportLibraryContextPtr
+  create_ultralytics_detect_library_context();
+
+  /**
+   * @brief Creates an empty context of the Ultralytics YOLO oriented bounding
+   * box dataset layout.
+   *
+   * @return Returns an empty UltralyticsObbImportLibraryContext instance.
+   */
+  virtual UltralyticsObbImportLibraryContextPtr
+  create_ultralytics_obb_library_context();
+
+  /**
+   * @brief Creates an empty context of the Ultralytics YOLO instance
+   * segmentation dataset layout.
+   *
+   * @return Returns an empty UltralyticsSegmentImportLibraryContext instance.
+   */
+  virtual UltralyticsSegmentImportLibraryContextPtr
+  create_ultralytics_segment_library_context();
+
+  /**
+   * @brief Creates an empty context of the COCO object detection dataset
+   * layout.
+   *
+   * @return Returns an empty CocoImportLibraryContext instance.
+   */
+  virtual CocoImportLibraryContextPtr create_coco_library_context();
+
+  /**
+   * @brief Creates an empty context of the Pascal VOC dataset layout.
+   *
+   * @return Returns an empty PascalVocImportLibraryContext instance.
+   */
+  virtual PascalVocImportLibraryContextPtr create_pascal_voc_library_context();
+
+  /**
+   * @brief Creates an empty context of the Create ML object detection dataset
+   * layout.
+   *
+   * @return Returns an empty CreateMLImportLibraryContext instance.
+   */
+  virtual CreateMLImportLibraryContextPtr create_createml_library_context();
 
   /**
    * @brief Creates an empty context of the PyTorch Vision dataset layout.
@@ -126,6 +195,26 @@ class LibFactory
   virtual IImageSizeFacilityPtr create_image_sizer();
 
   static LibFactoryPtr create_factory();
+
+ private:
+  /**
+   * @brief Creates the importer of one family of the dataset layouts.
+   *
+   * The wanted layout is the very type of the context descendant, so the
+   * lookup is a cast per layout - and the layouts are grouped into the three
+   * families they are written by, so that no single method carries the whole
+   * list of them.
+   *
+   * @param ctx The LibraryContext descendant naming the wanted layout.
+   *
+   * @return Returns a new importer, or a nullptr when the context names no
+   * layout of that family.
+   */
+  static IImporterPtr create_plain_importer(const LibraryContextPtr& ctx);
+  /// @copydoc LibFactory::create_plain_importer
+  static IImporterPtr create_ultralytics_importer(const LibraryContextPtr& ctx);
+  /// @copydoc LibFactory::create_plain_importer
+  static IImporterPtr create_descriptor_importer(const LibraryContextPtr& ctx);
 };
 
 using LibFactoryPtr = LibFactory::LibFactoryPtr;

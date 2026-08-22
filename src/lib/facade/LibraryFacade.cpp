@@ -57,6 +57,64 @@ Yolo4ImportLibraryContextPtr LibraryFacade::create_yolo4_library_context()
   return libFactory->create_yolo4_library_context();
 }
 
+UltralyticsDetectImportLibraryContextPtr
+LibraryFacade::create_ultralytics_detect_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_ultralytics_detect_library_context();
+}
+
+UltralyticsObbImportLibraryContextPtr
+LibraryFacade::create_ultralytics_obb_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_ultralytics_obb_library_context();
+}
+
+UltralyticsSegmentImportLibraryContextPtr
+LibraryFacade::create_ultralytics_segment_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_ultralytics_segment_library_context();
+}
+
+CocoImportLibraryContextPtr LibraryFacade::create_coco_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_coco_library_context();
+}
+
+PascalVocImportLibraryContextPtr
+LibraryFacade::create_pascal_voc_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_pascal_voc_library_context();
+}
+
+CreateMLImportLibraryContextPtr LibraryFacade::create_createml_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_createml_library_context();
+}
+
 PyTorchImportLibraryContextPtr LibraryFacade::create_pytorch_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();

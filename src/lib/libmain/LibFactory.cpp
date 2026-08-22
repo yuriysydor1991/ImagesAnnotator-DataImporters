@@ -30,11 +30,23 @@
 #include <cassert>
 #include <memory>
 
-#include "PlainTxtImportLibraryContext.h"
-#include "PyTorchImportLibraryContext.h"
-#include "Yolo4ImportLibraryContext.h"
+#include "contexts/CocoImportLibraryContext.h"
+#include "contexts/CreateMLImportLibraryContext.h"
+#include "contexts/PascalVocImportLibraryContext.h"
+#include "contexts/PlainTxtImportLibraryContext.h"
+#include "contexts/PyTorchImportLibraryContext.h"
+#include "contexts/UltralyticsDetectImportLibraryContext.h"
+#include "contexts/UltralyticsObbImportLibraryContext.h"
+#include "contexts/UltralyticsSegmentImportLibraryContext.h"
+#include "contexts/Yolo4ImportLibraryContext.h"
+#include "src/importers/Coco/CocoFolder2DBImporter.h"
+#include "src/importers/CreateML/CreateMLFolder2DBImporter.h"
+#include "src/importers/PascalVoc/PascalVocFolder2DBImporter.h"
 #include "src/importers/PlainTxt/PlainTxtFolder2DBImporter.h"
 #include "src/importers/PyTorch/PyTorchVisionFolder2DBImporter.h"
+#include "src/importers/Ultralytics/UltralyticsDetectFolder2DBImporter.h"
+#include "src/importers/Ultralytics/UltralyticsObbFolder2DBImporter.h"
+#include "src/importers/Ultralytics/UltralyticsSegmentFolder2DBImporter.h"
 #include "src/importers/Yolo4/Yolo4Folder2DBImporter.h"
 #include "src/lib/libmain/LibMain.h"
 #include "src/log/log.h"
@@ -62,6 +74,42 @@ LibFactory::create_yolo4_library_context()
   return std::make_shared<Yolo4ImportLibraryContext>();
 }
 
+LibFactory::UltralyticsDetectImportLibraryContextPtr
+LibFactory::create_ultralytics_detect_library_context()
+{
+  return std::make_shared<UltralyticsDetectImportLibraryContext>();
+}
+
+LibFactory::UltralyticsObbImportLibraryContextPtr
+LibFactory::create_ultralytics_obb_library_context()
+{
+  return std::make_shared<UltralyticsObbImportLibraryContext>();
+}
+
+LibFactory::UltralyticsSegmentImportLibraryContextPtr
+LibFactory::create_ultralytics_segment_library_context()
+{
+  return std::make_shared<UltralyticsSegmentImportLibraryContext>();
+}
+
+LibFactory::CocoImportLibraryContextPtr
+LibFactory::create_coco_library_context()
+{
+  return std::make_shared<CocoImportLibraryContext>();
+}
+
+LibFactory::PascalVocImportLibraryContextPtr
+LibFactory::create_pascal_voc_library_context()
+{
+  return std::make_shared<PascalVocImportLibraryContext>();
+}
+
+LibFactory::CreateMLImportLibraryContextPtr
+LibFactory::create_createml_library_context()
+{
+  return std::make_shared<CreateMLImportLibraryContext>();
+}
+
 LibFactory::PyTorchImportLibraryContextPtr
 LibFactory::create_pytorch_library_context()
 {
@@ -82,6 +130,26 @@ LibFactory::ILibPtr LibFactory::create_appropriate_lib(
 LibFactory::IImporterPtr LibFactory::create_importer(
     const LibraryContextPtr& ctx)
 {
+  auto importer = create_plain_importer(ctx);
+
+  if (importer == nullptr) {
+    importer = create_ultralytics_importer(ctx);
+  }
+
+  if (importer == nullptr) {
+    importer = create_descriptor_importer(ctx);
+  }
+
+  if (importer == nullptr) {
+    LOGE("No library context of a known dataset layout given");
+  }
+
+  return importer;
+}
+
+LibFactory::IImporterPtr LibFactory::create_plain_importer(
+    const LibraryContextPtr& ctx)
+{
   if (std::dynamic_pointer_cast<PlainTxtImportLibraryContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::importers::PlainTxtFolder2DBImporter>();
   }
@@ -95,7 +163,49 @@ LibFactory::IImporterPtr LibFactory::create_importer(
         iannotator::importers::PyTorchVisionFolder2DBImporter>();
   }
 
-  LOGE("No library context of a known dataset layout given");
+  return nullptr;
+}
+
+LibFactory::IImporterPtr LibFactory::create_ultralytics_importer(
+    const LibraryContextPtr& ctx)
+{
+  if (std::dynamic_pointer_cast<UltralyticsDetectImportLibraryContext>(ctx) !=
+      nullptr) {
+    return std::make_shared<
+        iannotator::importers::UltralyticsDetectFolder2DBImporter>();
+  }
+
+  if (std::dynamic_pointer_cast<UltralyticsObbImportLibraryContext>(ctx) !=
+      nullptr) {
+    return std::make_shared<
+        iannotator::importers::UltralyticsObbFolder2DBImporter>();
+  }
+
+  if (std::dynamic_pointer_cast<UltralyticsSegmentImportLibraryContext>(ctx) !=
+      nullptr) {
+    return std::make_shared<
+        iannotator::importers::UltralyticsSegmentFolder2DBImporter>();
+  }
+
+  return nullptr;
+}
+
+LibFactory::IImporterPtr LibFactory::create_descriptor_importer(
+    const LibraryContextPtr& ctx)
+{
+  if (std::dynamic_pointer_cast<CocoImportLibraryContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::importers::CocoFolder2DBImporter>();
+  }
+
+  if (std::dynamic_pointer_cast<PascalVocImportLibraryContext>(ctx) !=
+      nullptr) {
+    return std::make_shared<
+        iannotator::importers::PascalVocFolder2DBImporter>();
+  }
+
+  if (std::dynamic_pointer_cast<CreateMLImportLibraryContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::importers::CreateMLFolder2DBImporter>();
+  }
 
   return nullptr;
 }

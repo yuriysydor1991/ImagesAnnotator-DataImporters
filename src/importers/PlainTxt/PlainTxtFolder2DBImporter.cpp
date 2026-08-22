@@ -147,17 +147,7 @@ bool PlainTxtFolder2DBImporter::read_dataset(
   // when there is something to measure the pictures with. A record left with
   // zeroes still holds every rectangle: they are stored in the image own
   // pixels here, which is what the internal format keeps them in as well.
-  if (has_image_sizer()) {
-    for (auto& ir : records) {
-      int width{0};
-      int height{0};
-
-      if (measure_image(ir->get_full_path(), width, height)) {
-        ir->iwidth = width;
-        ir->iheight = height;
-      }
-    }
-  }
+  measure_unsized(records);
 
   outRecords.swap(records);
 

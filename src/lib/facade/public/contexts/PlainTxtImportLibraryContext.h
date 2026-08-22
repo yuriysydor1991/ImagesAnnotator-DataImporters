@@ -25,38 +25,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTLIBRARYCONTEXT_CLASS_H
 
 #include <memory>
 
-#include "ImportersAPI.h"
-#include "LibraryContext.h"
+#include "../ImportersAPI.h"
+#include "../LibraryContext.h"
 
 namespace ImagesAnnotatorDataImporters011
 {
 
 /**
- * @brief The library context which reads the darknet training directory of the
- * YOLO v4 detector back into image records. Requires an IImageSizeFacility
- * unless the library was built with its own, since the layout stores its
- * boxes normalised.
+ * @brief The library context which reads the `<annotation-name>.txt` files of
+ * the plain text dataset layout, one per annotation name, back into image
+ * records.
  *
  * The class carries no data of its own: instantiating it is what names the
  * wanted dataset layout, everything else is inherited from LibraryContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API Yolo4ImportLibraryContext : public LibraryContext
+class IADI_API PlainTxtImportLibraryContext : public LibraryContext
 {
  public:
-  using Yolo4ImportLibraryContextPtr =
-      std::shared_ptr<Yolo4ImportLibraryContext>;
+  using PlainTxtImportLibraryContextPtr =
+      std::shared_ptr<PlainTxtImportLibraryContext>;
 };
 
-using Yolo4ImportLibraryContextPtr =
-    Yolo4ImportLibraryContext::Yolo4ImportLibraryContextPtr;
+using PlainTxtImportLibraryContextPtr =
+    PlainTxtImportLibraryContext::PlainTxtImportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataImporters011
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTLIBRARYCONTEXT_CLASS_H

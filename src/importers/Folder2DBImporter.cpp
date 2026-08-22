@@ -30,6 +30,7 @@
 #include <cassert>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -142,11 +143,58 @@ bool Folder2DBImporter::measure_image(const std::filesystem::path& imagePath,
   return true;
 }
 
+void Folder2DBImporter::measure_unsized(const ImageRecordsSet& records)
+{
+  if (!has_image_sizer()) {
+    return;
+  }
+
+  for (const auto& ir : records) {
+    assert(ir != nullptr);
+
+    if (ir->iwidth > 0 && ir->iheight > 0) {
+      continue;
+    }
+
+    int width{0};
+    int height{0};
+
+    if (measure_image(ir->get_full_path(), width, height)) {
+      ir->iwidth = width;
+      ir->iheight = height;
+    }
+  }
+}
+
 ImageRecordPtr Folder2DBImporter::create_record(
     const std::filesystem::path& imagePath)
 {
   return ImageRecord::create(imagePath.filename().string(),
                              imagePath.parent_path().string());
+}
+
+bool Folder2DBImporter::read_file(const std::filesystem::path& fpath,
+                                  std::string& contents)
+{
+  std::ifstream file(fpath, std::ios::binary);
+
+  if (!file.is_open()) {
+    LOGE("Fail to open the file: " << fpath.string());
+    return false;
+  }
+
+  std::ostringstream read;
+
+  read << file.rdbuf();
+
+  if (file.bad()) {
+    LOGE("Fail to read the file: " << fpath.string());
+    return false;
+  }
+
+  contents = read.str();
+
+  return true;
 }
 
 std::vector<std::string> Folder2DBImporter::read_lines(

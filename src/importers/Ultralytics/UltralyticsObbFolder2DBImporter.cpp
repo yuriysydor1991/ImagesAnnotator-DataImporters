@@ -25,38 +25,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PYTORCHIMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PYTORCHIMPORTLIBRARYCONTEXT_CLASS_H
+#include "src/importers/Ultralytics/UltralyticsObbFolder2DBImporter.h"
 
-#include <memory>
+#include <cstddef>
+#include <vector>
 
-#include "ImportersAPI.h"
-#include "LibraryContext.h"
+#include "src/log/log.h"
 
-namespace ImagesAnnotatorDataImporters011
+namespace iannotator::importers
 {
 
-/**
- * @brief The library context which reads the PyTorch Vision ImageFolder layout
- * of cropped out rectangles back into image records. Requires an
- * IImageSizeFacility unless the library was built with its own, since the
- * annotation of such a record is the cropped image itself.
- *
- * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
- *
- * Current file is a target for the library header installation.
- */
-class IADI_API PyTorchImportLibraryContext : public LibraryContext
+namespace
 {
- public:
-  using PyTorchImportLibraryContextPtr =
-      std::shared_ptr<PyTorchImportLibraryContext>;
-};
+/// @brief How many numbers the box of an oriented bounding box line carries:
+/// the x and the y of its four corners
+constexpr const std::size_t cornerFields = 8U;
+}  // namespace
 
-using PyTorchImportLibraryContextPtr =
-    PyTorchImportLibraryContext::PyTorchImportLibraryContextPtr;
+bool UltralyticsObbFolder2DBImporter::read_rectangle(
+    const std::vector<double>& values, NormalizedRect& nrect) const
+{
+  if (values.size() != cornerFields) {
+    LOGE("The oriented bounding box label line carries "
+         << values.size()
+         << " numbers behind its class index instead of the eight of four "
+            "corners");
+    return false;
+  }
 
-}  // namespace ImagesAnnotatorDataImporters011
+  return read_corners(values, nrect);
+}
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PYTORCHIMPORTLIBRARYCONTEXT_CLASS_H
+}  // namespace iannotator::importers

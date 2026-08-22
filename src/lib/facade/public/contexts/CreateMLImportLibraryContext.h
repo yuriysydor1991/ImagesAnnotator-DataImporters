@@ -25,37 +25,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_CREATEMLIMPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_CREATEMLIMPORTLIBRARYCONTEXT_CLASS_H
 
 #include <memory>
 
-#include "ImportersAPI.h"
-#include "LibraryContext.h"
+#include "../ImportersAPI.h"
+#include "../LibraryContext.h"
 
 namespace ImagesAnnotatorDataImporters011
 {
 
 /**
- * @brief The library context which reads the `<annotation-name>.txt` files of
- * the plain text dataset layout, one per annotation name, back into image
- * records.
+ * @brief The library context which reads the Create ML object detection
+ * dataset - the flat directory of the pictures and the one JSON descriptor
+ * beside them - back into image records.
+ *
+ * The boxes are held in the pixels of their image, so an IImageSizeFacility is
+ * optional here: it only fills the image dimensions of the produced records
+ * in, since the layout carries no size of its own anywhere.
  *
  * The class carries no data of its own: instantiating it is what names the
  * wanted dataset layout, everything else is inherited from LibraryContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API PlainTxtImportLibraryContext : public LibraryContext
+class IADI_API CreateMLImportLibraryContext : public LibraryContext
 {
  public:
-  using PlainTxtImportLibraryContextPtr =
-      std::shared_ptr<PlainTxtImportLibraryContext>;
+  using CreateMLImportLibraryContextPtr =
+      std::shared_ptr<CreateMLImportLibraryContext>;
 };
 
-using PlainTxtImportLibraryContextPtr =
-    PlainTxtImportLibraryContext::PlainTxtImportLibraryContextPtr;
+using CreateMLImportLibraryContextPtr =
+    CreateMLImportLibraryContext::CreateMLImportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataImporters011
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_CREATEMLIMPORTLIBRARYCONTEXT_CLASS_H

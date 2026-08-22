@@ -31,6 +31,8 @@
 #include <ImagesAnnotatorDataDrivers-0.11/ImageRecord.h>
 #include <ImagesAnnotatorDataDrivers-0.11/ImageRecordRect.h>
 
+#include <cmath>
+
 #include "src/helpers/IHelper.h"
 
 namespace iannotator::importers::helpers
@@ -55,6 +57,24 @@ class TypeHelper : virtual public IHelper
   inline static double toD(const Ntype& val)
   {
     return static_cast<double>(val);
+  }
+
+  /**
+   * @brief Rounds a number a dataset descriptor holds onto the image pixel it
+   * names.
+   *
+   * Every layout read here writes at least some of its coordinates as
+   * fractions - the normalised YOLO ones, the halved Create ML centres - while
+   * an ImageRecordRect is drawn in whole pixels, so the rounding is the very
+   * last step of every one of those readings.
+   *
+   * @param val The number to round.
+   *
+   * @return Returns the nearest pixel coordinate.
+   */
+  inline static int toPixels(const double& val)
+  {
+    return static_cast<int>(std::lround(val));
   }
 };
 

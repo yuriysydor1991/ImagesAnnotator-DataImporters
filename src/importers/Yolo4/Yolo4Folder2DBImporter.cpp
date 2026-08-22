@@ -29,7 +29,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <cmath>
 #include <cstddef>
 #include <exception>
 #include <filesystem>
@@ -38,6 +37,7 @@
 #include <string>
 #include <vector>
 
+#include "src/helpers/StringHelper.h"
 #include "src/log/log.h"
 
 namespace iannotator::importers
@@ -45,32 +45,8 @@ namespace iannotator::importers
 
 namespace
 {
-
 namespace fs = std::filesystem;
-
-/// @brief The whitespace the obj.data entries are written with around their
-/// equals sign
-const std::string blanks = " \t";
-
-std::string trim(const std::string& value)
-{
-  const auto first = value.find_first_not_of(blanks);
-
-  if (first == std::string::npos) {
-    return {};
-  }
-
-  return value.substr(first, value.find_last_not_of(blanks) - first + 1U);
 }
-
-/// @brief Rounds a coordinate the normalisation gave back to the pixel the
-/// export divided it out of
-int to_pixels(const double& value)
-{
-  return static_cast<int>(std::lround(value));
-}
-
-}  // namespace
 
 bool Yolo4Folder2DBImporter::needs_image_sizer() const { return true; }
 
@@ -146,8 +122,8 @@ Yolo4Folder2DBImporter::ObjData Yolo4Folder2DBImporter::read_obj_data(
       continue;
     }
 
-    const std::string key = trim(line.substr(0U, eq));
-    const std::string value = trim(line.substr(eq + 1U));
+    const std::string key = helpers::StringHelper::trim(line.substr(0U, eq));
+    const std::string value = helpers::StringHelper::trim(line.substr(eq + 1U));
 
     if (key.empty() || value.empty()) {
       continue;
@@ -333,8 +309,8 @@ ImageRecordRectPtr Yolo4Folder2DBImporter::read_label_line(
   const double height = nheight * toD(ir->iheight);
 
   return std::make_shared<ImageRecordRect>(
-      classes[classIndex], to_pixels(cx - (width / 2.0)),
-      to_pixels(cy - (height / 2.0)), to_pixels(width), to_pixels(height));
+      classes[classIndex], toPixels(cx - (width / 2.0)),
+      toPixels(cy - (height / 2.0)), toPixels(width), toPixels(height));
 }
 
 }  // namespace iannotator::importers

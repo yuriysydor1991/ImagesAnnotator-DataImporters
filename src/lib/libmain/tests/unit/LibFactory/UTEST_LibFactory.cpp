@@ -4,9 +4,15 @@
 #include <memory>
 
 #include "LibraryContext.h"
-#include "PlainTxtImportLibraryContext.h"
-#include "PyTorchImportLibraryContext.h"
-#include "Yolo4ImportLibraryContext.h"
+#include "contexts/CocoImportLibraryContext.h"
+#include "contexts/CreateMLImportLibraryContext.h"
+#include "contexts/PascalVocImportLibraryContext.h"
+#include "contexts/PlainTxtImportLibraryContext.h"
+#include "contexts/PyTorchImportLibraryContext.h"
+#include "contexts/UltralyticsDetectImportLibraryContext.h"
+#include "contexts/UltralyticsObbImportLibraryContext.h"
+#include "contexts/UltralyticsSegmentImportLibraryContext.h"
+#include "contexts/Yolo4ImportLibraryContext.h"
 #include "src/lib/libmain/LibFactory.h"
 
 using namespace ImagesAnnotatorDataImporters011;
@@ -30,6 +36,12 @@ TEST_F(UTEST_LibFactory, create_library_context_of_every_layout_success)
 {
   EXPECT_NE(factory->create_plain_txt_library_context(), nullptr);
   EXPECT_NE(factory->create_yolo4_library_context(), nullptr);
+  EXPECT_NE(factory->create_ultralytics_detect_library_context(), nullptr);
+  EXPECT_NE(factory->create_ultralytics_obb_library_context(), nullptr);
+  EXPECT_NE(factory->create_ultralytics_segment_library_context(), nullptr);
+  EXPECT_NE(factory->create_coco_library_context(), nullptr);
+  EXPECT_NE(factory->create_pascal_voc_library_context(), nullptr);
+  EXPECT_NE(factory->create_createml_library_context(), nullptr);
   EXPECT_NE(factory->create_pytorch_library_context(), nullptr);
 }
 
@@ -42,6 +54,23 @@ TEST_F(UTEST_LibFactory, every_created_context_names_its_own_importer)
       nullptr);
   EXPECT_NE(factory->create_importer(factory->create_yolo4_library_context()),
             nullptr);
+  EXPECT_NE(factory->create_importer(
+                factory->create_ultralytics_detect_library_context()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(
+                factory->create_ultralytics_obb_library_context()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(
+                factory->create_ultralytics_segment_library_context()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(factory->create_coco_library_context()),
+            nullptr);
+  EXPECT_NE(
+      factory->create_importer(factory->create_pascal_voc_library_context()),
+      nullptr);
+  EXPECT_NE(
+      factory->create_importer(factory->create_createml_library_context()),
+      nullptr);
   EXPECT_NE(factory->create_importer(factory->create_pytorch_library_context()),
             nullptr);
 }
@@ -59,6 +88,24 @@ TEST_F(UTEST_LibFactory, create_importer_gives_an_instance_for_every_context)
   EXPECT_NE(
       factory->create_importer(std::make_shared<Yolo4ImportLibraryContext>()),
       nullptr);
+  EXPECT_NE(factory->create_importer(
+                std::make_shared<UltralyticsDetectImportLibraryContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(
+                std::make_shared<UltralyticsObbImportLibraryContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(
+                std::make_shared<UltralyticsSegmentImportLibraryContext>()),
+            nullptr);
+  EXPECT_NE(
+      factory->create_importer(std::make_shared<CocoImportLibraryContext>()),
+      nullptr);
+  EXPECT_NE(factory->create_importer(
+                std::make_shared<PascalVocImportLibraryContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(
+                std::make_shared<CreateMLImportLibraryContext>()),
+            nullptr);
   EXPECT_NE(
       factory->create_importer(std::make_shared<PyTorchImportLibraryContext>()),
       nullptr);

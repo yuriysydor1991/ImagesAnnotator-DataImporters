@@ -36,9 +36,15 @@
 #include "ILib.h"
 #include "ImportersAPI.h"
 #include "LibraryContext.h"
-#include "PlainTxtImportLibraryContext.h"
-#include "PyTorchImportLibraryContext.h"
-#include "Yolo4ImportLibraryContext.h"
+#include "contexts/CocoImportLibraryContext.h"
+#include "contexts/CreateMLImportLibraryContext.h"
+#include "contexts/PascalVocImportLibraryContext.h"
+#include "contexts/PlainTxtImportLibraryContext.h"
+#include "contexts/PyTorchImportLibraryContext.h"
+#include "contexts/UltralyticsDetectImportLibraryContext.h"
+#include "contexts/UltralyticsObbImportLibraryContext.h"
+#include "contexts/UltralyticsSegmentImportLibraryContext.h"
+#include "contexts/Yolo4ImportLibraryContext.h"
 
 /**
  * @brief The logging subsystem interface every project built from the
@@ -101,6 +107,59 @@ class IADI_API LibraryFacade
    * @return Returns a new Yolo4ImportLibraryContext class instance.
    */
   static Yolo4ImportLibraryContextPtr create_yolo4_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * Ultralytics YOLO detection dataset layout.
+   *
+   * @return Returns a new UltralyticsDetectImportLibraryContext class
+   * instance.
+   */
+  static UltralyticsDetectImportLibraryContextPtr
+  create_ultralytics_detect_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * Ultralytics YOLO oriented bounding box dataset layout.
+   *
+   * @return Returns a new UltralyticsObbImportLibraryContext class instance.
+   */
+  static UltralyticsObbImportLibraryContextPtr
+  create_ultralytics_obb_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * Ultralytics YOLO instance segmentation dataset layout.
+   *
+   * @return Returns a new UltralyticsSegmentImportLibraryContext class
+   * instance.
+   */
+  static UltralyticsSegmentImportLibraryContextPtr
+  create_ultralytics_segment_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the COCO
+   * object detection dataset layout.
+   *
+   * @return Returns a new CocoImportLibraryContext class instance.
+   */
+  static CocoImportLibraryContextPtr create_coco_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the Pascal VOC
+   * dataset layout.
+   *
+   * @return Returns a new PascalVocImportLibraryContext class instance.
+   */
+  static PascalVocImportLibraryContextPtr create_pascal_voc_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the Create ML
+   * object detection dataset layout.
+   *
+   * @return Returns a new CreateMLImportLibraryContext class instance.
+   */
+  static CreateMLImportLibraryContextPtr create_createml_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the PyTorch

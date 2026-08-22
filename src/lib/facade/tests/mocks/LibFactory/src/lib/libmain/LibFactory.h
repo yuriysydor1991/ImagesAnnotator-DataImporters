@@ -11,9 +11,15 @@
 #include "IImporter.h"
 #include "ILib.h"
 #include "LibraryContext.h"
-#include "PlainTxtImportLibraryContext.h"
-#include "PyTorchImportLibraryContext.h"
-#include "Yolo4ImportLibraryContext.h"
+#include "contexts/CocoImportLibraryContext.h"
+#include "contexts/CreateMLImportLibraryContext.h"
+#include "contexts/PascalVocImportLibraryContext.h"
+#include "contexts/PlainTxtImportLibraryContext.h"
+#include "contexts/PyTorchImportLibraryContext.h"
+#include "contexts/UltralyticsDetectImportLibraryContext.h"
+#include "contexts/UltralyticsObbImportLibraryContext.h"
+#include "contexts/UltralyticsSegmentImportLibraryContext.h"
+#include "contexts/Yolo4ImportLibraryContext.h"
 
 namespace iadi0impl
 {
@@ -34,6 +40,19 @@ class LibFactorySynthParent
       ImagesAnnotatorDataImporters011::Yolo4ImportLibraryContextPtr;
   using PyTorchImportLibraryContextPtr =
       ImagesAnnotatorDataImporters011::PyTorchImportLibraryContextPtr;
+  using UltralyticsDetectImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::UltralyticsDetectImportLibraryContextPtr;
+  using UltralyticsObbImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::UltralyticsObbImportLibraryContextPtr;
+  using UltralyticsSegmentImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::
+          UltralyticsSegmentImportLibraryContextPtr;
+  using CocoImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::CocoImportLibraryContextPtr;
+  using PascalVocImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::PascalVocImportLibraryContextPtr;
+  using CreateMLImportLibraryContextPtr =
+      ImagesAnnotatorDataImporters011::CreateMLImportLibraryContextPtr;
   using IImporterPtr = ImagesAnnotatorDataImporters011::IImporterPtr;
   using IImageSizeFacilityPtr =
       ImagesAnnotatorDataImporters011::IImageSizeFacilityPtr;
@@ -45,6 +64,16 @@ class LibFactorySynthParent
   virtual PlainTxtImportLibraryContextPtr
   create_plain_txt_library_context() = 0;
   virtual Yolo4ImportLibraryContextPtr create_yolo4_library_context() = 0;
+  virtual UltralyticsDetectImportLibraryContextPtr
+  create_ultralytics_detect_library_context() = 0;
+  virtual UltralyticsObbImportLibraryContextPtr
+  create_ultralytics_obb_library_context() = 0;
+  virtual UltralyticsSegmentImportLibraryContextPtr
+  create_ultralytics_segment_library_context() = 0;
+  virtual CocoImportLibraryContextPtr create_coco_library_context() = 0;
+  virtual PascalVocImportLibraryContextPtr
+  create_pascal_voc_library_context() = 0;
+  virtual CreateMLImportLibraryContextPtr create_createml_library_context() = 0;
   virtual PyTorchImportLibraryContextPtr create_pytorch_library_context() = 0;
   virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx) = 0;
   virtual IImporterPtr create_importer(const LibraryContextPtr& ctx) = 0;
@@ -71,6 +100,18 @@ class LibFactory : public LibFactorySynthParent
               (), (override));
   MOCK_METHOD(Yolo4ImportLibraryContextPtr, create_yolo4_library_context, (),
               (override));
+  MOCK_METHOD(UltralyticsDetectImportLibraryContextPtr,
+              create_ultralytics_detect_library_context, (), (override));
+  MOCK_METHOD(UltralyticsObbImportLibraryContextPtr,
+              create_ultralytics_obb_library_context, (), (override));
+  MOCK_METHOD(UltralyticsSegmentImportLibraryContextPtr,
+              create_ultralytics_segment_library_context, (), (override));
+  MOCK_METHOD(CocoImportLibraryContextPtr, create_coco_library_context, (),
+              (override));
+  MOCK_METHOD(PascalVocImportLibraryContextPtr,
+              create_pascal_voc_library_context, (), (override));
+  MOCK_METHOD(CreateMLImportLibraryContextPtr, create_createml_library_context,
+              (), (override));
   MOCK_METHOD(PyTorchImportLibraryContextPtr, create_pytorch_library_context,
               (), (override));
   MOCK_METHOD(ILibPtr, create_appropriate_lib, (LibraryContextPtr ctx),

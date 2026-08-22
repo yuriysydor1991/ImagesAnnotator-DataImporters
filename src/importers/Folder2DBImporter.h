@@ -103,6 +103,19 @@ class Folder2DBImporter : virtual public IImporter
   bool has_image_sizer() const;
 
   /**
+   * @brief Fills the image dimensions of the records which were recovered
+   * without them.
+   *
+   * The layouts whose rectangles are stored in the pixels of their image carry
+   * no size of their own, so this is what fills that pair in for them - when
+   * there is a reader to ask, since such a record is complete without it. A
+   * record which already carries a size keeps the one its dataset declared.
+   *
+   * @param records The records to look through.
+   */
+  void measure_unsized(const ImageRecordsSet& records);
+
+  /**
    * @brief Builds the record of the given image file path, split into the
    * directory and the name below it the internal format keeps them in.
    *
@@ -111,6 +124,21 @@ class Folder2DBImporter : virtual public IImporter
    * @return Returns the new record, without any rectangle of its own.
    */
   static ImageRecordPtr create_record(const std::filesystem::path& imagePath);
+
+  /**
+   * @brief Reads the given file whole.
+   *
+   * The layouts whose descriptor is one document rather than a list of lines
+   * - the JSON and the XML ones - are handed to their reader as that whole
+   * text.
+   *
+   * @param fpath The file to read.
+   * @param contents Out: everything the file holds, left alone on a failure.
+   *
+   * @return Returns true when the file was opened and read through.
+   */
+  static bool read_file(const std::filesystem::path& fpath,
+                        std::string& contents);
 
   /**
    * @brief Reads the given text file into its lines.

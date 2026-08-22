@@ -45,11 +45,76 @@ set(IADI_PYTORCH_SRC
   ${IADI_IMPORTERS_SRC_DIR}/PyTorch/PyTorchVisionFolder2DBImporter.cpp
 )
 
+# The two document readers the layouts whose whole descriptor is one file are
+# read through. They are held apart from the importers, since more than one
+# layout shares each of them, and they are tested apart from those as well.
+set(IADI_PARSERS_SRC_DIR
+  ${CMAKE_CURRENT_SOURCE_DIR}/parsers
+)
+
+set(IADI_JSON_PARSER_SRC
+  ${IADI_PARSERS_SRC_DIR}/json/JsonValue.cpp
+  ${IADI_PARSERS_SRC_DIR}/json/JsonParser.cpp
+)
+
+set(IADI_XML_PARSER_SRC
+  ${IADI_PARSERS_SRC_DIR}/xml/XmlNode.cpp
+  ${IADI_PARSERS_SRC_DIR}/xml/XmlParser.cpp
+)
+
+# What the two layouts described by a single JSON document share on top of it:
+# the locating of that document among the files a dataset of the layout may
+# arrive with.
+set(IADI_JSON_DESCRIPTOR_SRC
+  ${IADI_IMPORTERS_COMMON_SRC}
+  ${IADI_JSON_PARSER_SRC}
+  ${IADI_IMPORTERS_SRC_DIR}/JsonDescriptor2DBImporter.cpp
+)
+
+set(IADI_COCO_SRC
+  ${IADI_JSON_DESCRIPTOR_SRC}
+  ${IADI_IMPORTERS_SRC_DIR}/Coco/CocoFolder2DBImporter.cpp
+)
+
+set(IADI_CREATEML_SRC
+  ${IADI_JSON_DESCRIPTOR_SRC}
+  ${IADI_IMPORTERS_SRC_DIR}/CreateML/CreateMLFolder2DBImporter.cpp
+)
+
+set(IADI_PASCAL_VOC_SRC
+  ${IADI_IMPORTERS_COMMON_SRC}
+  ${IADI_XML_PARSER_SRC}
+  ${IADI_IMPORTERS_SRC_DIR}/PascalVoc/PascalVocFolder2DBImporter.cpp
+)
+
+# The three Ultralytics YOLO layouts differ in one label file line only, so the
+# three importers of them are one source list: a unit test driving any of them
+# compiles all three.
+set(IADI_ULTRALYTICS_SRC
+  ${IADI_IMPORTERS_COMMON_SRC}
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsDataYaml.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsDetectFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsObbFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsSegmentFolder2DBImporter.cpp
+)
+
 set(IADI_IMPORTERS_SRC
   ${IADI_IMPORTERS_COMMON_SRC}
+  ${IADI_JSON_PARSER_SRC}
+  ${IADI_XML_PARSER_SRC}
+  ${IADI_IMPORTERS_SRC_DIR}/JsonDescriptor2DBImporter.cpp
   ${IADI_IMPORTERS_SRC_DIR}/PlainTxt/PlainTxtFolder2DBImporter.cpp
   ${IADI_IMPORTERS_SRC_DIR}/Yolo4/Yolo4Folder2DBImporter.cpp
   ${IADI_IMPORTERS_SRC_DIR}/PyTorch/PyTorchVisionFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Coco/CocoFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/CreateML/CreateMLFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/PascalVoc/PascalVocFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsDataYaml.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsDetectFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsObbFolder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsSegmentFolder2DBImporter.cpp
 )
 
 # The installed context carries the accessors of the import data, so every test
@@ -89,6 +154,7 @@ add_subdirectory(lib)
 
 add_subdirectory(helpers)
 add_subdirectory(sizers)
+add_subdirectory(parsers)
 add_subdirectory(importers)
 
 add_subdirectory(log)

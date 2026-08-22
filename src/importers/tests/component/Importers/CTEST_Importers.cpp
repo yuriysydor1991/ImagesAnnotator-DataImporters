@@ -81,11 +81,53 @@ class CTEST_Importers : public testing::Test
   template <class ContextT>
   std::shared_ptr<ContextT> context(const std::string& subdir)
   {
-    auto ctx = std::make_shared<ContextT>();
+    return filled(std::make_shared<ContextT>(), subdir);
+  }
+
+  /**
+   * @brief Fills a context the library facade handed out, which is the way a
+   * downstream project builds one.
+   *
+   * @param ctx The empty context of the wanted layout.
+   * @param subdir The dataset directory below the test root.
+   *
+   * @return Returns that very context, ready to be imported with.
+   */
+  template <class ContextPtrT>
+  ContextPtrT filled(ContextPtrT ctx, const std::string& subdir)
+  {
     ctx->set_import_path((root / subdir).string());
     ctx->set_db(db);
     ctx->set_image_sizer(std::make_shared<FakeSizer>(200, 100));
     return ctx;
+  }
+
+  /**
+   * @brief Writes the Ultralytics YOLO directory of one image of 200x100 and
+   * the one rectangle the given label line names.
+   */
+  void given_the_ultralytics_dataset(const std::string& labelLine)
+  {
+    given_file("ultralytics/data.yaml",
+               "train: images/train\n"
+               "val: images/train\n"
+               "\n"
+               "names:\n"
+               "  0: 'cat'\n"
+               "  1: 'dog'\n");
+    given_file("ultralytics/images/train/a.png", "not-a-real-image");
+    given_file("ultralytics/labels/train/a.txt", labelLine);
+  }
+
+  /// @brief The one rectangle of the one imported record
+  iadd::ImageRecordRectPtr the_rectangle()
+  {
+    if (db->get_images_db().size() != 1U ||
+        db->get_images_db().front()->rects.size() != 1U) {
+      return {};
+    }
+
+    return db->get_images_db().front()->rects.front();
   }
 
   fs::path root;
@@ -176,6 +218,188 @@ TEST_F(CTEST_Importers, pytorch_vision_import_reads_the_tag_directories)
   EXPECT_EQ(ir->rects.front()->y, 0);
   EXPECT_EQ(ir->rects.front()->width, 200);
   EXPECT_EQ(ir->rects.front()->height, 100);
+}
+
+// The very four numbers the sibling exporters library writes into its COCO
+// descriptor, which are the ones an ImageRecordRect holds.
+TEST_F(CTEST_Importers, coco_import_reads_the_single_json_descriptor)
+{
+  given_file("coco/images/a.png", "not-a-real-image");
+  given_file("coco/annotations/instances_default.json", R"({
+"info": {"description": "The ImagesAnnotator annotations dataset"},
+"licenses": [],
+"images": [{"id": 1, "file_name": "a.png", "width": 640, "height": 400}],
+"annotations": [{"id": 1, "image_id": 1, "category_id": 2,
+                 "bbox": [50, 20, 100, 40], "area": 4000, "iscrowd": 0,
+                 "segmentation": []}],
+"categories": [{"id": 1, "name": "cat"}, {"id": 2, "name": "dog"}]})");
+
+  auto ctx = filled(iadi::LibraryFacade::create_coco_library_context(), "coco");
+
+  auto importer = iadi::LibraryFacade::create_importer(ctx);
+
+  ASSERT_NE(importer, nullptr);
+  ASSERT_TRUE(importer->import_db(ctx));
+
+  ASSERT_EQ(db->get_images_db().size(), 1U);
+
+  auto ir = db->get_images_db().front();
+
+  // the descriptor carries the size, so no measurement was needed
+  EXPECT_EQ(ir->iwidth, 640);
+  EXPECT_EQ(ir->iheight, 400);
+
+  auto irr = the_rectangle();
+
+  ASSERT_NE(irr, nullptr);
+  EXPECT_EQ(irr->name, "dog");
+  EXPECT_EQ(irr->x, 50);
+  EXPECT_EQ(irr->y, 20);
+  EXPECT_EQ(irr->width, 100);
+  EXPECT_EQ(irr->height, 40);
+}
+
+// The centre the Create ML descriptor writes, halved back onto the corner the
+// rectangle was drawn from.
+TEST_F(CTEST_Importers, createml_import_reads_the_flat_directory)
+{
+  given_file("createml/a.png", "not-a-real-image");
+  given_file("createml/annotations.json", R"([
+  {"imagefilename": "a.png", "annotation": [
+    {"label": "dog", "coordinates": {"x": 100, "y": 40, "width": 100,
+                                     "height": 40}}
+  ]}
+])");
+
+  auto ctx = filled(iadi::LibraryFacade::create_createml_library_context(),
+                    "createml");
+
+  auto importer = iadi::LibraryFacade::create_importer(ctx);
+
+  ASSERT_NE(importer, nullptr);
+  ASSERT_TRUE(importer->import_db(ctx));
+
+  auto irr = the_rectangle();
+
+  ASSERT_NE(irr, nullptr);
+  EXPECT_EQ(irr->name, "dog");
+  EXPECT_EQ(irr->x, 50);
+  EXPECT_EQ(irr->y, 20);
+  EXPECT_EQ(irr->width, 100);
+  EXPECT_EQ(irr->height, 40);
+}
+
+// The two corner points of a bndbox, turned back into the origin and the size.
+TEST_F(CTEST_Importers, pascal_voc_import_reads_the_devkit_directory)
+{
+  given_file("voc/JPEGImages/a.png", "not-a-real-image");
+  given_file("voc/ImageSets/Main/train.txt", "a\n");
+  given_file("voc/Annotations/a.xml", R"(<?xml version="1.0" encoding="UTF-8"?>
+<annotation>
+  <folder>JPEGImages</folder>
+  <filename>a.png</filename>
+  <size><width>640</width><height>400</height><depth>3</depth></size>
+  <segmented>0</segmented>
+  <object>
+    <name>dog</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox><xmin>50</xmin><ymin>20</ymin><xmax>150</xmax><ymax>60</ymax></bndbox>
+  </object>
+</annotation>)");
+
+  auto ctx =
+      filled(iadi::LibraryFacade::create_pascal_voc_library_context(), "voc");
+
+  auto importer = iadi::LibraryFacade::create_importer(ctx);
+
+  ASSERT_NE(importer, nullptr);
+  ASSERT_TRUE(importer->import_db(ctx));
+
+  ASSERT_EQ(db->get_images_db().size(), 1U);
+  EXPECT_EQ(db->get_images_db().front()->iwidth, 640);
+
+  auto irr = the_rectangle();
+
+  ASSERT_NE(irr, nullptr);
+  EXPECT_EQ(irr->name, "dog");
+  EXPECT_EQ(irr->x, 50);
+  EXPECT_EQ(irr->y, 20);
+  EXPECT_EQ(irr->width, 100);
+  EXPECT_EQ(irr->height, 40);
+}
+
+// The centre and the size of the detection line, multiplied back by the image
+// the exporting side divided them by.
+TEST_F(CTEST_Importers, ultralytics_detect_import_reads_the_label_files)
+{
+  given_the_ultralytics_dataset("1 0.5 0.4 0.5 0.4\n");
+
+  auto ctx =
+      filled(iadi::LibraryFacade::create_ultralytics_detect_library_context(),
+             "ultralytics");
+
+  auto importer = iadi::LibraryFacade::create_importer(ctx);
+
+  ASSERT_NE(importer, nullptr);
+  ASSERT_TRUE(importer->import_db(ctx));
+
+  auto irr = the_rectangle();
+
+  ASSERT_NE(irr, nullptr);
+  EXPECT_EQ(irr->name, "dog");
+  EXPECT_EQ(irr->x, 50);
+  EXPECT_EQ(irr->y, 20);
+  EXPECT_EQ(irr->width, 100);
+  EXPECT_EQ(irr->height, 40);
+}
+
+// The four corners of that very box, clockwise from the top left one.
+TEST_F(CTEST_Importers, ultralytics_obb_import_reads_the_corners)
+{
+  given_the_ultralytics_dataset("1 0.25 0.2 0.75 0.2 0.75 0.6 0.25 0.6\n");
+
+  auto ctx =
+      filled(iadi::LibraryFacade::create_ultralytics_obb_library_context(),
+             "ultralytics");
+
+  auto importer = iadi::LibraryFacade::create_importer(ctx);
+
+  ASSERT_NE(importer, nullptr);
+  ASSERT_TRUE(importer->import_db(ctx));
+
+  auto irr = the_rectangle();
+
+  ASSERT_NE(irr, nullptr);
+  EXPECT_EQ(irr->name, "dog");
+  EXPECT_EQ(irr->x, 50);
+  EXPECT_EQ(irr->width, 100);
+}
+
+// The polygon outlining the object, which the rectangle holding it comes back
+// out of.
+TEST_F(CTEST_Importers, ultralytics_segment_import_reads_the_polygon)
+{
+  given_the_ultralytics_dataset("0 0.25 0.2 0.75 0.4 0.5 0.6\n");
+
+  auto ctx =
+      filled(iadi::LibraryFacade::create_ultralytics_segment_library_context(),
+             "ultralytics");
+
+  auto importer = iadi::LibraryFacade::create_importer(ctx);
+
+  ASSERT_NE(importer, nullptr);
+  ASSERT_TRUE(importer->import_db(ctx));
+
+  auto irr = the_rectangle();
+
+  ASSERT_NE(irr, nullptr);
+  EXPECT_EQ(irr->name, "cat");
+  EXPECT_EQ(irr->x, 50);
+  EXPECT_EQ(irr->y, 20);
+  EXPECT_EQ(irr->width, 100);
+  EXPECT_EQ(irr->height, 40);
 }
 
 TEST_F(CTEST_Importers, perform_import_runs_the_import_named_by_the_context)
