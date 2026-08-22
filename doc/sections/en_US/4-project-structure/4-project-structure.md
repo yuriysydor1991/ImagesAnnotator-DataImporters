@@ -1,6 +1,6 @@
 # Project structure
 
-The repository builds a single shared library - `libImagesAnnotatorDataImporters-0.12.so` - that turns a training dataset on disk into an ImagesAnnotator annotations database. There is no executable: apart from the library itself the build only produces test binaries.
+The repository builds a single shared library - `libImagesAnnotatorDataImporters-0.13.so` - that turns a training dataset on disk into an ImagesAnnotator annotations database. There is no executable: apart from the library itself the build only produces test binaries.
 
 The library is the reverse of the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) one, so that a dataset produced by any tool - by that exporters library above all - may be read back into an annotations project, and so that the [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git) application and any other tool share one implementation of that reading. The annotation records themselves are not defined here: they are built through the [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, which had earlier taken the annotations database out of that same application.
 
@@ -8,7 +8,7 @@ The top level layout:
 
 | Path | Contents |
 |---|---|
-| [src/lib/facade/public](/src/lib/facade/public) | the installable public headers - the whole `ImagesAnnotatorDataImporters012` interface |
+| [src/lib/facade/public](/src/lib/facade/public) | the installable public headers - the whole `ImagesAnnotatorDataImporters013` interface |
 | [src/lib/facade/LibraryFacade.cpp](/src/lib/facade/LibraryFacade.cpp) | the facade implementation, the entry point of the library |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` and `LibFactory.cpp` - the implementation core |
 | [src/lib/cmake](/src/lib/cmake) | generation of the installable CMake package of the library |
@@ -21,7 +21,7 @@ The top level layout:
 | [doc](/doc) | this documentation and the project diagrams |
 | [misc](/misc) | the Jenkins pipeline and the Docker files |
 
-The implementation lives in the `iadi0impl`, `iannotator::importers`, `iannotator::importers::helpers`, `iannotator::importers::parsers` and `iannotator::importers::sizers` namespaces. None of them is installed - a consuming project only ever sees `ImagesAnnotatorDataImporters012` (an `iadi` alias is recommended).
+The implementation lives in the `iadi0impl`, `iannotator::importers`, `iannotator::importers::helpers`, `iannotator::importers::parsers` and `iannotator::importers::sizers` namespaces. None of them is installed - a consuming project only ever sees `ImagesAnnotatorDataImporters013` (an `iadi` alias is recommended).
 
 1. [Project diagrams](/doc/sections/en_US/4-project-structure/4-0-project-diagrams.md)
 1. [Where the importers implementation lives](/doc/sections/en_US/4-project-structure/4-1-implement-code-straight-away.md)

@@ -24,7 +24,7 @@ Finally, execute the `cpack` command inside the project build directory:
 cpack -C Release
 ```
 
-The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.12.0` the package name may look like `ImagesAnnotatorDataImporters-0.12.0-win64.msi` (the exact architecture suffix depends on the build host).
+The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.13.0` the package name may look like `ImagesAnnotatorDataImporters-0.13.0-win64.msi` (the exact architecture suffix depends on the build host).
 
 In order to examine details of the WIX MSI package configuration visit the [cmake/enablers/packagers/template-project-wix-enabler.cmake](/cmake/enablers/packagers/template-project-wix-enabler.cmake) file.
 

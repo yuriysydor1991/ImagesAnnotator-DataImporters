@@ -58,7 +58,7 @@ namespace logger
 class ILogger;
 }  // namespace logger
 
-namespace ImagesAnnotatorDataImporters012
+namespace ImagesAnnotatorDataImporters013
 {
 
 /**
@@ -70,7 +70,7 @@ namespace ImagesAnnotatorDataImporters012
  *
  * @code
  * namespace iadd = ImagesAnnotatorDataDrivers011;
- * namespace iadi = ImagesAnnotatorDataImporters012;
+ * namespace iadi = ImagesAnnotatorDataImporters013;
  *
  * auto db = iadd::LibraryFacade::create_annotations_db();
  *
@@ -243,6 +243,6 @@ class IADI_API LibraryFacade
       const std::shared_ptr<logger::ILogger>& realLogger);
 };
 
-}  // namespace ImagesAnnotatorDataImporters012
+}  // namespace ImagesAnnotatorDataImporters013
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYFACADE_CLASS_H

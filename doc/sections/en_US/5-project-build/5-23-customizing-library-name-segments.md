@@ -5,8 +5,8 @@ The library name that downstream consumers see (the shared object, the
 directory and the imported target namespace exported through
 `install(EXPORT ...)`) is derived from three optional CMake options. They let
 parallel installs of distinct versions of the library coexist on the same host
-- for example `include/ImagesAnnotatorDataImporters-0.12.0-dev/` next to
-`include/ImagesAnnotatorDataImporters-0.12/`.
+- for example `include/ImagesAnnotatorDataImporters-0.13.0-dev/` next to
+`include/ImagesAnnotatorDataImporters-0.13/`.
 
 | Option | Default | Effect |
 |---|---|---|
@@ -15,21 +15,21 @@ parallel installs of distinct versions of the library coexist on the same host
 | `-DLIB_NAME_SUFFIX=-dev` | `""` | Appends an arbitrary trailing tag |
 
 The minor segment is included by default because the public API namespace
-carries the major and the minor version pair (`ImagesAnnotatorDataImporters012`)
+carries the major and the minor version pair (`ImagesAnnotatorDataImporters013`)
 and because the [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md)
 names itself the very same way. Two minor releases therefore install completely
 side by side - their binaries, their header directories and their CMake packages
 all differ.
 
-Resulting names for this `0.12.0` project:
+Resulting names for this `0.13.0` project:
 
 | Configure flags | Library name | Produced binary |
 |---|---|---|
-| (none) | `ImagesAnnotatorDataImporters-0.12` | `libImagesAnnotatorDataImporters-0.12.so` |
+| (none) | `ImagesAnnotatorDataImporters-0.13` | `libImagesAnnotatorDataImporters-0.13.so` |
 | `-DLIB_INCLUDE_MINOR_IN_NAME=OFF` | `ImagesAnnotatorDataImporters-0` | `libImagesAnnotatorDataImporters-0.so` |
-| `-DLIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataImporters-0.12.0` | `libImagesAnnotatorDataImporters-0.12.0.so` |
-| `-DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataImporters-0.12-dev` | `libImagesAnnotatorDataImporters-0.12-dev.so` |
-| `-DLIB_INCLUDE_MICRO_IN_NAME=ON -DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataImporters-0.12.0-dev` | `libImagesAnnotatorDataImporters-0.12.0-dev.so` |
+| `-DLIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataImporters-0.13.0` | `libImagesAnnotatorDataImporters-0.13.0.so` |
+| `-DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataImporters-0.13-dev` | `libImagesAnnotatorDataImporters-0.13-dev.so` |
+| `-DLIB_INCLUDE_MICRO_IN_NAME=ON -DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataImporters-0.13.0-dev` | `libImagesAnnotatorDataImporters-0.13.0-dev.so` |
 
 Combined configure example:
 
@@ -47,21 +47,21 @@ cmake --install build --prefix /usr/local
 The same name is used consistently for every installed artefact. With the
 default configure that gives:
 
-- `<prefix>/lib/libImagesAnnotatorDataImporters-0.12.so.0.12.0` with the
-  `libImagesAnnotatorDataImporters-0.12.so.0` soname symlink (the `SOVERSION`
+- `<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so.0.13.0` with the
+  `libImagesAnnotatorDataImporters-0.13.so.0` soname symlink (the `SOVERSION`
   stays the major version) and the development `.so` namelink,
-- `<prefix>/include/ImagesAnnotatorDataImporters-0.12/*.h` - the public headers of
+- `<prefix>/include/ImagesAnnotatorDataImporters-0.13/*.h` - the public headers of
   [src/lib/facade/public](/src/lib/facade/public), declared through the
   `INSTALL_INTERFACE` of the library target,
-- `<libdir>/cmake/ImagesAnnotatorDataImporters-0.12/` with the generated
+- `<libdir>/cmake/ImagesAnnotatorDataImporters-0.13/` with the generated
   `Config.cmake`, `ConfigVersion.cmake` and `Targets.cmake` files, plus the
-  `ImagesAnnotatorDataImporters-0.12::ImagesAnnotatorDataImporters-0.12` imported
+  `ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13` imported
   target.
 
-A consumer therefore writes `find_package(ImagesAnnotatorDataImporters-0.12 0.12
+A consumer therefore writes `find_package(ImagesAnnotatorDataImporters-0.13 0.13
 REQUIRED)` for a default install, and has to use the customised name verbatim
 when the segments were changed. The C++ namespace of the sources,
-`ImagesAnnotatorDataImporters012`, is not affected by these options.
+`ImagesAnnotatorDataImporters013`, is not affected by these options.
 
 The derivation lives in
 [cmake/template-project-misc-variables-declare.cmake](/cmake/template-project-misc-variables-declare.cmake)

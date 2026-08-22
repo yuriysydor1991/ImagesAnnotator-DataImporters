@@ -1,6 +1,6 @@
 # Використання бібліотеки у власному проекті
 
-Бібліотека призначена для споживання іншими проектами: вона не створює власного виконуваного файлу, лише спільний обʼєкт `libImagesAnnotatorDataImporters-0.12.so` разом зі своїми встановлюваними заголовками і CMake-пакунком. Дана секція описує, що має зробити проект нижче за течією, щоб побудуватись проти неї.
+Бібліотека призначена для споживання іншими проектами: вона не створює власного виконуваного файлу, лише спільний обʼєкт `libImagesAnnotatorDataImporters-0.13.so` разом зі своїми встановлюваними заголовками і CMake-пакунком. Дана секція описує, що має зробити проект нижче за течією, щоб побудуватись проти неї.
 
 ## Що потрібно встановити спершу
 
@@ -12,9 +12,9 @@
 Встановлення розміщує в обраному префіксі наступне:
 
 ```
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/     публічні заголовки
-<prefix>/lib/libImagesAnnotatorDataImporters-0.12.so    спільний обʼєкт, soname .so.0
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.12/   файли CMake-пакунка
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/     публічні заголовки
+<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so    спільний обʼєкт, soname .so.0
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/   файли CMake-пакунка
 ```
 
 ## Пошук пакунка за допомогою CMake
@@ -27,17 +27,17 @@ project(MyImportingTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataImporters-0.12 0.12 REQUIRED)
+find_package(ImagesAnnotatorDataImporters-0.13 0.13 REQUIRED)
 
 add_executable(my-importing-tool main.cpp)
 
 target_link_libraries(
   my-importing-tool
-  PRIVATE ImagesAnnotatorDataImporters-0.12::ImagesAnnotatorDataImporters-0.12
+  PRIVATE ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13
 )
 ```
 
-І імʼя пакунка, і імпортована ціль несуть мажорну та мінорну версії бібліотеки, тож майбутній випуск можна встановити паралельно з цим. Запит версії звіряється зі встановленим файлом `ImagesAnnotatorDataImporters-0.12ConfigVersion.cmake` за правилом сумісності `SameMajorVersion`.
+І імʼя пакунка, і імпортована ціль несуть мажорну та мінорну версії бібліотеки, тож майбутній випуск можна встановити паралельно з цим. Запит версії звіряється зі встановленим файлом `ImagesAnnotatorDataImporters-0.13ConfigVersion.cmake` за правилом сумісності `SameMajorVersion`.
 
 Встановлений файл конфігурації пакунка, згенерований з [src/lib/cmake/ImportersLibraryConfig.cmake.in](/src/lib/cmake/ImportersLibraryConfig.cmake.in), викликає `find_dependency()` для пакунка драйверів даних перед тим як прочитати експортовані цілі. Бібліотека драйверів даних лінкується як `PUBLIC`, оскільки встановлювані заголовки цієї бібліотеки згадують її типи бази даних та записів, тож лінкування наведеної вище цілі приносить із собою і шлях до заголовків, і спільний обʼєкт драйверів даних. Окремий `find_package()` для драйверів даних у споживачі не потрібен, хоча його виклик і не шкодить.
 
@@ -58,7 +58,7 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH="/opt/iadd;/opt/iadi"
 Експортуються два корені підключення, тож компілюються обидва написання:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.12/LibraryFacade.h>  // рекомендовано
+#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>  // рекомендовано
 #include <LibraryFacade.h>                                    // теж працює
 ```
 
@@ -72,7 +72,7 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH="/opt/iadd;/opt/iadi"
 
 ```cpp
 namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters012;
+namespace iadi = ImagesAnnotatorDataImporters013;
 ```
 
 ## Що має надати твій проект
@@ -87,13 +87,13 @@ namespace iadi = ImagesAnnotatorDataImporters012;
 
 ```cpp
 #include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataImporters-0.12/LibraryFacade.h>
+#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>
 
 #include <iostream>
 #include <memory>
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters012;
+namespace iadi = ImagesAnnotatorDataImporters013;
 
 int main()
 {

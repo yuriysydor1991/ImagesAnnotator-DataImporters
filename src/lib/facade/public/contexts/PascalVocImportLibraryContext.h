@@ -33,7 +33,7 @@
 #include "../ImportersAPI.h"
 #include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters012
+namespace ImagesAnnotatorDataImporters013
 {
 
 /**
@@ -59,6 +59,6 @@ class IADI_API PascalVocImportLibraryContext : public LibraryContext
 using PascalVocImportLibraryContextPtr =
     PascalVocImportLibraryContext::PascalVocImportLibraryContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters012
+}  // namespace ImagesAnnotatorDataImporters013
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PASCALVOCIMPORTLIBRARYCONTEXT_CLASS_H

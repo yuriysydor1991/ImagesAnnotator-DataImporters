@@ -4,8 +4,8 @@ The library name, the project version, the git commit the build was configured f
 
 | Constant | Filled from |
 |---|---|
-| `PROJECT_NAME` | `PROJECT_LIBRARY_NAME`, i.e. `ImagesAnnotatorDataImporters-0.12` |
-| `PROJECT_BUILD_VERSION` | `PROJECT_VERSION` of the root `project()` command - `0.12.0` |
+| `PROJECT_NAME` | `PROJECT_LIBRARY_NAME`, i.e. `ImagesAnnotatorDataImporters-0.13` |
+| `PROJECT_BUILD_VERSION` | `PROJECT_VERSION` of the root `project()` command - `0.13.0` |
 | `PROJECT_BUILD_COMMIT` | `git rev-parse HEAD`, read by [cmake/enablers/template-project-git-enabler.cmake](/cmake/enablers/template-project-git-enabler.cmake) |
 | `PROJECT_CONFIGURE_DATE` | the configure time `string(TIMESTAMP ...)` value |
 

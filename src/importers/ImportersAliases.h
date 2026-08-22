@@ -42,7 +42,7 @@
  *
  * This is the implementation side of the library: nothing declared under it is
  * installed - a consuming project only ever sees the
- * ImagesAnnotatorDataImporters012 interfaces. The namespace root is the one the
+ * ImagesAnnotatorDataImporters013 interfaces. The namespace root is the one the
  * sibling exporters library carries, so the two halves of the pair read alike
  * inside the ImagesAnnotator application they both came out of.
  */
@@ -54,12 +54,12 @@ namespace iannotator::importers
  * names into the implementation namespace, so that the importers code refers
  * to them unqualified.
  */
-using ImagesAnnotatorDataImporters012::IImageSizeFacility;
-using ImagesAnnotatorDataImporters012::IImageSizeFacilityPtr;
-using ImagesAnnotatorDataImporters012::IImporter;
-using ImagesAnnotatorDataImporters012::IImporterPtr;
-using ImagesAnnotatorDataImporters012::LibraryContext;
-using ImagesAnnotatorDataImporters012::LibraryContextPtr;
+using ImagesAnnotatorDataImporters013::IImageSizeFacility;
+using ImagesAnnotatorDataImporters013::IImageSizeFacilityPtr;
+using ImagesAnnotatorDataImporters013::IImporter;
+using ImagesAnnotatorDataImporters013::IImporterPtr;
+using ImagesAnnotatorDataImporters013::LibraryContext;
+using ImagesAnnotatorDataImporters013::LibraryContextPtr;
 
 using ImagesAnnotatorDataDrivers011::IAnnotationsDB;
 using ImagesAnnotatorDataDrivers011::IAnnotationsDBPtr;

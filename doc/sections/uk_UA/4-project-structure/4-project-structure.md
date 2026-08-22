@@ -1,6 +1,6 @@
 # Структура проекту
 
-Репозиторій будує єдину спільну бібліотеку - `libImagesAnnotatorDataImporters-0.12.so`, - яка перетворює набір даних для навчання на диску на базу даних анотацій ImagesAnnotator. Виконуваного файлу немає: окрім самої бібліотеки збірка створює лише тестові бінарники.
+Репозиторій будує єдину спільну бібліотеку - `libImagesAnnotatorDataImporters-0.13.so`, - яка перетворює набір даних для навчання на диску на базу даних анотацій ImagesAnnotator. Виконуваного файлу немає: окрім самої бібліотеки збірка створює лише тестові бінарники.
 
 Бібліотека є оберненням спорідненої [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git), щоб набір даних, створений будь-яким інструментом - і передусім тією бібліотекою експортерів, - можна було прочитати назад до проекту анотацій, і щоб застосунок [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git) та будь-який інший інструмент поділяли одну реалізацію того читання. Самі записи анотацій тут не визначено: їх будують через бібліотеку [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git), яка раніше забрала базу даних анотацій із того самого застосунку.
 
@@ -8,7 +8,7 @@
 
 | Шлях | Вміст |
 |---|---|
-| [src/lib/facade/public](/src/lib/facade/public) | встановлювані публічні заголовки - увесь інтерфейс `ImagesAnnotatorDataImporters012` |
+| [src/lib/facade/public](/src/lib/facade/public) | встановлювані публічні заголовки - увесь інтерфейс `ImagesAnnotatorDataImporters013` |
 | [src/lib/facade/LibraryFacade.cpp](/src/lib/facade/LibraryFacade.cpp) | реалізація фасаду, точка входу бібліотеки |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` та `LibFactory.cpp` - ядро реалізації |
 | [src/lib/cmake](/src/lib/cmake) | генерація встановлюваного CMake-пакунка бібліотеки |
@@ -21,7 +21,7 @@
 | [doc](/doc) | ця документація і діаграми проекту |
 | [misc](/misc) | конвеєр Jenkins і файли Docker |
 
-Реалізація живе у просторах імен `iadi0impl`, `iannotator::importers`, `iannotator::importers::helpers`, `iannotator::importers::parsers` та `iannotator::importers::sizers`. Жоден із них не встановлюється - проект-споживач бачить лише `ImagesAnnotatorDataImporters012` (рекомендовано аліас `iadi`).
+Реалізація живе у просторах імен `iadi0impl`, `iannotator::importers`, `iannotator::importers::helpers`, `iannotator::importers::parsers` та `iannotator::importers::sizers`. Жоден із них не встановлюється - проект-споживач бачить лише `ImagesAnnotatorDataImporters013` (рекомендовано аліас `iadi`).
 
 1. [Діаграми проекту](/doc/sections/uk_UA/4-project-structure/4-0-project-diagrams.md)
 1. [Де живе реалізація імпортерів](/doc/sections/uk_UA/4-project-structure/4-1-implement-code-straight-away.md)

@@ -24,7 +24,7 @@ Finally, execute the `cpack` command inside the project build directory:
 cpack
 ```
 
-The package file should be generated inside the project build root directory. For example, if project name wasn't changed and it's version is `0.12.0` the package name may look like `ImagesAnnotatorDataImporters-0.12.0-amd64.pkg` (the actual architecture suffix depends on the build host).
+The package file should be generated inside the project build root directory. For example, if project name wasn't changed and it's version is `0.13.0` the package name may look like `ImagesAnnotatorDataImporters-0.13.0-amd64.pkg` (the actual architecture suffix depends on the build host).
 
 In order to examine details of the FreeBSD `pkg` package configuration visit the [cmake/enablers/packagers/template-project-freebsd-pkg-enabler.cmake](/cmake/enablers/packagers/template-project-freebsd-pkg-enabler.cmake) file.
 
@@ -33,7 +33,7 @@ The integration depends solely on `cmake` and `cpack` - no third-party applicati
 The following cache variables may optionally be overridden in order to tune the generated package metadata:
 
 - `TEMPLATE_PROJECT_FREEBSD_PKG_LICENSE` - SPDX-style license tag (default: `BSD2CLAUSE`). Common values are `BSD2CLAUSE`, `BSD3CLAUSE`, `GPLv3`, `MIT`, `APACHE20`.
-- `TEMPLATE_PROJECT_FREEBSD_PKG_ORIGIN` - FreeBSD ports origin in `<category>/<name>` form. The name part is the installable library name lowercased, so with the default settings the origin is `misc/imagesannotatordataimporters-0.12`.
+- `TEMPLATE_PROJECT_FREEBSD_PKG_ORIGIN` - FreeBSD ports origin in `<category>/<name>` form. The name part is the installable library name lowercased, so with the default settings the origin is `misc/imagesannotatordataimporters-0.13`.
 - `TEMPLATE_PROJECT_FREEBSD_PKG_CATEGORIES` - Semicolon-separated list of `pkg` categories (default: `misc`).
 
 In addition to those, the package `WWW` field is taken from the project `HOMEPAGE_URL` declared in the top-level `CMakeLists.txt`, the maintainer email from `PROJECT_MAINTAINER_EMAIL`, and the comment/description from the project `DESCRIPTION`. There is no need to declare anything new in the project's CMake files in order to start producing packages - just turn the option on.

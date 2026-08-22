@@ -1,6 +1,6 @@
 # Using the library in your project
 
-The library is meant to be consumed by other projects: it produces no executable of its own, only the `libImagesAnnotatorDataImporters-0.12.so` shared object with its installable headers and a CMake package. This section describes what a downstream project has to do to build against it.
+The library is meant to be consumed by other projects: it produces no executable of its own, only the `libImagesAnnotatorDataImporters-0.13.so` shared object with its installable headers and a CMake package. This section describes what a downstream project has to do to build against it.
 
 ## What has to be installed first
 
@@ -12,9 +12,9 @@ Two things have to be installed before a consumer may be configured:
 The install puts the following into the chosen prefix:
 
 ```
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/     the public headers
-<prefix>/lib/libImagesAnnotatorDataImporters-0.12.so    the shared object, soname .so.0
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.12/   the CMake package files
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/     the public headers
+<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so    the shared object, soname .so.0
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/   the CMake package files
 ```
 
 ## Finding the package with CMake
@@ -27,17 +27,17 @@ project(MyImportingTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataImporters-0.12 0.12 REQUIRED)
+find_package(ImagesAnnotatorDataImporters-0.13 0.13 REQUIRED)
 
 add_executable(my-importing-tool main.cpp)
 
 target_link_libraries(
   my-importing-tool
-  PRIVATE ImagesAnnotatorDataImporters-0.12::ImagesAnnotatorDataImporters-0.12
+  PRIVATE ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13
 )
 ```
 
-Both the package name and the imported target carry the library major and minor version, so a future release may be installed side by side with this one. The version request is matched against the installed `ImagesAnnotatorDataImporters-0.12ConfigVersion.cmake` file with the `SameMajorVersion` compatibility rule.
+Both the package name and the imported target carry the library major and minor version, so a future release may be installed side by side with this one. The version request is matched against the installed `ImagesAnnotatorDataImporters-0.13ConfigVersion.cmake` file with the `SameMajorVersion` compatibility rule.
 
 The installed package configuration file, generated from [src/lib/cmake/ImportersLibraryConfig.cmake.in](/src/lib/cmake/ImportersLibraryConfig.cmake.in), calls `find_dependency()` on the data drivers package before it reads the exported targets. The data drivers library is linked `PUBLIC` because the installable headers of this library name its database and record types, so linking the target above brings the data drivers include path and shared object along with it. A separate `find_package()` for the data drivers is not needed in a consumer, although calling one does no harm.
 
@@ -58,7 +58,7 @@ The very same variable is what this library itself needs at its own configure ti
 Two include roots are exported, so both spellings compile:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.12/LibraryFacade.h>  // recommended
+#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>  // recommended
 #include <LibraryFacade.h>                                    // also works
 ```
 
@@ -72,7 +72,7 @@ The interface namespaces of both libraries carry their major and minor version n
 
 ```cpp
 namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters012;
+namespace iadi = ImagesAnnotatorDataImporters013;
 ```
 
 ## What your project has to supply
@@ -87,13 +87,13 @@ The `main.cpp` below reads a plain text dataset back and stores it as a project 
 
 ```cpp
 #include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataImporters-0.12/LibraryFacade.h>
+#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>
 
 #include <iostream>
 #include <memory>
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters012;
+namespace iadi = ImagesAnnotatorDataImporters013;
 
 int main()
 {

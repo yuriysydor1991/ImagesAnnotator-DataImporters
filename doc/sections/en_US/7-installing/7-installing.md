@@ -51,48 +51,48 @@ sudo cmake --install . --prefix "/usr"
 
 ## What gets installed
 
-For the default `ImagesAnnotatorDataImporters-0.12` library name a prefix receives
+For the default `ImagesAnnotatorDataImporters-0.13` library name a prefix receives
 exactly the following files:
 
 ```
-<prefix>/lib/libImagesAnnotatorDataImporters-0.12.so.0.12.0
-<prefix>/lib/libImagesAnnotatorDataImporters-0.12.so.0
-<prefix>/lib/libImagesAnnotatorDataImporters-0.12.so
+<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so.0.13.0
+<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so.0
+<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so
 
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/ImportersAPI.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/IImporter.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/IImageSizeFacility.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/ILib.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/LibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/LibraryFacade.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/contexts/CocoImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/contexts/CreateMLImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/contexts/PascalVocImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/contexts/PlainTxtImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/contexts/PyTorchImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/contexts/UltralyticsDetectImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/contexts/UltralyticsObbImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/contexts/UltralyticsSegmentImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.12/contexts/Yolo4ImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/ImportersAPI.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/IImporter.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/IImageSizeFacility.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/ILib.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/LibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/LibraryFacade.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/CocoImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/CreateMLImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/PascalVocImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/PlainTxtImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/PyTorchImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/UltralyticsDetectImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/UltralyticsObbImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/UltralyticsSegmentImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/Yolo4ImportLibraryContext.h
 
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.12/ImagesAnnotatorDataImporters-0.12Config.cmake
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.12/ImagesAnnotatorDataImporters-0.12ConfigVersion.cmake
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.12/ImagesAnnotatorDataImporters-0.12Targets.cmake
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.12/ImagesAnnotatorDataImporters-0.12Targets-<config>.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/ImagesAnnotatorDataImporters-0.13Config.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/ImagesAnnotatorDataImporters-0.13ConfigVersion.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/ImagesAnnotatorDataImporters-0.13Targets.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/ImagesAnnotatorDataImporters-0.13Targets-<config>.cmake
 ```
 
-The `.so.0.12.0` file is the library itself, `.so.0` is the `SONAME` link the
+The `.so.0.13.0` file is the library itself, `.so.0` is the `SONAME` link the
 dynamic linker resolves and the bare `.so` link is the development one the
 compiler follows. The headers are the fifteen public ones of the
 [src/lib/facade/public](/src/lib/facade/public) directory, described in
 [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md).
 
 The four CMake files form the package that answers
-`find_package(ImagesAnnotatorDataImporters-0.12 0.12 REQUIRED)`. The `Config` one
+`find_package(ImagesAnnotatorDataImporters-0.13 0.13 REQUIRED)`. The `Config` one
 pulls the public `ImagesAnnotatorDataDrivers-0.11` dependency in before including
 the exported targets, the `ConfigVersion` one makes the version request
 succeed, and the `Targets` pair defines the
-`ImagesAnnotatorDataImporters-0.12::ImagesAnnotatorDataImporters-0.12` imported
+`ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13` imported
 target. The `<config>` part of the last file name follows the build type, and
 is `noconfig` when no `CMAKE_BUILD_TYPE` was set.
 
@@ -104,7 +104,7 @@ all four path segments above change together if the name is customised, see
 ## Install components
 
 The installed files are split into two components. `Runtime` holds what a
-program needs to run, that is the `.so.0.12.0` file and its `SONAME` link.
+program needs to run, that is the `.so.0.13.0` file and its `SONAME` link.
 `Development` holds what a project needs to build against the library, that is
 the bare `.so` link, the headers and the CMake package files. Either one may be
 installed alone:

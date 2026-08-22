@@ -27,7 +27,7 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 - **Robust over a partial dataset** - a malformed line, an image file the dataset names but does not hold, a label naming an unknown class, a picture that cannot be measured: each is logged and skipped, the import run itself carries on.
 - **No image codec of its own** - the layouts which do not store their rectangles in the pixels of their image ask the consuming project to measure the pictures through the `IImageSizeFacility` interface, over whatever imaging stack that project already links. A build which found OpenCV ships such a reader itself, so a consumer with no imaging stack still gets those imports. The plain text, the COCO, the Pascal VOC and the Create ML layouts need no measurement at all.
 - **No JSON or XML dependency either** - the two descriptor formats are read by the library own document readers under [src/parsers](/src/parsers), exactly as the sibling exporters library writes those very descriptors without one. Nothing is linked for them, and nothing of either reader reaches the installed interface.
-- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.12` major and minor pair, so two minor releases install side by side.
+- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.13` major and minor pair, so two minor releases install side by side.
 
 # Usage example
 
@@ -40,21 +40,21 @@ project(MyTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataImporters-0.12 REQUIRED)
+find_package(ImagesAnnotatorDataImporters-0.13 REQUIRED)
 
 add_executable(mytool main.cpp)
-target_link_libraries(mytool ImagesAnnotatorDataImporters-0.12::ImagesAnnotatorDataImporters-0.12)
+target_link_libraries(mytool ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13)
 ```
 
 ```cpp
 #include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataImporters-0.12/LibraryFacade.h>
+#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>
 
 #include <iostream>
 #include <memory>
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters012;
+namespace iadi = ImagesAnnotatorDataImporters013;
 
 int main(int argc, char** argv)
 {
@@ -88,9 +88,9 @@ int main(int argc, char** argv)
 }
 ```
 
-The `ImagesAnnotatorDataImporters012` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
+The `ImagesAnnotatorDataImporters013` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
 
-Both `#include <ImagesAnnotatorDataImporters-0.12/LibraryFacade.h>` and a plain `#include <LibraryFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: header names like `LibraryFacade.h`, `LibraryContext.h` or `ILib.h` are generic enough to collide in a busy include path - both the data drivers and the exporters libraries of this family install headers of exactly those names.
+Both `#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>` and a plain `#include <LibraryFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: header names like `LibraryFacade.h`, `LibraryContext.h` or `ILib.h` are generic enough to collide in a busy include path - both the data drivers and the exporters libraries of this family install headers of exactly those names.
 
 The program above reads the YOLO v4 layout, whose rectangles are stored divided by the size of their image, so it needs a library built with OpenCV. Give an `IImageSizeFacility` of your own to `ctx->set_image_sizer()` otherwise, or start from the plain text layout, which needs none.
 

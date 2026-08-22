@@ -32,7 +32,7 @@
 
 #include "ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters012
+namespace ImagesAnnotatorDataImporters013
 {
 
 /**
@@ -74,6 +74,6 @@ class IADI_API IImporter
 
 using IImporterPtr = IImporter::IImporterPtr;
 
-}  // namespace ImagesAnnotatorDataImporters012
+}  // namespace ImagesAnnotatorDataImporters013
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IIMPORTER_ABSTRACT_CLASS_H

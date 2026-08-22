@@ -43,11 +43,11 @@ namespace iadi0impl
  * the layout named by the given context and drives it over the directory that
  * very same context points at.
  */
-class LibMain : public ImagesAnnotatorDataImporters012::ILib
+class LibMain : public ImagesAnnotatorDataImporters013::ILib
 {
  public:
   using LibMainPtr = std::shared_ptr<LibMain>;
-  using LibraryContextPtr = ImagesAnnotatorDataImporters012::LibraryContextPtr;
+  using LibraryContextPtr = ImagesAnnotatorDataImporters013::LibraryContextPtr;
 
   virtual ~LibMain() = default;
   LibMain();

@@ -26,7 +26,7 @@ cmake --install build --prefix /usr/local
 ```
 
 The HTML tree lands in `<prefix>/share/docs/<DOXYGEN_OUT_HTML_NAME>`, by
-default `<prefix>/share/docs/ImagesAnnotatorDataImporters-0.12-html`. It is
+default `<prefix>/share/docs/ImagesAnnotatorDataImporters-0.13-html`. It is
 installed under the `Documentation` install component, so a packager may pick
 it up separately from the `Runtime` and `Development` components of the
 library itself.

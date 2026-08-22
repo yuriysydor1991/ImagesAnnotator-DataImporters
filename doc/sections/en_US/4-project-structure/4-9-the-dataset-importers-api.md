@@ -1,11 +1,11 @@
 ## The dataset importers API
 
-The whole interface of the library is declared by the header files under [src/lib/facade/public](/src/lib/facade/public) and gets installed into the `include/ImagesAnnotatorDataImporters-0.12` sub-directory of the chosen install prefix. Nothing else leaves the shared object: every implementation class stays behind the abstract interfaces described here.
+The whole interface of the library is declared by the header files under [src/lib/facade/public](/src/lib/facade/public) and gets installed into the `include/ImagesAnnotatorDataImporters-0.13` sub-directory of the chosen install prefix. Nothing else leaves the shared object: every implementation class stays behind the abstract interfaces described here.
 
-All the installable declarations live in the `ImagesAnnotatorDataImporters012` namespace. The name carries the library major and minor version numbers (`0.12` gives the `012` suffix) so that two library versions may coexist in a single translation unit. Alias it once in your own code:
+All the installable declarations live in the `ImagesAnnotatorDataImporters013` namespace. The name carries the library major and minor version numbers (`0.13` gives the `013` suffix) so that two library versions may coexist in a single translation unit. Alias it once in your own code:
 
 ```cpp
-namespace iadi = ImagesAnnotatorDataImporters012;
+namespace iadi = ImagesAnnotatorDataImporters013;
 ```
 
 The records the importers build are not defined here. They come from the [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, whose interface namespace is `ImagesAnnotatorDataDrivers011` (aliased below as `iadd`). See the [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) subsection for the build side of that dependency.
@@ -135,13 +135,13 @@ The program below reads a YOLO v4 training directory back and writes the recover
 
 ```cpp
 #include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataImporters-0.12/LibraryFacade.h>
+#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>
 
 #include <iostream>
 #include <memory>
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters012;
+namespace iadi = ImagesAnnotatorDataImporters013;
 
 int main(int argc, char** argv)
 {
@@ -196,12 +196,12 @@ Note that an existing project file may be imported **into**: open it with `iadd:
 The sketch below wires one up over the imaging routines the consuming project already has - substitute your own decoding calls for the `my_imaging` ones:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.12/IImageSizeFacility.h>
+#include <ImagesAnnotatorDataImporters-0.13/IImageSizeFacility.h>
 
 #include <memory>
 #include <string>
 
-namespace iadi = ImagesAnnotatorDataImporters012;
+namespace iadi = ImagesAnnotatorDataImporters013;
 
 class MySizer : public iadi::IImageSizeFacility
 {

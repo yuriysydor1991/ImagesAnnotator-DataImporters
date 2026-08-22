@@ -38,7 +38,7 @@
 #include "IImporter.h"
 #include "ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters012
+namespace ImagesAnnotatorDataImporters013
 {
 
 /**
@@ -111,6 +111,6 @@ class IADI_API LibraryContext
 
 using LibraryContextPtr = LibraryContext::LibraryContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters012
+}  // namespace ImagesAnnotatorDataImporters013
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H

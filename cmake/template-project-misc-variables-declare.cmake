@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ON by default: the public API namespace carries the major and the minor
-# version (ImagesAnnotatorDataImporters012), so the installable names track the
+# version (ImagesAnnotatorDataImporters013), so the installable names track the
 # same pair. Two minor versions then install completely side by side - their
 # binaries, their header directories and their CMake packages all differ. This
 # is also what the ImagesAnnotatorDataDrivers library this project fills its
@@ -60,7 +60,7 @@ message(STATUS "PROJECT_LIBRARY_NAME: ${PROJECT_LIBRARY_NAME}")
 
 # The directory holding the installable public headers. Unlike in the project
 # template these are written by hand rather than generated, since the public
-# namespace of this library is a fixed ImagesAnnotatorDataImporters012 instead
+# namespace of this library is a fixed ImagesAnnotatorDataImporters013 instead
 # of one derived from the project name. The variable is declared here and not
 # in the src/lib subdirectory, because the analyzer targets are created before
 # that subdirectory is added and have to reach those headers too.

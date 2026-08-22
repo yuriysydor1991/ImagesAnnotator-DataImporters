@@ -33,7 +33,7 @@
 #include "../ImportersAPI.h"
 #include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters012
+namespace ImagesAnnotatorDataImporters013
 {
 
 /**
@@ -58,6 +58,6 @@ class IADI_API CocoImportLibraryContext : public LibraryContext
 using CocoImportLibraryContextPtr =
     CocoImportLibraryContext::CocoImportLibraryContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters012
+}  // namespace ImagesAnnotatorDataImporters013
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_COCOIMPORTLIBRARYCONTEXT_CLASS_H
