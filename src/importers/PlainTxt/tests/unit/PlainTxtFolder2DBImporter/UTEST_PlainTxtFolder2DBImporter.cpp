@@ -1,4 +1,4 @@
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -11,14 +11,14 @@
 #include "src/importers/PlainTxt/PlainTxtFolder2DBImporter.h"
 
 using namespace testing;
+using iannotator::importers::IADataImportersContext;
 using iannotator::importers::IAnnotationsDBPtr;
 using iannotator::importers::IImageSizeFacility;
 using iannotator::importers::IImageSizeFacilityPtr;
 using iannotator::importers::ImageRecordPtr;
-using iannotator::importers::LibraryContext;
 using iannotator::importers::PlainTxtFolder2DBImporter;
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
+namespace iadd = ImagesAnnotatorDataDrivers012;
 
 namespace
 {
@@ -61,7 +61,7 @@ class UTEST_PlainTxtFolder2DBImporter : public Test
     fs::remove_all(dir);
     fs::create_directories(dir);
 
-    db = iadd::LibraryFacade::create_annotations_db();
+    db = iadd::IADataDriversFacade::create_annotations_db();
 
     ASSERT_NE(db, nullptr);
   }
@@ -74,9 +74,9 @@ class UTEST_PlainTxtFolder2DBImporter : public Test
     f << contents;
   }
 
-  std::shared_ptr<LibraryContext> context()
+  std::shared_ptr<IADataImportersContext> context()
   {
-    auto ctx = std::make_shared<LibraryContext>();
+    auto ctx = std::make_shared<IADataImportersContext>();
     ctx->set_import_path(dir.string());
     ctx->set_db(db);
     return ctx;
@@ -260,7 +260,7 @@ TEST_F(UTEST_PlainTxtFolder2DBImporter, an_empty_directory_imports_nothing)
 
 TEST_F(UTEST_PlainTxtFolder2DBImporter, fails_when_import_path_is_empty)
 {
-  auto ctx = std::make_shared<LibraryContext>();
+  auto ctx = std::make_shared<IADataImportersContext>();
   ctx->set_db(db);
 
   PlainTxtFolder2DBImporter importer;
@@ -270,7 +270,7 @@ TEST_F(UTEST_PlainTxtFolder2DBImporter, fails_when_import_path_is_empty)
 
 TEST_F(UTEST_PlainTxtFolder2DBImporter, fails_without_a_database)
 {
-  auto ctx = std::make_shared<LibraryContext>();
+  auto ctx = std::make_shared<IADataImportersContext>();
   ctx->set_import_path(dir.string());
 
   PlainTxtFolder2DBImporter importer;

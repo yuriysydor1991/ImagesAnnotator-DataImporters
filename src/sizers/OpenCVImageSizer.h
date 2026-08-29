@@ -47,9 +47,9 @@ namespace iannotator::importers::sizers
  * create_builtin_image_sizer(), which hands out a nullptr in a build without
  * OpenCV.
  *
- * A reader the consumer sets through LibraryContext::set_image_sizer() always
- * wins over this one: a project that already decodes images its own way keeps
- * doing so, and this is only what fills an empty slot.
+ * A reader the consumer sets through IADataImportersContext::set_image_sizer()
+ * always wins over this one: a project that already decodes images its own way
+ * keeps doing so, and this is only what fills an empty slot.
  *
  * Nothing declared here is installed. The class is reached through the
  * abstract IImageSizeFacility exactly like a consumer supplied reader, so no

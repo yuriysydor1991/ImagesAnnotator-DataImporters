@@ -1,6 +1,6 @@
 # Використання бібліотеки у власному проекті
 
-Бібліотека призначена для споживання іншими проектами: вона не створює власного виконуваного файлу, лише спільний обʼєкт `libImagesAnnotatorDataImporters-0.13.so` разом зі своїми встановлюваними заголовками і CMake-пакунком. Дана секція описує, що має зробити проект нижче за течією, щоб побудуватись проти неї.
+Бібліотека призначена для споживання іншими проектами: вона не створює власного виконуваного файлу, лише спільний обʼєкт `libImagesAnnotatorDataImporters-0.14.so` разом зі своїми встановлюваними заголовками і CMake-пакунком. Дана секція описує, що має зробити проект нижче за течією, щоб побудуватись проти неї.
 
 ## Що потрібно встановити спершу
 
@@ -12,9 +12,9 @@
 Встановлення розміщує в обраному префіксі наступне:
 
 ```
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/     публічні заголовки
-<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so    спільний обʼєкт, soname .so.0
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/   файли CMake-пакунка
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/     публічні заголовки
+<prefix>/lib/libImagesAnnotatorDataImporters-0.14.so    спільний обʼєкт, soname .so.0
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.14/   файли CMake-пакунка
 ```
 
 ## Пошук пакунка за допомогою CMake
@@ -27,17 +27,17 @@ project(MyImportingTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataImporters-0.13 0.13 REQUIRED)
+find_package(ImagesAnnotatorDataImporters-0.14 0.14 REQUIRED)
 
 add_executable(my-importing-tool main.cpp)
 
 target_link_libraries(
   my-importing-tool
-  PRIVATE ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13
+  PRIVATE ImagesAnnotatorDataImporters-0.14::ImagesAnnotatorDataImporters-0.14
 )
 ```
 
-І імʼя пакунка, і імпортована ціль несуть мажорну та мінорну версії бібліотеки, тож майбутній випуск можна встановити паралельно з цим. Запит версії звіряється зі встановленим файлом `ImagesAnnotatorDataImporters-0.13ConfigVersion.cmake` за правилом сумісності `SameMajorVersion`.
+І імʼя пакунка, і імпортована ціль несуть мажорну та мінорну версії бібліотеки, тож майбутній випуск можна встановити паралельно з цим. Запит версії звіряється зі встановленим файлом `ImagesAnnotatorDataImporters-0.14ConfigVersion.cmake` за правилом сумісності `SameMajorVersion`.
 
 Встановлений файл конфігурації пакунка, згенерований з [src/lib/cmake/ImportersLibraryConfig.cmake.in](/src/lib/cmake/ImportersLibraryConfig.cmake.in), викликає `find_dependency()` для пакунка драйверів даних перед тим як прочитати експортовані цілі. Бібліотека драйверів даних лінкується як `PUBLIC`, оскільки встановлювані заголовки цієї бібліотеки згадують її типи бази даних та записів, тож лінкування наведеної вище цілі приносить із собою і шлях до заголовків, і спільний обʼєкт драйверів даних. Окремий `find_package()` для драйверів даних у споживачі не потрібен, хоча його виклик і не шкодить.
 
@@ -58,58 +58,58 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH="/opt/iadd;/opt/iadi"
 Експортуються два корені підключення, тож компілюються обидва написання:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>  // рекомендовано
-#include <LibraryFacade.h>                                    // теж працює
+#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>  // рекомендовано
+#include <IADataImportersFacade.h>                                    // теж працює
 ```
 
-Надавай перевагу написанню з префіксом. Імена заголовків на кшталт `LibraryFacade.h`, `LibraryContext.h` і `ILib.h` достатньо загальні щоб зіткнутись у насиченому шляху підключення - бібліотека драйверів даних встановлює заголовки точно з такими іменами, і за наявності обох простих коренів підключення коротке написання підхоплює той із двох, який компілятор побачить першим.
+Надавай перевагу написанню з префіксом. Імена заголовків на кшталт `IImporter.h` і `ImportersAPI.h` достатньо загальні щоб зіткнутись у насиченому шляху підключення, а префікс закріплює версію бібліотеки, з якою розмовляє одиниця трансляції.
 
-`LibraryFacade.h` підключає кожен інший публічний заголовок бібліотеки, тож зазвичай це єдиний, який згадує споживач.
+`IADataImportersFacade.h` підключає кожен інший публічний заголовок бібліотеки, тож зазвичай це єдиний, який згадує споживач.
 
 ## Скорочення просторів імен
 
 Інтерфейсні простори імен обох бібліотек несуть номери своїх мажорної і мінорної версій. Признач їм скорочення один раз - і підняття версії залишиться зміною в один рядок:
 
 ```cpp
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iadi = ImagesAnnotatorDataImporters014;
 ```
 
 ## Що має надати твій проект
 
-- **Базу даних.** `LibraryContext::set_db()` приймає `ImagesAnnotatorDataDrivers011::IAnnotationsDBPtr` - призначення, до якого зливаються відновлені записи. Порожня база походить з `iadd::LibraryFacade::create_annotations_db()`; передай натомість базу з `iadd::LibraryFacade::open_annotations_db("project.json")`, щоб імпортувати **до** наявного проекту, і імпорт долучить зображення, яких той проект ще не містить. У будь-якому разі саме база даних зберігає результат через власний `store_db()`.
-- **Директорію-джерело.** `LibraryContext::set_import_path()` має називати наявну директорію з набором даних тієї розкладки, яку представляє контекст. Усередині неї нічого не записується: імпорт є проходом лише на читання.
-- **Читач розмірів зображень, для пʼяти з девʼяти розкладок.** Розкладка YOLO v4 та три розкладки Ultralytics YOLO зберігають свої рамки поділеними на розмір їхнього зображення, а PyTorch Vision зберігає анотацію як саме обрізане зображення, тож жодну з пʼяти неможливо прочитати назад без вимірювання картинок - а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageSizeFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `LibraryContext::set_image_sizer()`. Бібліотека, зібрана з OpenCV, несе власний читач і заповнює ним порожнє місце, тож це обовʼязково лише для споживача збірки без OpenCV або для того, хто хоче власного вимірювання. Підсекція [API імпортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-importers-api.md) містить начерк реалізації, а [Вмикання читача розмірів зображень на OpenCV](/doc/sections/uk_UA/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md) описує вбудований. Розкладкам простого тексту, COCO, Pascal VOC та Create ML читач не потрібен зовсім: перша й остання тримають свої прямокутники у власних пікселях зображення, а дві інші несуть розміри зображень у власних дескрипторах.
+- **Базу даних.** `IADataImportersContext::set_db()` приймає `ImagesAnnotatorDataDrivers012::IAnnotationsDBPtr` - призначення, до якого зливаються відновлені записи. Порожня база походить з `iadd::IADataDriversFacade::create_annotations_db()`; передай натомість базу з `iadd::IADataDriversFacade::open_annotations_db("project.json")`, щоб імпортувати **до** наявного проекту, і імпорт долучить зображення, яких той проект ще не містить. У будь-якому разі саме база даних зберігає результат через власний `store_db()`.
+- **Директорію-джерело.** `IADataImportersContext::set_import_path()` має називати наявну директорію з набором даних тієї розкладки, яку представляє контекст. Усередині неї нічого не записується: імпорт є проходом лише на читання.
+- **Читач розмірів зображень, для пʼяти з девʼяти розкладок.** Розкладка YOLO v4 та три розкладки Ultralytics YOLO зберігають свої рамки поділеними на розмір їхнього зображення, а PyTorch Vision зберігає анотацію як саме обрізане зображення, тож жодну з пʼяти неможливо прочитати назад без вимірювання картинок - а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageSizeFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `IADataImportersContext::set_image_sizer()`. Бібліотека, зібрана з OpenCV, несе власний читач і заповнює ним порожнє місце, тож це обовʼязково лише для споживача збірки без OpenCV або для того, хто хоче власного вимірювання. Підсекція [API імпортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-importers-api.md) містить начерк реалізації, а [Вмикання читача розмірів зображень на OpenCV](/doc/sections/uk_UA/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md) описує вбудований. Розкладкам простого тексту, COCO, Pascal VOC та Create ML читач не потрібен зовсім: перша й остання тримають свої прямокутники у власних пікселях зображення, а дві інші несуть розміри зображень у власних дескрипторах.
 
 ## Мінімальний споживач
 
-Наведений нижче `main.cpp` читає назад набір даних простого тексту і зберігає його як файл проекту через одноразову точку входу `ILib::perform_import`:
+Наведений нижче `main.cpp` читає назад набір даних простого тексту і зберігає його як файл проекту через одноразову точку входу `IADataImportersLib::perform_import`:
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>
 
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iadi = ImagesAnnotatorDataImporters014;
 
 int main()
 {
-  auto db = iadd::LibraryFacade::create_annotations_db();
+  auto db = iadd::IADataDriversFacade::create_annotations_db();
 
   if (db == nullptr) {
     std::cerr << "fail to create the annotations database\n";
     return 1;
   }
 
-  auto ctx = iadi::LibraryFacade::create_plain_txt_library_context();
+  auto ctx = iadi::IADataImportersFacade::create_plain_txt_library_context();
 
   ctx->set_import_path("plain-dataset");
   ctx->set_db(db);
 
-  auto lib = iadi::LibraryFacade::create_library(ctx);
+  auto lib = iadi::IADataImportersFacade::create_library(ctx);
 
   if (lib == nullptr || !lib->perform_import(ctx)) {
     std::cerr << "the import has failed\n";
@@ -123,13 +123,13 @@ int main()
 
   std::cout << "imported " << ctx->get_imported_records()
             << " image records with the library version "
-            << iadi::LibraryFacade::library_version() << '\n';
+            << iadi::IADataImportersFacade::library_version() << '\n';
 
   return 0;
 }
 ```
 
-Створи натомість `iadi::Yolo4ImportLibraryContext`, один із трьох `iadi::Ultralytics*ImportLibraryContext`, `iadi::CocoImportLibraryContext`, `iadi::PascalVocImportLibraryContext`, `iadi::CreateMLImportLibraryContext` чи `iadi::PyTorchImportLibraryContext`, щоб отримати одну з восьми інших розкладок, описаних у підсекції [Розкладки наборів даних, які читаються](/doc/sections/uk_UA/4-project-structure/4-10-the-read-dataset-layouts.md) - розкладкам YOLO та PyTorch Vision потрібен читач розмірів зображень вище. Побудова імпортера напряму за допомогою `iadi::LibraryFacade::create_importer()` дає той самий результат із дрібнішим контролем - переглянь підсекцію [API імпортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-importers-api.md).
+Створи натомість `iadi::Yolo4ImportContext`, один із трьох `iadi::Ultralytics*ImportContext`, `iadi::CocoImportContext`, `iadi::PascalVocImportContext`, `iadi::CreateMLImportContext` чи `iadi::PyTorchImportContext`, щоб отримати одну з восьми інших розкладок, описаних у підсекції [Розкладки наборів даних, які читаються](/doc/sections/uk_UA/4-project-structure/4-10-the-read-dataset-layouts.md) - розкладкам YOLO та PyTorch Vision потрібен читач розмірів зображень вище. Побудова імпортера напряму за допомогою `iadi::IADataImportersFacade::create_importer()` дає той самий результат із дрібнішим контролем - переглянь підсекцію [API імпортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-importers-api.md).
 
 ## Запуск результату
 
@@ -139,7 +139,7 @@ int main()
 LD_LIBRARY_PATH=/opt/iadi/lib:/opt/iadd/lib ./my-importing-tool
 ```
 
-`iadi::LibraryFacade::library_version()` повідомляє версію бінарника, який було справді завантажено, і це найшвидший спосіб зʼясувати, яка саме з кількох встановлених копій дісталась твоїй програмі.
+`iadi::IADataImportersFacade::library_version()` повідомляє версію бінарника, який було справді завантажено, і це найшвидший спосіб зʼясувати, яка саме з кількох встановлених копій дісталась твоїй програмі.
 
 ## Опрацьований приклад усередині цього проекту
 

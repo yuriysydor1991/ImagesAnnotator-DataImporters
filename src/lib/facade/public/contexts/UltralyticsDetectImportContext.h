@@ -25,57 +25,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "LibraryContext.h"
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSDETECTIMPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSDETECTIMPORTCONTEXT_CLASS_H
 
-#include <cstddef>
 #include <memory>
-#include <string>
 
-namespace ImagesAnnotatorDataImporters013
+#include "../IADataImportersContext.h"
+#include "../ImportersAPI.h"
+
+namespace ImagesAnnotatorDataImporters014
 {
 
-const std::string& LibraryContext::get_import_path() const
+/**
+ * @brief The library context which reads the Ultralytics YOLO detection
+ * dataset - the `data.yaml` descriptor, the `images` directories and the
+ * `labels` ones beside them - back into image records. Requires an
+ * IImageSizeFacility unless the library was built with its own, since the
+ * layout stores its boxes normalised.
+ *
+ * The class carries no data of its own: instantiating it is what names the
+ * wanted dataset layout, everything else is inherited from
+ * IADataImportersContext.
+ *
+ * Current file is a target for the library header installation.
+ */
+class IADI_API UltralyticsDetectImportContext : public IADataImportersContext
 {
-  return import_path;
-}
+ public:
+  using UltralyticsDetectImportContextPtr =
+      std::shared_ptr<UltralyticsDetectImportContext>;
+};
 
-void LibraryContext::set_import_path(const std::string& newPath)
-{
-  import_path = newPath;
-}
+using UltralyticsDetectImportContextPtr =
+    UltralyticsDetectImportContext::UltralyticsDetectImportContextPtr;
 
-const LibraryContext::IAnnotationsDBPtr& LibraryContext::get_db() const
-{
-  return db;
-}
+}  // namespace ImagesAnnotatorDataImporters014
 
-void LibraryContext::set_db(const IAnnotationsDBPtr& newDb) { db = newDb; }
-
-const IImageSizeFacilityPtr& LibraryContext::get_image_sizer() const
-{
-  return imageSizer;
-}
-
-void LibraryContext::set_image_sizer(const IImageSizeFacilityPtr& newSizer)
-{
-  imageSizer = newSizer;
-}
-
-const IImporterPtr& LibraryContext::get_importer() const { return importer; }
-
-void LibraryContext::set_importer(const IImporterPtr& newImporter)
-{
-  importer = newImporter;
-}
-
-const std::size_t& LibraryContext::get_imported_records() const
-{
-  return importedRecords;
-}
-
-void LibraryContext::set_imported_records(const std::size_t& newCount)
-{
-  importedRecords = newCount;
-}
-
-}  // namespace ImagesAnnotatorDataImporters013
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSDETECTIMPORTCONTEXT_CLASS_H

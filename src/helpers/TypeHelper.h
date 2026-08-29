@@ -28,8 +28,8 @@
 #ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_TYPE_HELPER_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_TYPE_HELPER_CLASS_H
 
-#include <ImagesAnnotatorDataDrivers-0.11/ImageRecord.h>
-#include <ImagesAnnotatorDataDrivers-0.11/ImageRecordRect.h>
+#include <ImagesAnnotatorDataDrivers-0.12/ImageRecord.h>
+#include <ImagesAnnotatorDataDrivers-0.12/ImageRecordRect.h>
 
 #include <cmath>
 
@@ -44,11 +44,11 @@ namespace iannotator::importers::helpers
 class TypeHelper : virtual public IHelper
 {
  public:
-  using ImageRecordsSet = ImagesAnnotatorDataDrivers011::ImageRecordsSet;
-  using ImageRecordPtr = ImagesAnnotatorDataDrivers011::ImageRecordPtr;
-  using ImageRecordRect = ImagesAnnotatorDataDrivers011::ImageRecordRect;
-  using ImageRecordRectSet = ImagesAnnotatorDataDrivers011::ImageRecordRectSet;
-  using ImageRecordRectPtr = ImagesAnnotatorDataDrivers011::ImageRecordRectPtr;
+  using ImageRecordsSet = ImagesAnnotatorDataDrivers012::ImageRecordsSet;
+  using ImageRecordPtr = ImagesAnnotatorDataDrivers012::ImageRecordPtr;
+  using ImageRecordRect = ImagesAnnotatorDataDrivers012::ImageRecordRect;
+  using ImageRecordRectSet = ImagesAnnotatorDataDrivers012::ImageRecordRectSet;
+  using ImageRecordRectPtr = ImagesAnnotatorDataDrivers012::ImageRecordRectPtr;
 
   virtual ~TypeHelper() = default;
   TypeHelper() = default;

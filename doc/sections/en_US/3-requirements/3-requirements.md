@@ -4,7 +4,7 @@ This section contains the list of the required packages and tools that must be p
 
 One dependency is mandatory - the CMake configuration step fails without it:
 
-- The **ImagesAnnotatorDataDrivers** library. The importers build their image records and fill their annotations database through it, so it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.11 REQUIRED CONFIG)` and linked `PUBLIC`, because the installable headers name its database type. Build and install it from [https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) first and point this project at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>`. Examine the [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) subsection.
+- The **ImagesAnnotatorDataDrivers** library. The importers build their image records and fill their annotations database through it, so it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` and linked `PUBLIC`, because the installable headers name its database type. Build and install it from [https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) first and point this project at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>`. Examine the [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) subsection.
 
 Everything listed below is either a basic build tool or an optional addition needed for a particular development task only.
 

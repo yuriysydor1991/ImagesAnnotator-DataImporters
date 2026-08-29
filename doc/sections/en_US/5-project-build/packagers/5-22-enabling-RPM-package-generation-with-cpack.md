@@ -24,7 +24,7 @@ Finally, execute the `cpack` command inside the project build directory:
 cpack
 ```
 
-The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.13.0` the package name may look like `ImagesAnnotatorDataImporters-0.13.0-1.x86_64.rpm`.
+The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.14.0` the package name may look like `ImagesAnnotatorDataImporters-0.14.0-1.x86_64.rpm`.
 
 In order to examine details of the `.rpm` package configuration visit the [cmake/enablers/packagers/template-project-rpm-enabler.cmake](/cmake/enablers/packagers/template-project-rpm-enabler.cmake) file.
 

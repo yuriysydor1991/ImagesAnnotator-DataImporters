@@ -6,9 +6,9 @@ The unit tests are built with `-DENABLE_UNIT_TESTS=ON`. They compile the compone
 
 | Binary | Under test | Sources |
 |---|---|---|
-| `UTEST_LibraryFacade` | the installed facade | [src/lib/facade/LibraryFacade.cpp](/src/lib/facade/LibraryFacade.cpp) |
+| `UTEST_IADataImportersFacade` | the installed facade | [src/lib/facade/IADataImportersFacade.cpp](/src/lib/facade/IADataImportersFacade.cpp) |
 | `UTEST_LibFactory` | the object factory | [src/lib/libmain/LibFactory.cpp](/src/lib/libmain/LibFactory.cpp) |
-| `UTEST_LibMain` | the `ILib` implementation | [src/lib/libmain/LibMain.cpp](/src/lib/libmain/LibMain.cpp) |
+| `UTEST_LibMain` | the `IADataImportersLib` implementation | [src/lib/libmain/LibMain.cpp](/src/lib/libmain/LibMain.cpp) |
 | `UTEST_PlainTxtFolder2DBImporter` | the plain text importer | [src/importers/PlainTxt/PlainTxtFolder2DBImporter.cpp](/src/importers/PlainTxt/PlainTxtFolder2DBImporter.cpp) |
 | `UTEST_Yolo4Folder2DBImporter` | the darknet YOLOv4 importer | [src/importers/Yolo4/Yolo4Folder2DBImporter.cpp](/src/importers/Yolo4/Yolo4Folder2DBImporter.cpp) |
 | `UTEST_UltralyticsFolder2DBImporter` | the three Ultralytics YOLO importers and the `data.yaml` reader they share | [src/importers/Ultralytics](/src/importers/Ultralytics) |

@@ -123,9 +123,9 @@ pipeline {
     
     stage('Unit Tests') {
       parallel {
-        stage('UTEST_LibraryFacade') { 
+        stage('UTEST_IADataImportersFacade') { 
           steps { 
-            sh 'cd $BUILDDIR && ctest -R "UTEST_LibraryFacade\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_LibraryFacade.junit.xml'
+            sh 'cd $BUILDDIR && ctest -R "UTEST_IADataImportersFacade\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_IADataImportersFacade.junit.xml'
           }
         }
         stage('UTEST_LibFactory') { 

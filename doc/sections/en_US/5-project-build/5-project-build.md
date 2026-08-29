@@ -1,7 +1,7 @@
 # Project build
 
 The project is a CMake library project: it produces the shared object
-`libImagesAnnotatorDataImporters-0.13.so` together with its installable public
+`libImagesAnnotatorDataImporters-0.14.so` together with its installable public
 headers and its CMake package. No application binary is built, only the library
 and its test executables.
 

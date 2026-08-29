@@ -1,40 +1,40 @@
 ## The library's installable include header files
 
-The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - fifteen headers, all in the `ImagesAnnotatorDataImporters013` namespace. Six of them are the API proper and sit at the root of the directory:
+The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - fifteen headers, all in the `ImagesAnnotatorDataImporters014` namespace. Six of them are the API proper and sit at the root of the directory:
 
 | Header | Declares |
 |---|---|
-| [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` static methods, the entry point of the library |
-| [ILib.h](/src/lib/facade/public/ILib.h) | `ILib::perform_import()` - runs an import described by a `LibraryContext` |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the data accessors of a `perform_import()` and of an `import_db()`, plus the `get_importer()` and `get_imported_records()` out-ones |
+| [IADataImportersFacade.h](/src/lib/facade/public/IADataImportersFacade.h) | the `IADataImportersFacade` static methods, the entry point of the library |
+| [IADataImportersLib.h](/src/lib/facade/public/IADataImportersLib.h) | `IADataImportersLib::perform_import()` - runs an import described by a `IADataImportersContext` |
+| [IADataImportersContext.h](/src/lib/facade/public/IADataImportersContext.h) | the data accessors of a `perform_import()` and of an `import_db()`, plus the `get_importer()` and `get_imported_records()` out-ones |
 | [IImporter.h](/src/lib/facade/public/IImporter.h) | `IImporter::import_db()` - a single importer used on its own |
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | the interface the consuming project implements to measure images |
 | [ImportersAPI.h](/src/lib/facade/public/ImportersAPI.h) | the `IADI_API` visibility macro |
 
-The nine remaining ones are the layout specific `LibraryContext` descendants - one per dataset layout the library reads - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, which is the layout the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library carries for its own nine:
+The nine remaining ones are the layout specific `IADataImportersContext` descendants - one per dataset layout the library reads - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, which is the layout the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library carries for its own nine:
 
 | Header | Declares |
 |---|---|
-| [contexts/PlainTxtImportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtImportLibraryContext.h) | the `LibraryContext` of the plain text dataset layout |
-| [contexts/Yolo4ImportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ImportLibraryContext.h) | the `LibraryContext` of the YOLO v4 (darknet) dataset layout |
-| [contexts/UltralyticsDetectImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO detection dataset layout |
-| [contexts/UltralyticsObbImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO oriented bounding box dataset layout |
-| [contexts/UltralyticsSegmentImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO instance segmentation dataset layout |
-| [contexts/CocoImportLibraryContext.h](/src/lib/facade/public/contexts/CocoImportLibraryContext.h) | the `LibraryContext` of the COCO object detection dataset layout |
-| [contexts/PascalVocImportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocImportLibraryContext.h) | the `LibraryContext` of the Pascal VOC dataset layout |
-| [contexts/CreateMLImportLibraryContext.h](/src/lib/facade/public/contexts/CreateMLImportLibraryContext.h) | the `LibraryContext` of the Create ML object detection dataset layout |
-| [contexts/PyTorchImportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchImportLibraryContext.h) | the `LibraryContext` of the PyTorch Vision dataset layout |
+| [contexts/PlainTxtImportContext.h](/src/lib/facade/public/contexts/PlainTxtImportContext.h) | the `IADataImportersContext` of the plain text dataset layout |
+| [contexts/Yolo4ImportContext.h](/src/lib/facade/public/contexts/Yolo4ImportContext.h) | the `IADataImportersContext` of the YOLO v4 (darknet) dataset layout |
+| [contexts/UltralyticsDetectImportContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportContext.h) | the `IADataImportersContext` of the Ultralytics YOLO detection dataset layout |
+| [contexts/UltralyticsObbImportContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportContext.h) | the `IADataImportersContext` of the Ultralytics YOLO oriented bounding box dataset layout |
+| [contexts/UltralyticsSegmentImportContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportContext.h) | the `IADataImportersContext` of the Ultralytics YOLO instance segmentation dataset layout |
+| [contexts/CocoImportContext.h](/src/lib/facade/public/contexts/CocoImportContext.h) | the `IADataImportersContext` of the COCO object detection dataset layout |
+| [contexts/PascalVocImportContext.h](/src/lib/facade/public/contexts/PascalVocImportContext.h) | the `IADataImportersContext` of the Pascal VOC dataset layout |
+| [contexts/CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | the `IADataImportersContext` of the Create ML object detection dataset layout |
+| [contexts/PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | the `IADataImportersContext` of the PyTorch Vision dataset layout |
 
-Each of the nine reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataImporters-0.13/`, so a plain `#include "LibraryContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all nine through `LibraryFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.
+Each of the nine reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataImporters-0.14/`, so a plain `#include "IADataImportersContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all nine through `IADataImportersFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.
 
-[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) installs the directory as a whole under `include/${PROJECT_LIBRARY_NAME}`, which for the current name and version is `include/ImagesAnnotatorDataImporters-0.13/`. Both that sub-directory and the plain include root are exported by the library target, so a consumer may write either form:
+[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) installs the directory as a whole under `include/${PROJECT_LIBRARY_NAME}`, which for the current name and version is `include/ImagesAnnotatorDataImporters-0.14/`. Both that sub-directory and the plain include root are exported by the library target, so a consumer may write either form:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>  // recommended
-#include <LibraryFacade.h>                                    // also works
+#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>  // recommended
+#include <IADataImportersFacade.h>                                    // also works
 ```
 
-The prefixed form is the safe one - names such as `IImporter.h` are generic enough to collide in a busy include path, and both the data drivers and the exporters libraries of this family install a `LibraryFacade.h` of their own.
+The prefixed form is the safe one - names such as `IImporter.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
 
 ### Why only these headers are visible
 
@@ -46,16 +46,16 @@ So a new public class belongs in [src/lib/facade/public](/src/lib/facade/public)
 
 ### The installed CMake package
 
-Along with the binary and the headers the build installs a CMake package, generated by [src/lib/cmake/lib-cmake-module-gen.cmake](/src/lib/cmake/lib-cmake-module-gen.cmake) from [src/lib/cmake/ImportersLibraryConfig.cmake.in](/src/lib/cmake/ImportersLibraryConfig.cmake.in). It lands in `<libdir>/cmake/ImagesAnnotatorDataImporters-0.13/` and consists of three files: the exported targets, an `ImagesAnnotatorDataImporters-0.13ConfigVersion.cmake` written by `write_basic_package_version_file()` with `SameMajorVersion` compatibility, and the `ImagesAnnotatorDataImporters-0.13Config.cmake` that `find_dependency()`s the data drivers package before including the targets - the public headers name its database and record types, so it has to be resolved first.
+Along with the binary and the headers the build installs a CMake package, generated by [src/lib/cmake/lib-cmake-module-gen.cmake](/src/lib/cmake/lib-cmake-module-gen.cmake) from [src/lib/cmake/ImportersLibraryConfig.cmake.in](/src/lib/cmake/ImportersLibraryConfig.cmake.in). It lands in `<libdir>/cmake/ImagesAnnotatorDataImporters-0.14/` and consists of three files: the exported targets, an `ImagesAnnotatorDataImporters-0.14ConfigVersion.cmake` written by `write_basic_package_version_file()` with `SameMajorVersion` compatibility, and the `ImagesAnnotatorDataImporters-0.14Config.cmake` that `find_dependency()`s the data drivers package before including the targets - the public headers name its database and record types, so it has to be resolved first.
 
 A downstream project therefore needs no more than:
 
 ```cmake
-find_package(ImagesAnnotatorDataImporters-0.13 0.13 REQUIRED)
+find_package(ImagesAnnotatorDataImporters-0.14 0.14 REQUIRED)
 
 target_link_libraries(
   your_target
-  PRIVATE ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13
+  PRIVATE ImagesAnnotatorDataImporters-0.14::ImagesAnnotatorDataImporters-0.14
 )
 ```
 

@@ -14,20 +14,20 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 # Features
 
-- **Nine dataset layouts into one database** - selected by the `LibraryContext` descendant instantiated and implemented by one importer class each, the very nine the sibling exporters library writes:
-  - **Plain text** (`PlainTxtImportLibraryContext`) - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles in the pixels of that image;
-  - **YOLO v4 (darknet)** (`Yolo4ImportLibraryContext`) - the whole darknet training directory of the YOLO v4 detector: the class names of `data/obj.names`, the image list of `data/train.txt` and the normalised `.txt` label file of every image, with the `data/obj.data` descriptor followed when it is there, so that a directory laid out by some other tool is read the way that tool named it;
-  - **Ultralytics YOLO - detection, oriented bounding boxes and segmentation** (`UltralyticsDetectImportLibraryContext`, `UltralyticsObbImportLibraryContext` and `UltralyticsSegmentImportLibraryContext`) - the layout every Ultralytics release trains from: the `data.yaml` descriptor naming the classes and the image directories, and one label file per image under `labels/` beside them. The three differ in that label line alone - the box, its four corners or the polygon outlining the object - and the last two come back as the rectangle which holds what they draw;
-  - **COCO JSON** (`CocoImportLibraryContext`) - the COCO object detection dataset: the single JSON descriptor naming the pictures, their size, the categories and the `[x, y, width, height]` box of every annotation, which are the very four numbers a rectangle of the database holds;
-  - **Pascal VOC XML** (`PascalVocImportLibraryContext`) - the Pascal VOC devkit shape: one XML descriptor per image under `Annotations/`, or lying beside the pictures themselves, which is how [LabelImg](https://github.com/HumanSignal/labelImg) saves its own work;
-  - **Create ML JSON** (`CreateMLImportLibraryContext`) - the Create ML object detection dataset: the flat directory of the pictures and the one JSON descriptor beside them, whose boxes are written centred and come back on the corner they were drawn from;
-  - **PyTorch Vision `ImageFolder`** (`PyTorchImportLibraryContext`) - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the cropped images, each of which comes back as an image record whose single rectangle covers it whole.
-- **A one shot entry point** - fill the `LibraryContext` descendant of the wanted layout with the source directory and the destination database, and `ILib::perform_import()` builds the right importer and runs it. `LibraryFacade::create_importer()` gives the same result with a finer grained control.
+- **Nine dataset layouts into one database** - selected by the `IADataImportersContext` descendant instantiated and implemented by one importer class each, the very nine the sibling exporters library writes:
+  - **Plain text** (`PlainTxtImportContext`) - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles in the pixels of that image;
+  - **YOLO v4 (darknet)** (`Yolo4ImportContext`) - the whole darknet training directory of the YOLO v4 detector: the class names of `data/obj.names`, the image list of `data/train.txt` and the normalised `.txt` label file of every image, with the `data/obj.data` descriptor followed when it is there, so that a directory laid out by some other tool is read the way that tool named it;
+  - **Ultralytics YOLO - detection, oriented bounding boxes and segmentation** (`UltralyticsDetectImportContext`, `UltralyticsObbImportContext` and `UltralyticsSegmentImportContext`) - the layout every Ultralytics release trains from: the `data.yaml` descriptor naming the classes and the image directories, and one label file per image under `labels/` beside them. The three differ in that label line alone - the box, its four corners or the polygon outlining the object - and the last two come back as the rectangle which holds what they draw;
+  - **COCO JSON** (`CocoImportContext`) - the COCO object detection dataset: the single JSON descriptor naming the pictures, their size, the categories and the `[x, y, width, height]` box of every annotation, which are the very four numbers a rectangle of the database holds;
+  - **Pascal VOC XML** (`PascalVocImportContext`) - the Pascal VOC devkit shape: one XML descriptor per image under `Annotations/`, or lying beside the pictures themselves, which is how [LabelImg](https://github.com/HumanSignal/labelImg) saves its own work;
+  - **Create ML JSON** (`CreateMLImportContext`) - the Create ML object detection dataset: the flat directory of the pictures and the one JSON descriptor beside them, whose boxes are written centred and come back on the corner they were drawn from;
+  - **PyTorch Vision `ImageFolder`** (`PyTorchImportContext`) - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the cropped images, each of which comes back as an image record whose single rectangle covers it whole.
+- **A one shot entry point** - fill the `IADataImportersContext` descendant of the wanted layout with the source directory and the destination database, and `IADataImportersLib::perform_import()` builds the right importer and runs it. `IADataImportersFacade::create_importer()` gives the same result with a finer grained control.
 - **Nothing is overwritten** - an import is a read only pass over its directory. The recovered records point at the image files where they already lie, and they are merged into the database through `IAnnotationsDB::add_images_db()`, which keeps an image the database already holds. So a dataset may be imported into a project being edited, and importing the same dataset twice adds its images once.
 - **Robust over a partial dataset** - a malformed line, an image file the dataset names but does not hold, a label naming an unknown class, a picture that cannot be measured: each is logged and skipped, the import run itself carries on.
 - **No image codec of its own** - the layouts which do not store their rectangles in the pixels of their image ask the consuming project to measure the pictures through the `IImageSizeFacility` interface, over whatever imaging stack that project already links. A build which found OpenCV ships such a reader itself, so a consumer with no imaging stack still gets those imports. The plain text, the COCO, the Pascal VOC and the Create ML layouts need no measurement at all.
 - **No JSON or XML dependency either** - the two descriptor formats are read by the library own document readers under [src/parsers](/src/parsers), exactly as the sibling exporters library writes those very descriptors without one. Nothing is linked for them, and nothing of either reader reaches the installed interface.
-- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.13` major and minor pair, so two minor releases install side by side.
+- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.14` major and minor pair, so two minor releases install side by side.
 
 # Usage example
 
@@ -40,36 +40,36 @@ project(MyTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataImporters-0.13 REQUIRED)
+find_package(ImagesAnnotatorDataImporters-0.14 REQUIRED)
 
 add_executable(mytool main.cpp)
-target_link_libraries(mytool ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13)
+target_link_libraries(mytool ImagesAnnotatorDataImporters-0.14::ImagesAnnotatorDataImporters-0.14)
 ```
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>
 
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iadi = ImagesAnnotatorDataImporters014;
 
 int main(int argc, char** argv)
 {
   if (argc < 3) { return 1; }
 
-  auto db = iadd::LibraryFacade::create_annotations_db();
+  auto db = iadd::IADataDriversFacade::create_annotations_db();
 
   if (db == nullptr) { return 1; }
 
-  auto ctx = iadi::LibraryFacade::create_yolo4_library_context();
+  auto ctx = iadi::IADataImportersFacade::create_yolo4_library_context();
 
   ctx->set_import_path(argv[1]);
   ctx->set_db(db);
 
-  auto lib = iadi::LibraryFacade::create_default_lib();
+  auto lib = iadi::IADataImportersFacade::create_default_lib();
 
   if (lib == nullptr || !lib->perform_import(ctx)) {
     std::cerr << "the import has failed\n";
@@ -82,15 +82,15 @@ int main(int argc, char** argv)
   }
 
   std::cout << "imported " << ctx->get_imported_records() << " records with "
-            << iadi::LibraryFacade::library_version() << "\n";
+            << iadi::IADataImportersFacade::library_version() << "\n";
 
   return 0;
 }
 ```
 
-The `ImagesAnnotatorDataImporters013` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
+The `ImagesAnnotatorDataImporters014` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
 
-Both `#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>` and a plain `#include <LibraryFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: header names like `LibraryFacade.h`, `LibraryContext.h` or `ILib.h` are generic enough to collide in a busy include path - both the data drivers and the exporters libraries of this family install headers of exactly those names.
+Both `#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>` and a plain `#include <IADataImportersFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: `IImporter.h` and `ImportersAPI.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
 
 The program above reads the YOLO v4 layout, whose rectangles are stored divided by the size of their image, so it needs a library built with OpenCV. Give an `IImageSizeFacility` of your own to `ctx->set_image_sizer()` otherwise, or start from the plain text layout, which needs none.
 
@@ -103,7 +103,7 @@ More on the API and on the read datasets is in the [dataset importers API](/doc/
 | (always on) | [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) | it defines the annotations database the importers fill and the image records they build |
 | `ENABLE_OPENCV` | [OpenCV](https://opencv.org/) | optional: with it the library ships an image size reader of its own, so that a consumer with no imaging stack still gets the layouts which need one |
 
-The data drivers library is **mandatory**. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.11 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its database type. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
+The data drivers library is **mandatory**. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its database type. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
 
 OpenCV is **optional** and `ENABLE_OPENCV=ON` means *probe*, not *require*: a system without it configures and builds just the same, only without the built-in image size reader. It is linked **privately**: no public header exposes an OpenCV type, so a consuming project needs no OpenCV of its own. See the [enabling the OpenCV image size reader](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md) section.
 

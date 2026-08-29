@@ -25,15 +25,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTCONTEXT_CLASS_H
 
 #include <memory>
 
+#include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
-#include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
@@ -42,20 +42,20 @@ namespace ImagesAnnotatorDataImporters013
  * records.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataImportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API PlainTxtImportLibraryContext : public LibraryContext
+class IADI_API PlainTxtImportContext : public IADataImportersContext
 {
  public:
-  using PlainTxtImportLibraryContextPtr =
-      std::shared_ptr<PlainTxtImportLibraryContext>;
+  using PlainTxtImportContextPtr = std::shared_ptr<PlainTxtImportContext>;
 };
 
-using PlainTxtImportLibraryContextPtr =
-    PlainTxtImportLibraryContext::PlainTxtImportLibraryContextPtr;
+using PlainTxtImportContextPtr =
+    PlainTxtImportContext::PlainTxtImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTCONTEXT_CLASS_H

@@ -32,15 +32,15 @@
 
 #include "ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
- * @brief Only declared here, since the LibraryContext holds an IImporterPtr
- * of its own and its header is the one which includes this file.
+ * @brief Only declared here, since the IADataImportersContext holds an
+ * IImporterPtr of its own and its header is the one which includes this file.
  */
-class IADI_API LibraryContext;
-using LibraryContextPtr = std::shared_ptr<LibraryContext>;
+class IADI_API IADataImportersContext;
+using IADataImportersContextPtr = std::shared_ptr<IADataImportersContext>;
 
 /**
  * @brief The abstract class to define the interface for the all available
@@ -69,11 +69,11 @@ class IADI_API IImporter
    *
    * @return Returns true when the import as a whole ran through.
    */
-  virtual bool import_db(LibraryContextPtr ictx) = 0;
+  virtual bool import_db(IADataImportersContextPtr ictx) = 0;
 };
 
 using IImporterPtr = IImporter::IImporterPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IIMPORTER_ABSTRACT_CLASS_H

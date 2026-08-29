@@ -1,40 +1,40 @@
 ## Публічні інтерфейсні файли бібліотеки
 
-Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - пʼятнадцять заголовків, усі у просторі імен `ImagesAnnotatorDataImporters013`. Шість із них є власне API і лежать у корені директорії:
+Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - пʼятнадцять заголовків, усі у просторі імен `ImagesAnnotatorDataImporters014`. Шість із них є власне API і лежать у корені директорії:
 
 | Заголовок | Оголошує |
 |---|---|
-| [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | статичні методи `LibraryFacade`, точку входу бібліотеки |
-| [ILib.h](/src/lib/facade/public/ILib.h) | `ILib::perform_import()` - виконує імпорт, описаний `LibraryContext` |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | методи доступу до даних `perform_import()` та `import_db()`, разом із вихідними `get_importer()` та `get_imported_records()` |
+| [IADataImportersFacade.h](/src/lib/facade/public/IADataImportersFacade.h) | статичні методи `IADataImportersFacade`, точку входу бібліотеки |
+| [IADataImportersLib.h](/src/lib/facade/public/IADataImportersLib.h) | `IADataImportersLib::perform_import()` - виконує імпорт, описаний `IADataImportersContext` |
+| [IADataImportersContext.h](/src/lib/facade/public/IADataImportersContext.h) | методи доступу до даних `perform_import()` та `import_db()`, разом із вихідними `get_importer()` та `get_imported_records()` |
 | [IImporter.h](/src/lib/facade/public/IImporter.h) | `IImporter::import_db()` - окремий імпортер, використаний самостійно |
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | інтерфейс, який реалізує проект-споживач, щоб вимірювати зображення |
 | [ImportersAPI.h](/src/lib/facade/public/ImportersAPI.h) | макрос видимості `IADI_API` |
 
-Решта девʼять є нащадками `LibraryContext`, специфічними для розкладок - по одному на кожну розкладку набору даних, яку читає бібліотека, - і лежать разом у піддиректорії [contexts](/src/lib/facade/public/contexts), а не поруч із шістьма вище; саме таку розкладку має сусідня бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) для власних девʼяти:
+Решта девʼять є нащадками `IADataImportersContext`, специфічними для розкладок - по одному на кожну розкладку набору даних, яку читає бібліотека, - і лежать разом у піддиректорії [contexts](/src/lib/facade/public/contexts), а не поруч із шістьма вище; саме таку розкладку має сусідня бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) для власних девʼяти:
 
 | Заголовок | Оголошує |
 |---|---|
-| [contexts/PlainTxtImportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtImportLibraryContext.h) | `LibraryContext` розкладки простого тексту |
-| [contexts/Yolo4ImportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ImportLibraryContext.h) | `LibraryContext` розкладки YOLO v4 (darknet) |
-| [contexts/UltralyticsDetectImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportLibraryContext.h) | `LibraryContext` розкладки виявлення Ultralytics YOLO |
-| [contexts/UltralyticsObbImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportLibraryContext.h) | `LibraryContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
-| [contexts/UltralyticsSegmentImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportLibraryContext.h) | `LibraryContext` розкладки сегментації примірників Ultralytics YOLO |
-| [contexts/CocoImportLibraryContext.h](/src/lib/facade/public/contexts/CocoImportLibraryContext.h) | `LibraryContext` розкладки виявлення обʼєктів COCO |
-| [contexts/PascalVocImportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocImportLibraryContext.h) | `LibraryContext` розкладки Pascal VOC |
-| [contexts/CreateMLImportLibraryContext.h](/src/lib/facade/public/contexts/CreateMLImportLibraryContext.h) | `LibraryContext` розкладки виявлення обʼєктів Create ML |
-| [contexts/PyTorchImportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchImportLibraryContext.h) | `LibraryContext` розкладки PyTorch Vision |
+| [contexts/PlainTxtImportContext.h](/src/lib/facade/public/contexts/PlainTxtImportContext.h) | `IADataImportersContext` розкладки простого тексту |
+| [contexts/Yolo4ImportContext.h](/src/lib/facade/public/contexts/Yolo4ImportContext.h) | `IADataImportersContext` розкладки YOLO v4 (darknet) |
+| [contexts/UltralyticsDetectImportContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportContext.h) | `IADataImportersContext` розкладки виявлення Ultralytics YOLO |
+| [contexts/UltralyticsObbImportContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportContext.h) | `IADataImportersContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
+| [contexts/UltralyticsSegmentImportContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportContext.h) | `IADataImportersContext` розкладки сегментації примірників Ultralytics YOLO |
+| [contexts/CocoImportContext.h](/src/lib/facade/public/contexts/CocoImportContext.h) | `IADataImportersContext` розкладки виявлення обʼєктів COCO |
+| [contexts/PascalVocImportContext.h](/src/lib/facade/public/contexts/PascalVocImportContext.h) | `IADataImportersContext` розкладки Pascal VOC |
+| [contexts/CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | `IADataImportersContext` розкладки виявлення обʼєктів Create ML |
+| [contexts/PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | `IADataImportersContext` розкладки PyTorch Vision |
 
-Кожен із тих девʼяти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataImporters-0.13/`, тож звичайне `#include "LibraryContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх девʼяти через `LibraryFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
+Кожен із тих девʼяти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataImporters-0.14/`, тож звичайне `#include "IADataImportersContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх девʼяти через `IADataImportersFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
 
-[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) встановлює директорію цілком під `include/${PROJECT_LIBRARY_NAME}`, що для поточної назви і версії дає `include/ImagesAnnotatorDataImporters-0.13/`. І ту піддиректорію, і звичайний корінь підключення експортує ціль бібліотеки, тож споживач може писати будь-яку з двох форм:
+[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) встановлює директорію цілком під `include/${PROJECT_LIBRARY_NAME}`, що для поточної назви і версії дає `include/ImagesAnnotatorDataImporters-0.14/`. І ту піддиректорію, і звичайний корінь підключення експортує ціль бібліотеки, тож споживач може писати будь-яку з двох форм:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>  // рекомендована
-#include <LibraryFacade.h>                                    // теж працює
+#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>  // рекомендована
+#include <IADataImportersFacade.h>                                    // теж працює
 ```
 
-Форма з префіксом є безпечною - імена на кшталт `IImporter.h` достатньо загальні, щоб зіткнутися у насиченому шляху підключення, а бібліотеки драйверів даних та експортерів цієї ж родини встановлюють власні `LibraryFacade.h`.
+Форма з префіксом є безпечною - імена на кшталт `IImporter.h` достатньо загальні, щоб зіткнутися у насиченому шляху підключення, а префікс закріплює версію бібліотеки, з якою розмовляє одиниця трансляції.
 
 ### Чому видно лише ці заголовки
 
@@ -46,16 +46,16 @@
 
 ### Встановлюваний CMake-пакунок
 
-Разом із бінарником і заголовками збірка встановлює CMake-пакунок, згенерований [src/lib/cmake/lib-cmake-module-gen.cmake](/src/lib/cmake/lib-cmake-module-gen.cmake) із [src/lib/cmake/ImportersLibraryConfig.cmake.in](/src/lib/cmake/ImportersLibraryConfig.cmake.in). Він потрапляє до `<libdir>/cmake/ImagesAnnotatorDataImporters-0.13/` і складається з трьох файлів: експортовані цілі, `ImagesAnnotatorDataImporters-0.13ConfigVersion.cmake`, записаний `write_basic_package_version_file()` із сумісністю `SameMajorVersion`, та `ImagesAnnotatorDataImporters-0.13Config.cmake`, який виконує `find_dependency()` пакунка драйверів даних перед підключенням цілей - публічні заголовки називають його типи бази даних та записів, тож його треба розвʼязати першим.
+Разом із бінарником і заголовками збірка встановлює CMake-пакунок, згенерований [src/lib/cmake/lib-cmake-module-gen.cmake](/src/lib/cmake/lib-cmake-module-gen.cmake) із [src/lib/cmake/ImportersLibraryConfig.cmake.in](/src/lib/cmake/ImportersLibraryConfig.cmake.in). Він потрапляє до `<libdir>/cmake/ImagesAnnotatorDataImporters-0.14/` і складається з трьох файлів: експортовані цілі, `ImagesAnnotatorDataImporters-0.14ConfigVersion.cmake`, записаний `write_basic_package_version_file()` із сумісністю `SameMajorVersion`, та `ImagesAnnotatorDataImporters-0.14Config.cmake`, який виконує `find_dependency()` пакунка драйверів даних перед підключенням цілей - публічні заголовки називають його типи бази даних та записів, тож його треба розвʼязати першим.
 
 Тому проекту нижче за течією не потрібно нічого більшого за:
 
 ```cmake
-find_package(ImagesAnnotatorDataImporters-0.13 0.13 REQUIRED)
+find_package(ImagesAnnotatorDataImporters-0.14 0.14 REQUIRED)
 
 target_link_libraries(
   your_target
-  PRIVATE ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13
+  PRIVATE ImagesAnnotatorDataImporters-0.14::ImagesAnnotatorDataImporters-0.14
 )
 ```
 

@@ -51,48 +51,48 @@ sudo cmake --install . --prefix "/usr"
 
 ## What gets installed
 
-For the default `ImagesAnnotatorDataImporters-0.13` library name a prefix receives
+For the default `ImagesAnnotatorDataImporters-0.14` library name a prefix receives
 exactly the following files:
 
 ```
-<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so.0.13.0
-<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so.0
-<prefix>/lib/libImagesAnnotatorDataImporters-0.13.so
+<prefix>/lib/libImagesAnnotatorDataImporters-0.14.so.0.14.0
+<prefix>/lib/libImagesAnnotatorDataImporters-0.14.so.0
+<prefix>/lib/libImagesAnnotatorDataImporters-0.14.so
 
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/ImportersAPI.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/IImporter.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/IImageSizeFacility.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/ILib.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/LibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/LibraryFacade.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/CocoImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/CreateMLImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/PascalVocImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/PlainTxtImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/PyTorchImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/UltralyticsDetectImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/UltralyticsObbImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/UltralyticsSegmentImportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataImporters-0.13/contexts/Yolo4ImportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/ImportersAPI.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/IImporter.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/IImageSizeFacility.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/IADataImportersLib.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/IADataImportersContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/contexts/CocoImportContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/contexts/CreateMLImportContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/contexts/PascalVocImportContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/contexts/PlainTxtImportContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/contexts/PyTorchImportContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/contexts/UltralyticsDetectImportContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/contexts/UltralyticsObbImportContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/contexts/UltralyticsSegmentImportContext.h
+<prefix>/include/ImagesAnnotatorDataImporters-0.14/contexts/Yolo4ImportContext.h
 
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/ImagesAnnotatorDataImporters-0.13Config.cmake
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/ImagesAnnotatorDataImporters-0.13ConfigVersion.cmake
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/ImagesAnnotatorDataImporters-0.13Targets.cmake
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.13/ImagesAnnotatorDataImporters-0.13Targets-<config>.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.14/ImagesAnnotatorDataImporters-0.14Config.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.14/ImagesAnnotatorDataImporters-0.14ConfigVersion.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.14/ImagesAnnotatorDataImporters-0.14Targets.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.14/ImagesAnnotatorDataImporters-0.14Targets-<config>.cmake
 ```
 
-The `.so.0.13.0` file is the library itself, `.so.0` is the `SONAME` link the
+The `.so.0.14.0` file is the library itself, `.so.0` is the `SONAME` link the
 dynamic linker resolves and the bare `.so` link is the development one the
 compiler follows. The headers are the fifteen public ones of the
 [src/lib/facade/public](/src/lib/facade/public) directory, described in
 [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md).
 
 The four CMake files form the package that answers
-`find_package(ImagesAnnotatorDataImporters-0.13 0.13 REQUIRED)`. The `Config` one
-pulls the public `ImagesAnnotatorDataDrivers-0.11` dependency in before including
+`find_package(ImagesAnnotatorDataImporters-0.14 0.14 REQUIRED)`. The `Config` one
+pulls the public `ImagesAnnotatorDataDrivers-0.12` dependency in before including
 the exported targets, the `ConfigVersion` one makes the version request
 succeed, and the `Targets` pair defines the
-`ImagesAnnotatorDataImporters-0.13::ImagesAnnotatorDataImporters-0.13` imported
+`ImagesAnnotatorDataImporters-0.14::ImagesAnnotatorDataImporters-0.14` imported
 target. The `<config>` part of the last file name follows the build type, and
 is `noconfig` when no `CMAKE_BUILD_TYPE` was set.
 
@@ -104,7 +104,7 @@ all four path segments above change together if the name is customised, see
 ## Install components
 
 The installed files are split into two components. `Runtime` holds what a
-program needs to run, that is the `.so.0.13.0` file and its `SONAME` link.
+program needs to run, that is the `.so.0.14.0` file and its `SONAME` link.
 `Development` holds what a project needs to build against the library, that is
 the bare `.so` link, the headers and the CMake package files. Either one may be
 installed alone:
@@ -118,7 +118,7 @@ cmake --install . --component Development
 
 ## Using the installed library
 
-The library keeps the `ImagesAnnotatorDataDrivers-0.11` dependency public, so both
+The library keeps the `ImagesAnnotatorDataDrivers-0.12` dependency public, so both
 packages must be visible to the consuming project. Pass their prefixes through
 `CMAKE_PREFIX_PATH`:
 

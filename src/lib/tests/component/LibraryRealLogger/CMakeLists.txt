@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 # The library is expected to log into the real logger instance handed over by
 # its user, so the test links the produced shared library itself and drives it
-# through the public LibraryFacade only - the very shape a consuming
+# through the public IADataImportersFacade only - the very shape a consuming
 # application sees. The RealDefaultLogger source below is the test own copy of
 # the application side logger the instances are created from.
 add_executable(

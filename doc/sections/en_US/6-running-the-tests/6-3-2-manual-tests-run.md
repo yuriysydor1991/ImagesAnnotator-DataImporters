@@ -14,13 +14,13 @@ find -type f -executable \( -name 'UTEST_*' -o -name 'CTEST_*' \)
 ```
 
 After that, choose the particular test of interest and execute it manually if
-needed. For example, for the `LibraryFacade` class pass its unit test file
+needed. For example, for the `IADataImportersFacade` class pass its unit test file
 system path into the command line and hit enter (GNU/Linux based):
 
 ```
 # from the project root
 
-./build/src/lib/facade/tests/unit/LibraryFacade/UTEST_LibraryFacade
+./build/src/lib/facade/tests/unit/IADataImportersFacade/UTEST_IADataImportersFacade
 ```
 
 The importer tests live next to the sources they cover:
@@ -48,6 +48,6 @@ The usual Google Test command line flags apply, for instance to run a single
 case or to list the available ones:
 
 ```
-./build/src/lib/facade/tests/unit/LibraryFacade/UTEST_LibraryFacade --gtest_list_tests
-./build/src/lib/facade/tests/unit/LibraryFacade/UTEST_LibraryFacade --gtest_filter=*library_version*
+./build/src/lib/facade/tests/unit/IADataImportersFacade/UTEST_IADataImportersFacade --gtest_list_tests
+./build/src/lib/facade/tests/unit/IADataImportersFacade/UTEST_IADataImportersFacade --gtest_filter=*library_version*
 ```

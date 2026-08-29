@@ -25,41 +25,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSSEGMENTIMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSSEGMENTIMPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSOBBIMPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSOBBIMPORTCONTEXT_CLASS_H
 
 #include <memory>
 
+#include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
-#include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
- * @brief The library context which reads the Ultralytics YOLO instance
- * segmentation dataset back into image records. Every label file line carries
- * the polygon outlining an object there, and what comes back of it is the
- * rectangle holding that polygon. Requires an IImageSizeFacility unless the
- * library was built with its own, since the layout stores its points
- * normalised.
+ * @brief The library context which reads the Ultralytics YOLO oriented
+ * bounding box dataset back into image records. Every label file line carries
+ * the four corners of a box there, and what comes back of it is the upright
+ * rectangle holding them. Requires an IImageSizeFacility unless the library was
+ * built with its own, since the layout stores its corners normalised.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataImportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API UltralyticsSegmentImportLibraryContext : public LibraryContext
+class IADI_API UltralyticsObbImportContext : public IADataImportersContext
 {
  public:
-  using UltralyticsSegmentImportLibraryContextPtr =
-      std::shared_ptr<UltralyticsSegmentImportLibraryContext>;
+  using UltralyticsObbImportContextPtr =
+      std::shared_ptr<UltralyticsObbImportContext>;
 };
 
-using UltralyticsSegmentImportLibraryContextPtr =
-    UltralyticsSegmentImportLibraryContext::
-        UltralyticsSegmentImportLibraryContextPtr;
+using UltralyticsObbImportContextPtr =
+    UltralyticsObbImportContext::UltralyticsObbImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSSEGMENTIMPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSOBBIMPORTCONTEXT_CLASS_H

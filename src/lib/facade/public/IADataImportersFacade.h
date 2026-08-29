@@ -25,26 +25,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYFACADE_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYFACADE_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSFACADE_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSFACADE_CLASS_H
 
 #include <memory>
 #include <string>
 
+#include "IADataImportersContext.h"
+#include "IADataImportersLib.h"
 #include "IImageSizeFacility.h"
 #include "IImporter.h"
-#include "ILib.h"
 #include "ImportersAPI.h"
-#include "LibraryContext.h"
-#include "contexts/CocoImportLibraryContext.h"
-#include "contexts/CreateMLImportLibraryContext.h"
-#include "contexts/PascalVocImportLibraryContext.h"
-#include "contexts/PlainTxtImportLibraryContext.h"
-#include "contexts/PyTorchImportLibraryContext.h"
-#include "contexts/UltralyticsDetectImportLibraryContext.h"
-#include "contexts/UltralyticsObbImportLibraryContext.h"
-#include "contexts/UltralyticsSegmentImportLibraryContext.h"
-#include "contexts/Yolo4ImportLibraryContext.h"
+#include "contexts/CocoImportContext.h"
+#include "contexts/CreateMLImportContext.h"
+#include "contexts/PascalVocImportContext.h"
+#include "contexts/PlainTxtImportContext.h"
+#include "contexts/PyTorchImportContext.h"
+#include "contexts/UltralyticsDetectImportContext.h"
+#include "contexts/UltralyticsObbImportContext.h"
+#include "contexts/UltralyticsSegmentImportContext.h"
+#include "contexts/Yolo4ImportContext.h"
 
 /**
  * @brief The logging subsystem interface every project built from the
@@ -58,7 +58,7 @@ namespace logger
 class ILogger;
 }  // namespace logger
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
@@ -69,16 +69,16 @@ namespace ImagesAnnotatorDataImporters013
  * interfaces returned from here.
  *
  * @code
- * namespace iadd = ImagesAnnotatorDataDrivers011;
- * namespace iadi = ImagesAnnotatorDataImporters013;
+ * namespace iadd = ImagesAnnotatorDataDrivers012;
+ * namespace iadi = ImagesAnnotatorDataImporters014;
  *
- * auto db = iadd::LibraryFacade::create_annotations_db();
+ * auto db = iadd::IADataDriversFacade::create_annotations_db();
  *
- * auto ctx = iadi::LibraryFacade::create_yolo4_library_context();
+ * auto ctx = iadi::IADataImportersFacade::create_yolo4_library_context();
  * ctx->set_import_path("/tmp/yolo-dataset");
  * ctx->set_db(db);
  *
- * auto importer = iadi::LibraryFacade::create_importer(ctx);
+ * auto importer = iadi::IADataImportersFacade::create_importer(ctx);
  *
  * return importer != nullptr && importer->import_db(ctx) &&
  *        db->store_db("project.json");
@@ -86,88 +86,88 @@ namespace ImagesAnnotatorDataImporters013
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API LibraryFacade
+class IADI_API IADataImportersFacade
 {
  public:
-  virtual ~LibraryFacade() = default;
-  LibraryFacade() = default;
+  virtual ~IADataImportersFacade() = default;
+  IADataImportersFacade() = default;
 
   /**
    * @brief Factory method to create an empty library context of the plain
    * text dataset layout.
    *
-   * @return Returns a new PlainTxtImportLibraryContext class instance.
+   * @return Returns a new PlainTxtImportContext class instance.
    */
-  static PlainTxtImportLibraryContextPtr create_plain_txt_library_context();
+  static PlainTxtImportContextPtr create_plain_txt_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the YOLO v4
    * dataset layout.
    *
-   * @return Returns a new Yolo4ImportLibraryContext class instance.
+   * @return Returns a new Yolo4ImportContext class instance.
    */
-  static Yolo4ImportLibraryContextPtr create_yolo4_library_context();
+  static Yolo4ImportContextPtr create_yolo4_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the
    * Ultralytics YOLO detection dataset layout.
    *
-   * @return Returns a new UltralyticsDetectImportLibraryContext class
+   * @return Returns a new UltralyticsDetectImportContext class
    * instance.
    */
-  static UltralyticsDetectImportLibraryContextPtr
+  static UltralyticsDetectImportContextPtr
   create_ultralytics_detect_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the
    * Ultralytics YOLO oriented bounding box dataset layout.
    *
-   * @return Returns a new UltralyticsObbImportLibraryContext class instance.
+   * @return Returns a new UltralyticsObbImportContext class instance.
    */
-  static UltralyticsObbImportLibraryContextPtr
+  static UltralyticsObbImportContextPtr
   create_ultralytics_obb_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the
    * Ultralytics YOLO instance segmentation dataset layout.
    *
-   * @return Returns a new UltralyticsSegmentImportLibraryContext class
+   * @return Returns a new UltralyticsSegmentImportContext class
    * instance.
    */
-  static UltralyticsSegmentImportLibraryContextPtr
+  static UltralyticsSegmentImportContextPtr
   create_ultralytics_segment_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the COCO
    * object detection dataset layout.
    *
-   * @return Returns a new CocoImportLibraryContext class instance.
+   * @return Returns a new CocoImportContext class instance.
    */
-  static CocoImportLibraryContextPtr create_coco_library_context();
+  static CocoImportContextPtr create_coco_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the Pascal VOC
    * dataset layout.
    *
-   * @return Returns a new PascalVocImportLibraryContext class instance.
+   * @return Returns a new PascalVocImportContext class instance.
    */
-  static PascalVocImportLibraryContextPtr create_pascal_voc_library_context();
+  static PascalVocImportContextPtr create_pascal_voc_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the Create ML
    * object detection dataset layout.
    *
-   * @return Returns a new CreateMLImportLibraryContext class instance.
+   * @return Returns a new CreateMLImportContext class instance.
    */
-  static CreateMLImportLibraryContextPtr create_createml_library_context();
+  static CreateMLImportContextPtr create_createml_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the PyTorch
    * Vision dataset layout.
    *
-   * @return Returns a new PyTorchImportLibraryContext class instance.
+   * @return Returns a new PyTorchImportContext class instance.
    */
-  static PyTorchImportLibraryContextPtr create_pytorch_library_context();
+  static PyTorchImportContextPtr create_pytorch_library_context();
 
   /**
    * @brief Creates the default library implementation.
@@ -175,39 +175,40 @@ class IADI_API LibraryFacade
    * @return Returns the default library implementation. Currently returns
    * the LibMain class instance.
    */
-  static ILibPtr create_default_lib();
+  static IADataImportersLibPtr create_default_lib();
 
   /**
-   * @brief Creates and returns the appropriate ILib instance.
+   * @brief Creates and returns the appropriate IADataImportersLib instance.
    *
-   * @param ctx Filled LibraryContext to check for an appropriate ILib
-   * instance.
+   * @param ctx Filled IADataImportersContext to check for an appropriate
+   * IADataImportersLib instance.
    *
-   * @return Returns a new ILib descendant or a nullptr in case of any error.
+   * @return Returns a new IADataImportersLib descendant or a nullptr in case of
+   * any error.
    */
-  static ILibPtr create_library(LibraryContextPtr ctx);
+  static IADataImportersLibPtr create_library(IADataImportersContextPtr ctx);
 
   /**
    * @brief Creates the importer implementing the dataset layout of the given
    * context.
    *
-   * @param ctx The LibraryContext descendant naming the wanted layout.
+   * @param ctx The IADataImportersContext descendant naming the wanted layout.
    *
    * @return Returns a new IImporter descendant, or a nullptr for an empty
    * context.
    */
-  static IImporterPtr create_importer(const LibraryContextPtr& ctx);
+  static IImporterPtr create_importer(const IADataImportersContextPtr& ctx);
 
   /**
    * @brief Factory method to create the image size reader the library ships
    * itself.
    *
    * The library decodes no image format of its own, which is why
-   * LibraryContext::set_image_sizer() exists: an annotation of the internal
-   * project format is a rectangle in the pixels of its image, so the layouts
-   * which do not store those pixels ask their consumer to measure the picture.
-   * When this build of the library found OpenCV it is able to do that itself,
-   * and this method hands out such a reader.
+   * IADataImportersContext::set_image_sizer() exists: an annotation of the
+   * internal project format is a rectangle in the pixels of its image, so the
+   * layouts which do not store those pixels ask their consumer to measure the
+   * picture. When this build of the library found OpenCV it is able to do that
+   * itself, and this method hands out such a reader.
    *
    * Handing it over to that setter is optional. An import left with an empty
    * slot falls back to this very reader on its own, so a consumer with nothing
@@ -243,6 +244,6 @@ class IADI_API LibraryFacade
       const std::shared_ptr<logger::ILogger>& realLogger);
 };
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYFACADE_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSFACADE_CLASS_H

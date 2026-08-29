@@ -1,4 +1,4 @@
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -10,13 +10,13 @@
 #include "src/importers/PascalVoc/PascalVocFolder2DBImporter.h"
 
 using namespace testing;
+using iannotator::importers::IADataImportersContext;
 using iannotator::importers::IAnnotationsDBPtr;
 using iannotator::importers::IImageSizeFacility;
 using iannotator::importers::IImageSizeFacilityPtr;
-using iannotator::importers::LibraryContext;
 using iannotator::importers::PascalVocFolder2DBImporter;
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
+namespace iadd = ImagesAnnotatorDataDrivers012;
 
 namespace
 {
@@ -58,7 +58,7 @@ class UTEST_PascalVocFolder2DBImporter : public Test
     fs::remove_all(dir);
     fs::create_directories(dir);
 
-    db = iadd::LibraryFacade::create_annotations_db();
+    db = iadd::IADataDriversFacade::create_annotations_db();
 
     ASSERT_NE(db, nullptr);
   }
@@ -126,9 +126,9 @@ class UTEST_PascalVocFolder2DBImporter : public Test
 </annotation>)");
   }
 
-  std::shared_ptr<LibraryContext> context()
+  std::shared_ptr<IADataImportersContext> context()
   {
-    auto ctx = std::make_shared<LibraryContext>();
+    auto ctx = std::make_shared<IADataImportersContext>();
     ctx->set_import_path(dir.string());
     ctx->set_db(db);
     return ctx;

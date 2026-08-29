@@ -30,8 +30,8 @@
 
 #include <memory>
 
-#include "ILib.h"
-#include "LibraryContext.h"
+#include "IADataImportersContext.h"
+#include "IADataImportersLib.h"
 
 namespace iadi0impl
 {
@@ -43,30 +43,32 @@ namespace iadi0impl
  * the layout named by the given context and drives it over the directory that
  * very same context points at.
  */
-class LibMain : public ImagesAnnotatorDataImporters013::ILib
+class LibMain : public ImagesAnnotatorDataImporters014::IADataImportersLib
 {
  public:
   using LibMainPtr = std::shared_ptr<LibMain>;
-  using LibraryContextPtr = ImagesAnnotatorDataImporters013::LibraryContextPtr;
+  using IADataImportersContextPtr =
+      ImagesAnnotatorDataImporters014::IADataImportersContextPtr;
 
   virtual ~LibMain() = default;
   LibMain();
 
   /**
-   * @brief The implemented library interface method derived from an ILib
-   * abstract class. Designed to contain the main library code implementation.
+   * @brief The implemented library interface method derived from an
+   * IADataImportersLib abstract class. Designed to contain the main library
+   * code implementation.
    *
    * Builds the importer of the context layout and runs it over that very same
    * context. The importer that was used is provided back through the context
    * importer field.
    *
-   * @param ctx A filled LibraryContext descendant with appropriate data
+   * @param ctx A filled IADataImportersContext descendant with appropriate data
    * to perform it's actions.
    *
    * @return Returns a true value on the success and false in case of any
    * error.
    */
-  virtual bool perform_import(LibraryContextPtr ctx) override;
+  virtual bool perform_import(IADataImportersContextPtr ctx) override;
 
   static LibMainPtr create();
 };

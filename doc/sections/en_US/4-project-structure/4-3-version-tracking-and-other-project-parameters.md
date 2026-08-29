@@ -4,12 +4,12 @@ The library name, the project version, the git commit the build was configured f
 
 | Constant | Filled from |
 |---|---|
-| `PROJECT_NAME` | `PROJECT_LIBRARY_NAME`, i.e. `ImagesAnnotatorDataImporters-0.13` |
-| `PROJECT_BUILD_VERSION` | `PROJECT_VERSION` of the root `project()` command - `0.13.0` |
+| `PROJECT_NAME` | `PROJECT_LIBRARY_NAME`, i.e. `ImagesAnnotatorDataImporters-0.14` |
+| `PROJECT_BUILD_VERSION` | `PROJECT_VERSION` of the root `project()` command - `0.14.0` |
 | `PROJECT_BUILD_COMMIT` | `git rev-parse HEAD`, read by [cmake/enablers/template-project-git-enabler.cmake](/cmake/enablers/template-project-git-enabler.cmake) |
 | `PROJECT_CONFIGURE_DATE` | the configure time `string(TIMESTAMP ...)` value |
 
-The generated header is compiled into the library but is not installed. Two places use it: `LibraryFacade::library_version()` returns `project_decls::PROJECT_BUILD_VERSION`, which lets a consumer report the version of the shared object it actually loaded, and `helpers::ImageLoader` builds the name of its preload cache directory from the project name and version.
+The generated header is compiled into the library but is not installed. Two places use it: `IADataImportersFacade::library_version()` returns `project_decls::PROJECT_BUILD_VERSION`, which lets a consumer report the version of the shared object it actually loaded, and `helpers::ImageLoader` builds the name of its preload cache directory from the project name and version.
 
 Other parameters declared in [cmake/template-project-misc-variables-declare.cmake](/cmake/template-project-misc-variables-declare.cmake) and worth knowing about:
 

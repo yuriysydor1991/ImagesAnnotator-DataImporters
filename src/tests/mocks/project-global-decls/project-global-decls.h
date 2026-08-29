@@ -15,9 +15,9 @@ namespace project_decls
 {
 
 /// @brief Global project' library name
-const std::string PROJECT_NAME = "ImagesAnnotatorDataImporters-0.13";
+const std::string PROJECT_NAME = "ImagesAnnotatorDataImporters-0.14";
 /// @brief Global project' build version
-const std::string PROJECT_BUILD_VERSION = "0.13.0";
+const std::string PROJECT_BUILD_VERSION = "0.14.0";
 /// @brief Global project' configure git commit hash
 const std::string PROJECT_BUILD_COMMIT =
     "0000000000000000000000000000000000000000";

@@ -1,14 +1,14 @@
 ## API імпортерів наборів даних
 
-Увесь інтерфейс бібліотеки оголошено заголовними файлами під [src/lib/facade/public](/src/lib/facade/public); вони встановлюються до піддиректорії `include/ImagesAnnotatorDataImporters-0.13` обраного префікса встановлення. Ніщо інше не залишає спільного обʼєкта: кожен клас реалізації лишається за абстрактними інтерфейсами, описаними тут.
+Увесь інтерфейс бібліотеки оголошено заголовними файлами під [src/lib/facade/public](/src/lib/facade/public); вони встановлюються до піддиректорії `include/ImagesAnnotatorDataImporters-0.14` обраного префікса встановлення. Ніщо інше не залишає спільного обʼєкта: кожен клас реалізації лишається за абстрактними інтерфейсами, описаними тут.
 
-Усі встановлювані оголошення живуть у просторі імен `ImagesAnnotatorDataImporters013`. Назва несе мажорний і мінорний номери версії бібліотеки (`0.13` дає суфікс `013`), тож дві версії бібліотеки можуть співіснувати в одній одиниці трансляції. Створіть для неї псевдонім один раз у власному коді:
+Усі встановлювані оголошення живуть у просторі імен `ImagesAnnotatorDataImporters014`. Назва несе мажорний і мінорний номери версії бібліотеки (`0.14` дає суфікс `014`), тож дві версії бібліотеки можуть співіснувати в одній одиниці трансляції. Створіть для неї псевдонім один раз у власному коді:
 
 ```cpp
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadi = ImagesAnnotatorDataImporters014;
 ```
 
-Записи, які будують імпортери, тут не визначені. Вони походять із бібліотеки [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git), простір імен інтерфейсу якої - `ImagesAnnotatorDataDrivers011` (нижче з псевдонімом `iadd`). Див. підрозділ [Залежність від драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) щодо збіркової частини цієї залежності.
+Записи, які будують імпортери, тут не визначені. Вони походять із бібліотеки [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git), простір імен інтерфейсу якої - `ImagesAnnotatorDataDrivers012` (нижче з псевдонімом `iadd`). Див. підрозділ [Залежність від драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) щодо збіркової частини цієї залежності.
 
 ### Встановлювані заголовні файли
 
@@ -17,70 +17,70 @@ namespace iadi = ImagesAnnotatorDataImporters013;
 | [ImportersAPI.h](/src/lib/facade/public/ImportersAPI.h) | макрос видимості `IADI_API`, яким позначено кожне встановлюване оголошення |
 | [IImporter.h](/src/lib/facade/public/IImporter.h) | абстрактний інтерфейс імпортера `IImporter` |
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | інтерфейс `IImageSizeFacility`, який реалізує проект-споживач |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | клас вхідних та вихідних даних `LibraryContext`, яким керуються обидві точки входу |
-| [PlainTxtImportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtImportLibraryContext.h) | нащадок `LibraryContext` розкладки простого тексту |
-| [Yolo4ImportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ImportLibraryContext.h) | нащадок `LibraryContext` розкладки YOLO v4 (darknet) |
-| [UltralyticsDetectImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportLibraryContext.h) | нащадок `LibraryContext` розкладки виявлення Ultralytics YOLO |
-| [UltralyticsObbImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportLibraryContext.h) | нащадок `LibraryContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
-| [UltralyticsSegmentImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportLibraryContext.h) | нащадок `LibraryContext` розкладки сегментації примірників Ultralytics YOLO |
-| [CocoImportLibraryContext.h](/src/lib/facade/public/contexts/CocoImportLibraryContext.h) | нащадок `LibraryContext` розкладки виявлення обʼєктів COCO |
-| [PascalVocImportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocImportLibraryContext.h) | нащадок `LibraryContext` розкладки Pascal VOC |
-| [CreateMLImportLibraryContext.h](/src/lib/facade/public/contexts/CreateMLImportLibraryContext.h) | нащадок `LibraryContext` розкладки виявлення обʼєктів Create ML |
-| [PyTorchImportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchImportLibraryContext.h) | нащадок `LibraryContext` розкладки PyTorch Vision |
-| [ILib.h](/src/lib/facade/public/ILib.h) | абстрактний інтерфейс бібліотеки `ILib` із методом `perform_import` |
-| [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | клас-фабрику `LibraryFacade`, точку входу бібліотеки |
+| [IADataImportersContext.h](/src/lib/facade/public/IADataImportersContext.h) | клас вхідних та вихідних даних `IADataImportersContext`, яким керуються обидві точки входу |
+| [PlainTxtImportContext.h](/src/lib/facade/public/contexts/PlainTxtImportContext.h) | нащадок `IADataImportersContext` розкладки простого тексту |
+| [Yolo4ImportContext.h](/src/lib/facade/public/contexts/Yolo4ImportContext.h) | нащадок `IADataImportersContext` розкладки YOLO v4 (darknet) |
+| [UltralyticsDetectImportContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportContext.h) | нащадок `IADataImportersContext` розкладки виявлення Ultralytics YOLO |
+| [UltralyticsObbImportContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportContext.h) | нащадок `IADataImportersContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
+| [UltralyticsSegmentImportContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportContext.h) | нащадок `IADataImportersContext` розкладки сегментації примірників Ultralytics YOLO |
+| [CocoImportContext.h](/src/lib/facade/public/contexts/CocoImportContext.h) | нащадок `IADataImportersContext` розкладки виявлення обʼєктів COCO |
+| [PascalVocImportContext.h](/src/lib/facade/public/contexts/PascalVocImportContext.h) | нащадок `IADataImportersContext` розкладки Pascal VOC |
+| [CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | нащадок `IADataImportersContext` розкладки виявлення обʼєктів Create ML |
+| [PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | нащадок `IADataImportersContext` розкладки PyTorch Vision |
+| [IADataImportersLib.h](/src/lib/facade/public/IADataImportersLib.h) | абстрактний інтерфейс бібліотеки `IADataImportersLib` із методом `perform_import` |
+| [IADataImportersFacade.h](/src/lib/facade/public/IADataImportersFacade.h) | клас-фабрику `IADataImportersFacade`, точку входу бібліотеки |
 
-Підключення `LibraryFacade.h` тягне за собою кожен інший заголовок зі списку.
+Підключення `IADataImportersFacade.h` тягне за собою кожен інший заголовок зі списку.
 
 ### Розкладки наборів даних
 
 ```cpp
-class PlainTxtImportLibraryContext : public LibraryContext;
-class Yolo4ImportLibraryContext : public LibraryContext;
-class UltralyticsDetectImportLibraryContext : public LibraryContext;
-class UltralyticsObbImportLibraryContext : public LibraryContext;
-class UltralyticsSegmentImportLibraryContext : public LibraryContext;
-class CocoImportLibraryContext : public LibraryContext;
-class PascalVocImportLibraryContext : public LibraryContext;
-class CreateMLImportLibraryContext : public LibraryContext;
-class PyTorchImportLibraryContext : public LibraryContext;
+class PlainTxtImportContext : public IADataImportersContext;
+class Yolo4ImportContext : public IADataImportersContext;
+class UltralyticsDetectImportContext : public IADataImportersContext;
+class UltralyticsObbImportContext : public IADataImportersContext;
+class UltralyticsSegmentImportContext : public IADataImportersContext;
+class CocoImportContext : public IADataImportersContext;
+class PascalVocImportContext : public IADataImportersContext;
+class CreateMLImportContext : public IADataImportersContext;
+class PyTorchImportContext : public IADataImportersContext;
 ```
 
-Девʼять нащадків `LibraryContext` називають девʼять розкладок наборів даних, які бібліотека вміє читати. Інстанціація одного з них - це і є вибір розкладки, а бібліотека відображає цей тип на імпортер, який її читає. Жоден із них нічого не додає до `LibraryContext`, бо все, що потрібно імпорту - директорія-джерело, база даних-призначення та засіб вимірювання зображень - зберігається у базовому класі. Що саме кожен із них очікує знайти на диску, описано в підрозділі [Розкладки наборів даних, які читаються](/doc/sections/uk_UA/4-project-structure/4-10-the-read-dataset-layouts.md).
+Девʼять нащадків `IADataImportersContext` називають девʼять розкладок наборів даних, які бібліотека вміє читати. Інстанціація одного з них - це і є вибір розкладки, а бібліотека відображає цей тип на імпортер, який її читає. Жоден із них нічого не додає до `IADataImportersContext`, бо все, що потрібно імпорту - директорія-джерело, база даних-призначення та засіб вимірювання зображень - зберігається у базовому класі. Що саме кожен із них очікує знайти на диску, описано в підрозділі [Розкладки наборів даних, які читаються](/doc/sections/uk_UA/4-project-structure/4-10-the-read-dataset-layouts.md).
 
 Ці девʼять є оберненням тих самих девʼяти розкладок, які записує споріднена бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) - одна до одної, під тими самими назвами - і пара замикає коло: проект, експортований у будь-яку з них та імпортований назад, дає ті самі анотації, з якими починав - настільки, наскільки сама розкладка здатна їх нести.
 
-Пʼять розкладок, які неможливо прочитати, не знаючи розміру кожного зображення (див. `IImageSizeFacility` нижче), - це `Yolo4ImportLibraryContext`, три `Ultralytics*ImportLibraryContext`, чия геометрія зберігається поділеною на той розмір, та `PyTorchImportLibraryContext`, чиєю анотацією є саме обрізане зображення. `CocoImportLibraryContext` та `PascalVocImportLibraryContext` читають розміри з власних дескрипторів, а `PlainTxtImportLibraryContext` і `CreateMLImportLibraryContext` не потребують вимірювання взагалі, бо обидві зберігають свої прямокутники у власних пікселях зображення, точно так, як їх тримає внутрішній формат проекту.
+Пʼять розкладок, які неможливо прочитати, не знаючи розміру кожного зображення (див. `IImageSizeFacility` нижче), - це `Yolo4ImportContext`, три `Ultralytics*ImportContext`, чия геометрія зберігається поділеною на той розмір, та `PyTorchImportContext`, чиєю анотацією є саме обрізане зображення. `CocoImportContext` та `PascalVocImportContext` читають розміри з власних дескрипторів, а `PlainTxtImportContext` і `CreateMLImportContext` не потребують вимірювання взагалі, бо обидві зберігають свої прямокутники у власних пікселях зображення, точно так, як їх тримає внутрішній формат проекту.
 
-### LibraryContext
+### IADataImportersContext
 
-Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `ILib::perform_import()` та `IImporter::import_db()` імпортера, зібраного вручну. Створіть його фабричним методом `LibraryFacade` потрібної розкладки - одним із девʼяти `create_*_library_context()`, перелічених нижче - або інстанціюйте нащадка самостійно, як це робить споживач, шаблонізований за типом розкладки.
+Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `IADataImportersLib::perform_import()` та `IImporter::import_db()` імпортера, зібраного вручну. Створіть його фабричним методом `IADataImportersFacade` потрібної розкладки - одним із девʼяти `create_*_library_context()`, перелічених нижче - або інстанціюйте нащадка самостійно, як це робить споживач, шаблонізований за типом розкладки.
 
 Дані, які він несе, є приватними і доступні лише через методи доступу. Кожен геттер віддає `const`-посилання на те, що зберігає контекст, кожен сеттер копіює передане значення всередину:
 
 | Методи доступу | Напрямок | Значення |
 | --- | --- | --- |
 | `get_import_path()`, `set_import_path()` | вх. | директорія-джерело імпорту, `std::string`, обовʼязкова |
-| `get_db()`, `set_db()` | вх.-вих. | база даних анотацій, до якої зливаються відновлені записи, `ImagesAnnotatorDataDrivers011::IAnnotationsDBPtr`, обовʼязкова |
+| `get_db()`, `set_db()` | вх.-вих. | база даних анотацій, до якої зливаються відновлені записи, `ImagesAnnotatorDataDrivers012::IAnnotationsDBPtr`, обовʼязкова |
 | `get_image_sizer()`, `set_image_sizer()` | вх. | засіб вимірювання зображень, `IImageSizeFacilityPtr`. Обовʼязковий для розкладок, які без нього неможливо прочитати, якщо бібліотеку не зібрано з OpenCV |
 | `get_importer()`, `set_importer()` | вих. | екземпляр імпортера, який виконав останній `perform_import`, `IImporterPtr` |
 | `get_imported_records()`, `set_imported_records()` | вих. | скільки записів зображень останній імпорт відновив і передав до бази даних, `std::size_t` |
 
-`LibraryContextPtr` - псевдонім `std::shared_ptr<LibraryContext>`.
+`IADataImportersContextPtr` - псевдонім `std::shared_ptr<IADataImportersContext>`.
 
-База даних є `IAnnotationsDB`, а не лише читабельним `IImagesPathsDBProvider`, який бере бібліотека експортерів, бо імпорт має **додавати** записи: вони передаються через `IAnnotationsDB::add_images_db()`, який пропускає зображення, що база вже містить, і тримає результат відсортованим за шляхами зображень. Тому імпорт одного й того самого набору даних двічі додає його зображення один раз, а імпорт до бази даних проекту, що редагується, доповнює її, а не заміщує. Порожню базу отримайте з `iadd::LibraryFacade::create_annotations_db()`.
+База даних є `IAnnotationsDB`, а не лише читабельним `IImagesPathsDBProvider`, який бере бібліотека експортерів, бо імпорт має **додавати** записи: вони передаються через `IAnnotationsDB::add_images_db()`, який пропускає зображення, що база вже містить, і тримає результат відсортованим за шляхами зображень. Тому імпорт одного й того самого набору даних двічі додає його зображення один раз, а імпорт до бази даних проекту, що редагується, доповнює її, а не заміщує. Порожню базу отримайте з `iadd::IADataDriversFacade::create_annotations_db()`.
 
 `get_imported_records()` рахує те, що імпорт відновив із набору даних, а не приріст бази даних - ці два числа різняться на записи, які злиття вище знайшло вже наявними.
 
 ### IImporter
 
 ```cpp
-virtual bool import_db(LibraryContextPtr ictx) = 0;
+virtual bool import_db(IADataImportersContextPtr ictx) = 0;
 ```
 
 Єдиний метод імпортера. Він читає набір даних, названий контекстом, у розкладці, яку цей імпортер реалізує, зливає відновлені записи до бази даних того самого контексту й повертає `true`, коли запуск загалом пройшов. Записи, які він не може обробити - зіпсований рядок, відсутній файл зображення, зображення, яке не вдалося виміряти - пропускаються та повідомляються через журнал бібліотеки, вони не завалюють запуск. `false` означає, що контекст неповний, шлях імпорту не містить директорії або директорія взагалі не містить набору даних цієї розкладки - відсутній чи нечитабельний дескриптор, навколо якого розкладку побудовано. База даних лишається недоторканою.
 
-Розкладка, яку називає тип контексту, тут не розглядається: читається розкладка самого імпортера, тож навіть базовий клас `LibraryContext`, який не називає жодної розкладки, цілком придатний для керування `import_db()`. Реалізація не повинна утримувати контекст після виклику, бо контекст, що тримає цей імпортер, замкнув би цикл вказівників. `IImporterPtr` - псевдонім `std::shared_ptr<IImporter>`.
+Розкладка, яку називає тип контексту, тут не розглядається: читається розкладка самого імпортера, тож навіть базовий клас `IADataImportersContext`, який не називає жодної розкладки, цілком придатний для керування `import_db()`. Реалізація не повинна утримувати контекст після виклику, бо контекст, що тримає цей імпортер, замкнув би цикл вказівників. `IImporterPtr` - псевдонім `std::shared_ptr<IImporter>`.
 
 ### IImageSizeFacility
 
@@ -104,28 +104,28 @@ virtual IImageSizeFacilityPtr clone() = 0;
 
 `clone()` має створювати копію, що не поділяє жодного змінного стану декодування з оригіналом. Імпортери, які постачаються сьогодні, викликають лише `read_image_size()`, але метод є частиною інтерфейсу й має бути реалізований.
 
-### ILib
+### IADataImportersLib
 
-`ILib::perform_import(LibraryContextPtr ctx)` - одноразова точка входу бібліотеки. Вона будує імпортер розкладки, яку називає контекст, публікує його через `ctx->set_importer()` і виконує імпорт над тим самим контекстом, `get_imported_records()` якого потім несе кількість. Вона повертає `false`, коли контекст не називає жодної відомої розкладки або коли не вдався сам імпорт. Проектам, яким потрібне точніше керування, варто натомість збудувати імпортер напряму через `LibraryFacade::create_importer()` і викликати на ньому `import_db()` - з тим самим контекстом в обох руках.
+`IADataImportersLib::perform_import(IADataImportersContextPtr ctx)` - одноразова точка входу бібліотеки. Вона будує імпортер розкладки, яку називає контекст, публікує його через `ctx->set_importer()` і виконує імпорт над тим самим контекстом, `get_imported_records()` якого потім несе кількість. Вона повертає `false`, коли контекст не називає жодної відомої розкладки або коли не вдався сам імпорт. Проектам, яким потрібне точніше керування, варто натомість збудувати імпортер напряму через `IADataImportersFacade::create_importer()` і викликати на ньому `import_db()` - з тим самим контекстом в обох руках.
 
-### LibraryFacade
+### IADataImportersFacade
 
 Клас лише зі статичних фабричних методів, і єдина точка входу, яка потрібна проекту-споживачеві:
 
 | Метод | Повертає |
 | --- | --- |
-| `create_plain_txt_library_context()` | новий порожній `PlainTxtImportLibraryContextPtr` |
-| `create_yolo4_library_context()` | новий порожній `Yolo4ImportLibraryContextPtr` |
-| `create_ultralytics_detect_library_context()` | новий порожній `UltralyticsDetectImportLibraryContextPtr` |
-| `create_ultralytics_obb_library_context()` | новий порожній `UltralyticsObbImportLibraryContextPtr` |
-| `create_ultralytics_segment_library_context()` | новий порожній `UltralyticsSegmentImportLibraryContextPtr` |
-| `create_coco_library_context()` | новий порожній `CocoImportLibraryContextPtr` |
-| `create_pascal_voc_library_context()` | новий порожній `PascalVocImportLibraryContextPtr` |
-| `create_createml_library_context()` | новий порожній `CreateMLImportLibraryContextPtr` |
-| `create_pytorch_library_context()` | новий порожній `PyTorchImportLibraryContextPtr` |
-| `create_default_lib()` | типову реалізацію `ILibPtr` |
-| `create_library(LibraryContextPtr ctx)` | реалізацію `ILibPtr`, відповідну до наданого контексту |
-| `create_importer(const LibraryContextPtr& ctx)` | новий `IImporterPtr` для розкладки контексту або `nullptr` для контексту, що не називає жодної відомої розкладки |
+| `create_plain_txt_library_context()` | новий порожній `PlainTxtImportContextPtr` |
+| `create_yolo4_library_context()` | новий порожній `Yolo4ImportContextPtr` |
+| `create_ultralytics_detect_library_context()` | новий порожній `UltralyticsDetectImportContextPtr` |
+| `create_ultralytics_obb_library_context()` | новий порожній `UltralyticsObbImportContextPtr` |
+| `create_ultralytics_segment_library_context()` | новий порожній `UltralyticsSegmentImportContextPtr` |
+| `create_coco_library_context()` | новий порожній `CocoImportContextPtr` |
+| `create_pascal_voc_library_context()` | новий порожній `PascalVocImportContextPtr` |
+| `create_createml_library_context()` | новий порожній `CreateMLImportContextPtr` |
+| `create_pytorch_library_context()` | новий порожній `PyTorchImportContextPtr` |
+| `create_default_lib()` | типову реалізацію `IADataImportersLibPtr` |
+| `create_library(IADataImportersContextPtr ctx)` | реалізацію `IADataImportersLibPtr`, відповідну до наданого контексту |
+| `create_importer(const IADataImportersContextPtr& ctx)` | новий `IImporterPtr` для розкладки контексту або `nullptr` для контексту, що не називає жодної відомої розкладки |
 | `create_image_sizer()` | читач розмірів зображень, який бібліотека постачає сама, або `nullptr` у збірці без OpenCV |
 | `library_version()` | рядок версії використовуваного бінарника бібліотеки |
 
@@ -134,14 +134,14 @@ virtual IImageSizeFacilityPtr clone() = 0;
 Програма нижче читає назад навчальну директорію YOLO v4 і записує відновлені анотації як файл проекту ImagesAnnotator через бібліотеку драйверів даних. Див. розділ [Використання бібліотеки у власному проекті](/doc/sections/uk_UA/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) щодо CMake-частини.
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>
 
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iadi = ImagesAnnotatorDataImporters014;
 
 int main(int argc, char** argv)
 {
@@ -150,19 +150,19 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  auto db = iadd::LibraryFacade::create_annotations_db();
+  auto db = iadd::IADataDriversFacade::create_annotations_db();
 
   if (db == nullptr) {
     std::cerr << "fail to create the annotations database\n";
     return 1;
   }
 
-  auto ctx = iadi::LibraryFacade::create_yolo4_library_context();
+  auto ctx = iadi::IADataImportersFacade::create_yolo4_library_context();
 
   ctx->set_import_path(argv[1]);
   ctx->set_db(db);
 
-  auto importer = iadi::LibraryFacade::create_importer(ctx);
+  auto importer = iadi::IADataImportersFacade::create_importer(ctx);
 
   if (importer == nullptr) {
     std::cerr << "no importer available for the requested layout\n";
@@ -181,7 +181,7 @@ int main(int argc, char** argv)
 
   std::cout << "imported " << ctx->get_imported_records()
             << " image records by the importers library version "
-            << iadi::LibraryFacade::library_version() << '\n';
+            << iadi::IADataImportersFacade::library_version() << '\n';
 
   return 0;
 }
@@ -189,19 +189,19 @@ int main(int argc, char** argv)
 
 Тут не передано жодного читача розмірів зображень, тож програмі вище потрібна бібліотека, зібрана з OpenCV. Інакше передайте власний читач до `ctx->set_image_sizer()` - наступний підрозділ показує як - або почніть із розкладки простого тексту, якій він не потрібен.
 
-Зауважте, що імпортувати можна й **до** наявного файлу проекту: відкрийте його через `iadd::LibraryFacade::open_annotations_db()` замість створення порожньої бази, і імпорт долучить зображення, яких проект ще не містить.
+Зауважте, що імпортувати можна й **до** наявного файлу проекту: відкрийте його через `iadd::IADataDriversFacade::open_annotations_db()` замість створення порожньої бази, і імпорт долучить зображення, яких проект ще не містить.
 
 ### Реалізація читача розмірів зображень
 
 Ескіз нижче підключає такий читач до графічних процедур, які проект-споживач уже має - підставте власні виклики декодування замість `my_imaging`:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.13/IImageSizeFacility.h>
+#include <ImagesAnnotatorDataImporters-0.14/IImageSizeFacility.h>
 
 #include <memory>
 #include <string>
 
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadi = ImagesAnnotatorDataImporters014;
 
 class MySizer : public iadi::IImageSizeFacility
 {
@@ -231,7 +231,7 @@ class MySizer : public iadi::IImageSizeFacility
 Передайте екземпляр через контекст, і кожен імпортер його підхопить:
 
 ```cpp
-auto ctx = iadi::LibraryFacade::create_yolo4_library_context();
+auto ctx = iadi::IADataImportersFacade::create_yolo4_library_context();
 
 ctx->set_image_sizer(std::make_shared<MySizer>());
 ```

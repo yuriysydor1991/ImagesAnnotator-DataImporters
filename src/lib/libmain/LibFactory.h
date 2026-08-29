@@ -30,19 +30,19 @@
 
 #include <memory>
 
+#include "IADataImportersContext.h"
+#include "IADataImportersLib.h"
 #include "IImageSizeFacility.h"
 #include "IImporter.h"
-#include "ILib.h"
-#include "LibraryContext.h"
-#include "contexts/CocoImportLibraryContext.h"
-#include "contexts/CreateMLImportLibraryContext.h"
-#include "contexts/PascalVocImportLibraryContext.h"
-#include "contexts/PlainTxtImportLibraryContext.h"
-#include "contexts/PyTorchImportLibraryContext.h"
-#include "contexts/UltralyticsDetectImportLibraryContext.h"
-#include "contexts/UltralyticsObbImportLibraryContext.h"
-#include "contexts/UltralyticsSegmentImportLibraryContext.h"
-#include "contexts/Yolo4ImportLibraryContext.h"
+#include "contexts/CocoImportContext.h"
+#include "contexts/CreateMLImportContext.h"
+#include "contexts/PascalVocImportContext.h"
+#include "contexts/PlainTxtImportContext.h"
+#include "contexts/PyTorchImportContext.h"
+#include "contexts/UltralyticsDetectImportContext.h"
+#include "contexts/UltralyticsObbImportContext.h"
+#include "contexts/UltralyticsSegmentImportContext.h"
+#include "contexts/Yolo4ImportContext.h"
 
 namespace iadi0impl
 {
@@ -56,31 +56,33 @@ class LibFactory
 {
  public:
   using LibFactoryPtr = std::shared_ptr<LibFactory>;
-  using ILibPtr = ImagesAnnotatorDataImporters013::ILibPtr;
-  using LibraryContextPtr = ImagesAnnotatorDataImporters013::LibraryContextPtr;
-  using LibraryContext = ImagesAnnotatorDataImporters013::LibraryContext;
-  using PlainTxtImportLibraryContextPtr =
-      ImagesAnnotatorDataImporters013::PlainTxtImportLibraryContextPtr;
-  using Yolo4ImportLibraryContextPtr =
-      ImagesAnnotatorDataImporters013::Yolo4ImportLibraryContextPtr;
-  using PyTorchImportLibraryContextPtr =
-      ImagesAnnotatorDataImporters013::PyTorchImportLibraryContextPtr;
-  using UltralyticsDetectImportLibraryContextPtr =
-      ImagesAnnotatorDataImporters013::UltralyticsDetectImportLibraryContextPtr;
-  using UltralyticsObbImportLibraryContextPtr =
-      ImagesAnnotatorDataImporters013::UltralyticsObbImportLibraryContextPtr;
-  using UltralyticsSegmentImportLibraryContextPtr =
-      ImagesAnnotatorDataImporters013::
-          UltralyticsSegmentImportLibraryContextPtr;
-  using CocoImportLibraryContextPtr =
-      ImagesAnnotatorDataImporters013::CocoImportLibraryContextPtr;
-  using PascalVocImportLibraryContextPtr =
-      ImagesAnnotatorDataImporters013::PascalVocImportLibraryContextPtr;
-  using CreateMLImportLibraryContextPtr =
-      ImagesAnnotatorDataImporters013::CreateMLImportLibraryContextPtr;
-  using IImporterPtr = ImagesAnnotatorDataImporters013::IImporterPtr;
+  using IADataImportersLibPtr =
+      ImagesAnnotatorDataImporters014::IADataImportersLibPtr;
+  using IADataImportersContextPtr =
+      ImagesAnnotatorDataImporters014::IADataImportersContextPtr;
+  using IADataImportersContext =
+      ImagesAnnotatorDataImporters014::IADataImportersContext;
+  using PlainTxtImportContextPtr =
+      ImagesAnnotatorDataImporters014::PlainTxtImportContextPtr;
+  using Yolo4ImportContextPtr =
+      ImagesAnnotatorDataImporters014::Yolo4ImportContextPtr;
+  using PyTorchImportContextPtr =
+      ImagesAnnotatorDataImporters014::PyTorchImportContextPtr;
+  using UltralyticsDetectImportContextPtr =
+      ImagesAnnotatorDataImporters014::UltralyticsDetectImportContextPtr;
+  using UltralyticsObbImportContextPtr =
+      ImagesAnnotatorDataImporters014::UltralyticsObbImportContextPtr;
+  using UltralyticsSegmentImportContextPtr =
+      ImagesAnnotatorDataImporters014::UltralyticsSegmentImportContextPtr;
+  using CocoImportContextPtr =
+      ImagesAnnotatorDataImporters014::CocoImportContextPtr;
+  using PascalVocImportContextPtr =
+      ImagesAnnotatorDataImporters014::PascalVocImportContextPtr;
+  using CreateMLImportContextPtr =
+      ImagesAnnotatorDataImporters014::CreateMLImportContextPtr;
+  using IImporterPtr = ImagesAnnotatorDataImporters014::IImporterPtr;
   using IImageSizeFacilityPtr =
-      ImagesAnnotatorDataImporters013::IImageSizeFacilityPtr;
+      ImagesAnnotatorDataImporters014::IImageSizeFacilityPtr;
 
   virtual ~LibFactory() = default;
   LibFactory() = default;
@@ -92,78 +94,78 @@ class LibFactory
    * @return Returns the default library implementation. Currently returns
    * the LibMain class instance.
    */
-  virtual ILibPtr create_default_lib();
+  virtual IADataImportersLibPtr create_default_lib();
 
   /**
    * @brief Creates an empty context of the plain text dataset layout.
    *
-   * @return Returns an empty PlainTxtImportLibraryContext instance.
+   * @return Returns an empty PlainTxtImportContext instance.
    */
-  virtual PlainTxtImportLibraryContextPtr create_plain_txt_library_context();
+  virtual PlainTxtImportContextPtr create_plain_txt_library_context();
 
   /**
    * @brief Creates an empty context of the YOLO v4 dataset layout.
    *
-   * @return Returns an empty Yolo4ImportLibraryContext instance.
+   * @return Returns an empty Yolo4ImportContext instance.
    */
-  virtual Yolo4ImportLibraryContextPtr create_yolo4_library_context();
+  virtual Yolo4ImportContextPtr create_yolo4_library_context();
 
   /**
    * @brief Creates an empty context of the Ultralytics YOLO detection dataset
    * layout.
    *
-   * @return Returns an empty UltralyticsDetectImportLibraryContext instance.
+   * @return Returns an empty UltralyticsDetectImportContext instance.
    */
-  virtual UltralyticsDetectImportLibraryContextPtr
+  virtual UltralyticsDetectImportContextPtr
   create_ultralytics_detect_library_context();
 
   /**
    * @brief Creates an empty context of the Ultralytics YOLO oriented bounding
    * box dataset layout.
    *
-   * @return Returns an empty UltralyticsObbImportLibraryContext instance.
+   * @return Returns an empty UltralyticsObbImportContext instance.
    */
-  virtual UltralyticsObbImportLibraryContextPtr
+  virtual UltralyticsObbImportContextPtr
   create_ultralytics_obb_library_context();
 
   /**
    * @brief Creates an empty context of the Ultralytics YOLO instance
    * segmentation dataset layout.
    *
-   * @return Returns an empty UltralyticsSegmentImportLibraryContext instance.
+   * @return Returns an empty UltralyticsSegmentImportContext instance.
    */
-  virtual UltralyticsSegmentImportLibraryContextPtr
+  virtual UltralyticsSegmentImportContextPtr
   create_ultralytics_segment_library_context();
 
   /**
    * @brief Creates an empty context of the COCO object detection dataset
    * layout.
    *
-   * @return Returns an empty CocoImportLibraryContext instance.
+   * @return Returns an empty CocoImportContext instance.
    */
-  virtual CocoImportLibraryContextPtr create_coco_library_context();
+  virtual CocoImportContextPtr create_coco_library_context();
 
   /**
    * @brief Creates an empty context of the Pascal VOC dataset layout.
    *
-   * @return Returns an empty PascalVocImportLibraryContext instance.
+   * @return Returns an empty PascalVocImportContext instance.
    */
-  virtual PascalVocImportLibraryContextPtr create_pascal_voc_library_context();
+  virtual PascalVocImportContextPtr create_pascal_voc_library_context();
 
   /**
    * @brief Creates an empty context of the Create ML object detection dataset
    * layout.
    *
-   * @return Returns an empty CreateMLImportLibraryContext instance.
+   * @return Returns an empty CreateMLImportContext instance.
    */
-  virtual CreateMLImportLibraryContextPtr create_createml_library_context();
+  virtual CreateMLImportContextPtr create_createml_library_context();
 
   /**
    * @brief Creates an empty context of the PyTorch Vision dataset layout.
    *
-   * @return Returns an empty PyTorchImportLibraryContext instance.
+   * @return Returns an empty PyTorchImportContext instance.
    */
-  virtual PyTorchImportLibraryContextPtr create_pytorch_library_context();
+  virtual PyTorchImportContextPtr create_pytorch_library_context();
 
   /**
    * @brief Creates appropriate library implementation instance
@@ -173,24 +175,25 @@ class LibFactory
    * or a nullptr in case of any error. Currently returns the LibMain class
    * instance only.
    */
-  virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx);
+  virtual IADataImportersLibPtr create_appropriate_lib(
+      IADataImportersContextPtr ctx);
 
   /**
    * @brief Creates the importer implementing the dataset layout of the given
    * context.
    *
-   * @param ctx The LibraryContext descendant naming the wanted layout.
+   * @param ctx The IADataImportersContext descendant naming the wanted layout.
    *
    * @return Returns a new importer or a nullptr for an empty context.
    */
-  virtual IImporterPtr create_importer(const LibraryContextPtr& ctx);
+  virtual IImporterPtr create_importer(const IADataImportersContextPtr& ctx);
 
   /**
    * @brief Creates the image size reader the library ships itself.
    *
    * @return Returns a new reader when this build found OpenCV, and a nullptr
    * when it did not. A nullptr only means the consumer has to supply one of
-   * its own through LibraryContext::set_image_sizer().
+   * its own through IADataImportersContext::set_image_sizer().
    */
   virtual IImageSizeFacilityPtr create_image_sizer();
 
@@ -205,16 +208,19 @@ class LibFactory
    * families they are written by, so that no single method carries the whole
    * list of them.
    *
-   * @param ctx The LibraryContext descendant naming the wanted layout.
+   * @param ctx The IADataImportersContext descendant naming the wanted layout.
    *
    * @return Returns a new importer, or a nullptr when the context names no
    * layout of that family.
    */
-  static IImporterPtr create_plain_importer(const LibraryContextPtr& ctx);
+  static IImporterPtr create_plain_importer(
+      const IADataImportersContextPtr& ctx);
   /// @copydoc LibFactory::create_plain_importer
-  static IImporterPtr create_ultralytics_importer(const LibraryContextPtr& ctx);
+  static IImporterPtr create_ultralytics_importer(
+      const IADataImportersContextPtr& ctx);
   /// @copydoc LibFactory::create_plain_importer
-  static IImporterPtr create_descriptor_importer(const LibraryContextPtr& ctx);
+  static IImporterPtr create_descriptor_importer(
+      const IADataImportersContextPtr& ctx);
 };
 
 using LibFactoryPtr = LibFactory::LibFactoryPtr;

@@ -3,19 +3,19 @@
 
 #include <memory>
 
-#include "LibraryContext.h"
-#include "contexts/CocoImportLibraryContext.h"
-#include "contexts/CreateMLImportLibraryContext.h"
-#include "contexts/PascalVocImportLibraryContext.h"
-#include "contexts/PlainTxtImportLibraryContext.h"
-#include "contexts/PyTorchImportLibraryContext.h"
-#include "contexts/UltralyticsDetectImportLibraryContext.h"
-#include "contexts/UltralyticsObbImportLibraryContext.h"
-#include "contexts/UltralyticsSegmentImportLibraryContext.h"
-#include "contexts/Yolo4ImportLibraryContext.h"
+#include "IADataImportersContext.h"
+#include "contexts/CocoImportContext.h"
+#include "contexts/CreateMLImportContext.h"
+#include "contexts/PascalVocImportContext.h"
+#include "contexts/PlainTxtImportContext.h"
+#include "contexts/PyTorchImportContext.h"
+#include "contexts/UltralyticsDetectImportContext.h"
+#include "contexts/UltralyticsObbImportContext.h"
+#include "contexts/UltralyticsSegmentImportContext.h"
+#include "contexts/Yolo4ImportContext.h"
 #include "src/lib/libmain/LibFactory.h"
 
-using namespace ImagesAnnotatorDataImporters013;
+using namespace ImagesAnnotatorDataImporters014;
 using namespace iadi0impl;
 using namespace testing;
 
@@ -82,47 +82,43 @@ TEST_F(UTEST_LibFactory, create_appropriate_lib_success)
 
 TEST_F(UTEST_LibFactory, create_importer_gives_an_instance_for_every_context)
 {
+  EXPECT_NE(factory->create_importer(std::make_shared<PlainTxtImportContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(std::make_shared<Yolo4ImportContext>()),
+            nullptr);
   EXPECT_NE(factory->create_importer(
-                std::make_shared<PlainTxtImportLibraryContext>()),
+                std::make_shared<UltralyticsDetectImportContext>()),
             nullptr);
   EXPECT_NE(
-      factory->create_importer(std::make_shared<Yolo4ImportLibraryContext>()),
+      factory->create_importer(std::make_shared<UltralyticsObbImportContext>()),
       nullptr);
   EXPECT_NE(factory->create_importer(
-                std::make_shared<UltralyticsDetectImportLibraryContext>()),
+                std::make_shared<UltralyticsSegmentImportContext>()),
             nullptr);
-  EXPECT_NE(factory->create_importer(
-                std::make_shared<UltralyticsObbImportLibraryContext>()),
-            nullptr);
-  EXPECT_NE(factory->create_importer(
-                std::make_shared<UltralyticsSegmentImportLibraryContext>()),
+  EXPECT_NE(factory->create_importer(std::make_shared<CocoImportContext>()),
             nullptr);
   EXPECT_NE(
-      factory->create_importer(std::make_shared<CocoImportLibraryContext>()),
+      factory->create_importer(std::make_shared<PascalVocImportContext>()),
       nullptr);
-  EXPECT_NE(factory->create_importer(
-                std::make_shared<PascalVocImportLibraryContext>()),
+  EXPECT_NE(factory->create_importer(std::make_shared<CreateMLImportContext>()),
             nullptr);
-  EXPECT_NE(factory->create_importer(
-                std::make_shared<CreateMLImportLibraryContext>()),
+  EXPECT_NE(factory->create_importer(std::make_shared<PyTorchImportContext>()),
             nullptr);
-  EXPECT_NE(
-      factory->create_importer(std::make_shared<PyTorchImportLibraryContext>()),
-      nullptr);
 }
 
 TEST_F(UTEST_LibFactory, create_importer_without_a_layout_context_failure)
 {
   EXPECT_EQ(factory->create_importer({}), nullptr);
-  EXPECT_EQ(factory->create_importer(std::make_shared<LibraryContext>()),
-            nullptr);
+  EXPECT_EQ(
+      factory->create_importer(std::make_shared<IADataImportersContext>()),
+      nullptr);
 }
 
 // The one image size reader case that runs in every configuration: with OpenCV
 // the factory hands out the library's own reader, without it a nullptr, which
-// is what makes LibraryContext::set_image_sizer() mandatory again. The reader
-// itself is covered by UTEST_OpenCVImageSizer, configured only in an OpenCV
-// build.
+// is what makes IADataImportersContext::set_image_sizer() mandatory again. The
+// reader itself is covered by UTEST_OpenCVImageSizer, configured only in an
+// OpenCV build.
 TEST_F(UTEST_LibFactory, create_image_sizer_matches_what_the_build_found)
 {
   const auto sizer = factory->create_image_sizer();

@@ -121,7 +121,7 @@ set(IADI_IMPORTERS_SRC
 # executable driving a context needs this translation unit, exactly as the
 # library target itself does.
 set(IADI_FACADE_SRC
-  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/LibraryContext.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/IADataImportersContext.cpp
 )
 
 # The image size reader factory is compiled into every build; the OpenCV

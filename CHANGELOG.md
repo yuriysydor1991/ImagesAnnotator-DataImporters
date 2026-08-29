@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.0] - 2026-08-29
+
+### Changed
+
+- **The generically named public classes are named after the library**: `LibraryFacade` is `IADataImportersFacade`, `LibraryContext` is `IADataImportersContext` and `ILib` is `IADataImportersLib`, each in the header of its own name, and the `LibraryContextPtr` and `ILibPtr` aliases follow as `IADataImportersContextPtr` and `IADataImportersLibPtr`. The nine layout descendants drop the now meaningless `Library` from theirs - `CocoImportLibraryContext` is `CocoImportContext`, and so on through `CreateMLImportContext`, `PascalVocImportContext`, `PlainTxtImportContext`, `PyTorchImportContext`, the three `Ultralytics*ImportContext` ones and `Yolo4ImportContext`. The sibling [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) and [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) libraries used to install a `LibraryFacade.h`, a `LibraryContext.h` and an `ILib.h` of their own, so a consumer of two of the three had three same named headers on one include path and told them apart by the versioned directory prefix alone; each library now installs headers and types no other one carries. `IImporter`, `IImageSizeFacility` and every facade method keep their names.
+
+- **The installable names carry the `0.14` pair**, which every consumer of this library has to follow: the public namespace is `ImagesAnnotatorDataImporters014`, the headers install into `<prefix>/include/ImagesAnnotatorDataImporters-0.14/`, the binary is `libImagesAnnotatorDataImporters-0.14.so.0.14.0` and the CMake package a consumer resolves is `find_package(ImagesAnnotatorDataImporters-0.14 0.14 REQUIRED CONFIG)`. The data drivers dependency is followed to its own 0.12 names at the same time: `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)`, the `<ImagesAnnotatorDataDrivers-0.12/...>` includes and the `ImagesAnnotatorDataDrivers012` namespace. The 0.13 pair the sources carried between the releases is skipped rather than released, and a 0.12 installation stays on the disk beside the new one instead of being overwritten by it.
+
 ## [0.12.0] - 2026-08-22
 
 ### Added

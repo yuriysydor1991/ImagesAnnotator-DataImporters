@@ -1,6 +1,6 @@
 @startuml
 
-package "ImagesAnnotatorDataDrivers011 (dependency)" #EEEEEE {
+package "ImagesAnnotatorDataDrivers012 (dependency)" #EEEEEE {
   abstract class "IAnnotationsDB" as IDB {
     +{abstract} void add_images_db(const ImageRecordsSet& andb)
     +{abstract} ImageRecordsSet& get_images_db()
@@ -15,9 +15,9 @@ package "ImagesAnnotatorDataDrivers011 (dependency)" #EEEEEE {
   }
 }
 
-package "ImagesAnnotatorDataImporters013 (installed interface)" {
+package "ImagesAnnotatorDataImporters014 (installed interface)" {
   abstract class IImporter {
-    +{abstract} bool import_db(LibraryContextPtr ictx)
+    +{abstract} bool import_db(IADataImportersContextPtr ictx)
   }
 
   abstract class IImageSizeFacility {
@@ -25,7 +25,7 @@ package "ImagesAnnotatorDataImporters013 (installed interface)" {
     +{abstract} IImageSizeFacilityPtr clone()
   }
 
-  class LibraryContext {
+  class IADataImportersContext {
     -std::string import_path
     -IAnnotationsDBPtr db
     -IImageSizeFacilityPtr imageSizer
@@ -43,33 +43,33 @@ package "ImagesAnnotatorDataImporters013 (installed interface)" {
     +void set_imported_records(const std::size_t&)
   }
 
-  class PlainTxtImportLibraryContext
-  class Yolo4ImportLibraryContext
-  class UltralyticsDetectImportLibraryContext
-  class UltralyticsObbImportLibraryContext
-  class UltralyticsSegmentImportLibraryContext
-  class CocoImportLibraryContext
-  class PascalVocImportLibraryContext
-  class CreateMLImportLibraryContext
-  class PyTorchImportLibraryContext
+  class PlainTxtImportContext
+  class Yolo4ImportContext
+  class UltralyticsDetectImportContext
+  class UltralyticsObbImportContext
+  class UltralyticsSegmentImportContext
+  class CocoImportContext
+  class PascalVocImportContext
+  class CreateMLImportContext
+  class PyTorchImportContext
 
-  abstract class ILib {
-    +{abstract} bool perform_import(LibraryContextPtr ctx)
+  abstract class IADataImportersLib {
+    +{abstract} bool perform_import(IADataImportersContextPtr ctx)
   }
 
-  class LibraryFacade {
-    +{static} PlainTxtImportLibraryContextPtr create_plain_txt_library_context()
-    +{static} Yolo4ImportLibraryContextPtr create_yolo4_library_context()
-    +{static} UltralyticsDetectImportLibraryContextPtr create_ultralytics_detect_library_context()
-    +{static} UltralyticsObbImportLibraryContextPtr create_ultralytics_obb_library_context()
-    +{static} UltralyticsSegmentImportLibraryContextPtr create_ultralytics_segment_library_context()
-    +{static} CocoImportLibraryContextPtr create_coco_library_context()
-    +{static} PascalVocImportLibraryContextPtr create_pascal_voc_library_context()
-    +{static} CreateMLImportLibraryContextPtr create_createml_library_context()
-    +{static} PyTorchImportLibraryContextPtr create_pytorch_library_context()
-    +{static} ILibPtr create_default_lib()
-    +{static} ILibPtr create_library(LibraryContextPtr ctx)
-    +{static} IImporterPtr create_importer(const LibraryContextPtr& ctx)
+  class IADataImportersFacade {
+    +{static} PlainTxtImportContextPtr create_plain_txt_library_context()
+    +{static} Yolo4ImportContextPtr create_yolo4_library_context()
+    +{static} UltralyticsDetectImportContextPtr create_ultralytics_detect_library_context()
+    +{static} UltralyticsObbImportContextPtr create_ultralytics_obb_library_context()
+    +{static} UltralyticsSegmentImportContextPtr create_ultralytics_segment_library_context()
+    +{static} CocoImportContextPtr create_coco_library_context()
+    +{static} PascalVocImportContextPtr create_pascal_voc_library_context()
+    +{static} CreateMLImportContextPtr create_createml_library_context()
+    +{static} PyTorchImportContextPtr create_pytorch_library_context()
+    +{static} IADataImportersLibPtr create_default_lib()
+    +{static} IADataImportersLibPtr create_library(IADataImportersContextPtr ctx)
+    +{static} IImporterPtr create_importer(const IADataImportersContextPtr& ctx)
     +{static} IImageSizeFacilityPtr create_image_sizer()
     +{static} std::string library_version()
   }
@@ -77,29 +77,29 @@ package "ImagesAnnotatorDataImporters013 (installed interface)" {
 
 package "Implementation (hidden symbols)" #F8F8F8 {
   class LibMain {
-    +bool perform_import(LibraryContextPtr ctx)
+    +bool perform_import(IADataImportersContextPtr ctx)
     +{static} LibMainPtr create()
   }
 
   class LibFactory {
-    +ILibPtr create_default_lib()
-    +PlainTxtImportLibraryContextPtr create_plain_txt_library_context()
-    +Yolo4ImportLibraryContextPtr create_yolo4_library_context()
-    +UltralyticsDetectImportLibraryContextPtr create_ultralytics_detect_library_context()
-    +UltralyticsObbImportLibraryContextPtr create_ultralytics_obb_library_context()
-    +UltralyticsSegmentImportLibraryContextPtr create_ultralytics_segment_library_context()
-    +CocoImportLibraryContextPtr create_coco_library_context()
-    +PascalVocImportLibraryContextPtr create_pascal_voc_library_context()
-    +CreateMLImportLibraryContextPtr create_createml_library_context()
-    +PyTorchImportLibraryContextPtr create_pytorch_library_context()
-    +ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
-    +IImporterPtr create_importer(const LibraryContextPtr& ctx)
+    +IADataImportersLibPtr create_default_lib()
+    +PlainTxtImportContextPtr create_plain_txt_library_context()
+    +Yolo4ImportContextPtr create_yolo4_library_context()
+    +UltralyticsDetectImportContextPtr create_ultralytics_detect_library_context()
+    +UltralyticsObbImportContextPtr create_ultralytics_obb_library_context()
+    +UltralyticsSegmentImportContextPtr create_ultralytics_segment_library_context()
+    +CocoImportContextPtr create_coco_library_context()
+    +PascalVocImportContextPtr create_pascal_voc_library_context()
+    +CreateMLImportContextPtr create_createml_library_context()
+    +PyTorchImportContextPtr create_pytorch_library_context()
+    +IADataImportersLibPtr create_appropriate_lib(IADataImportersContextPtr ctx)
+    +IImporterPtr create_importer(const IADataImportersContextPtr& ctx)
     +IImageSizeFacilityPtr create_image_sizer()
     +{static} LibFactoryPtr create_factory()
   }
 
   abstract class Folder2DBImporter {
-    +bool import_db(LibraryContextPtr ictx)
+    +bool import_db(IADataImportersContextPtr ictx)
     #{abstract} bool read_dataset(const std::filesystem::path& importDir, ImageRecordsSet& records)
     #virtual bool needs_image_sizer() const
     #bool measure_image(const std::filesystem::path& imagePath, int& width, int& height)
@@ -189,7 +189,7 @@ note right of IImageSizeFacility
   of its own.
 end note
 
-note bottom of LibraryFacade
+note bottom of IADataImportersFacade
   The only entry point a consuming
   project needs. Everything else stays
   behind these abstract interfaces.
@@ -229,7 +229,7 @@ note bottom of OpenCVImageSizer
   always wins over it.
 end note
 
-ILib <|-- LibMain
+IADataImportersLib <|-- LibMain
 IImporter <|-- Folder2DBImporter
 IImageSizeFacility <|-- OpenCVImageSizer
 
@@ -252,7 +252,7 @@ IXmlParser <|-- XmlParser
 JsonParser ..> JsonValue : builds
 XmlParser ..> XmlNode : builds
 
-LibraryFacade --> LibFactory : creates
+IADataImportersFacade --> LibFactory : creates
 LibMain --> LibFactory : creates
 LibFactory ..> LibMain : creates
 LibFactory ..> PlainTxtFolder2DBImporter : creates
@@ -266,21 +266,21 @@ LibFactory ..> CreateMLFolder2DBImporter : creates
 LibFactory ..> PyTorchVisionFolder2DBImporter : creates
 LibFactory ..> OpenCVImageSizer : creates
 
-LibraryContext <|-- PlainTxtImportLibraryContext
-LibraryContext <|-- Yolo4ImportLibraryContext
-LibraryContext <|-- UltralyticsDetectImportLibraryContext
-LibraryContext <|-- UltralyticsObbImportLibraryContext
-LibraryContext <|-- UltralyticsSegmentImportLibraryContext
-LibraryContext <|-- CocoImportLibraryContext
-LibraryContext <|-- PascalVocImportLibraryContext
-LibraryContext <|-- CreateMLImportLibraryContext
-LibraryContext <|-- PyTorchImportLibraryContext
+IADataImportersContext <|-- PlainTxtImportContext
+IADataImportersContext <|-- Yolo4ImportContext
+IADataImportersContext <|-- UltralyticsDetectImportContext
+IADataImportersContext <|-- UltralyticsObbImportContext
+IADataImportersContext <|-- UltralyticsSegmentImportContext
+IADataImportersContext <|-- CocoImportContext
+IADataImportersContext <|-- PascalVocImportContext
+IADataImportersContext <|-- CreateMLImportContext
+IADataImportersContext <|-- PyTorchImportContext
 
-LibFactory ..> LibraryContext : creates and casts to pick the layout
+LibFactory ..> IADataImportersContext : creates and casts to pick the layout
 
-LibraryContext --> IDB : fills
-LibraryContext --> IImageSizeFacility : uses
-IImporter --> LibraryContext : driven with
+IADataImportersContext --> IDB : fills
+IADataImportersContext --> IImageSizeFacility : uses
+IImporter --> IADataImportersContext : driven with
 
 UltralyticsFolder2DBImporter ..> UltralyticsDataYaml : reads the descriptor with
 JsonDescriptor2DBImporter ..> IJsonParser : reads the descriptor with

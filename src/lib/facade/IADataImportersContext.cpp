@@ -25,38 +25,65 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTLIBRARYCONTEXT_CLASS_H
+#include "IADataImportersContext.h"
 
+#include <cstddef>
 #include <memory>
+#include <string>
 
-#include "../ImportersAPI.h"
-#include "../LibraryContext.h"
-
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
-/**
- * @brief The library context which reads the darknet training directory of the
- * YOLO v4 detector back into image records. Requires an IImageSizeFacility
- * unless the library was built with its own, since the layout stores its
- * boxes normalised.
- *
- * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
- *
- * Current file is a target for the library header installation.
- */
-class IADI_API Yolo4ImportLibraryContext : public LibraryContext
+const std::string& IADataImportersContext::get_import_path() const
 {
- public:
-  using Yolo4ImportLibraryContextPtr =
-      std::shared_ptr<Yolo4ImportLibraryContext>;
-};
+  return import_path;
+}
 
-using Yolo4ImportLibraryContextPtr =
-    Yolo4ImportLibraryContext::Yolo4ImportLibraryContextPtr;
+void IADataImportersContext::set_import_path(const std::string& newPath)
+{
+  import_path = newPath;
+}
 
-}  // namespace ImagesAnnotatorDataImporters013
+const IADataImportersContext::IAnnotationsDBPtr&
+IADataImportersContext::get_db() const
+{
+  return db;
+}
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTLIBRARYCONTEXT_CLASS_H
+void IADataImportersContext::set_db(const IAnnotationsDBPtr& newDb)
+{
+  db = newDb;
+}
+
+const IImageSizeFacilityPtr& IADataImportersContext::get_image_sizer() const
+{
+  return imageSizer;
+}
+
+void IADataImportersContext::set_image_sizer(
+    const IImageSizeFacilityPtr& newSizer)
+{
+  imageSizer = newSizer;
+}
+
+const IImporterPtr& IADataImportersContext::get_importer() const
+{
+  return importer;
+}
+
+void IADataImportersContext::set_importer(const IImporterPtr& newImporter)
+{
+  importer = newImporter;
+}
+
+const std::size_t& IADataImportersContext::get_imported_records() const
+{
+  return importedRecords;
+}
+
+void IADataImportersContext::set_imported_records(const std::size_t& newCount)
+{
+  importedRecords = newCount;
+}
+
+}  // namespace ImagesAnnotatorDataImporters014

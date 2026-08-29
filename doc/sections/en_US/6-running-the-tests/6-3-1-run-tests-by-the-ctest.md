@@ -28,7 +28,7 @@ ctest --tests-dir /path/to/the/project/build/directory
 ```
 
 The cases are distributed over eleven binaries: eight unit test ones
-(`UTEST_LibraryFacade`, `UTEST_LibFactory`, `UTEST_LibMain`,
+(`UTEST_IADataImportersFacade`, `UTEST_LibFactory`, `UTEST_LibMain`,
 `UTEST_PlainTxtFolder2DBImporter`, `UTEST_Yolo4Folder2DBImporter`,
 `UTEST_PyTorchVisionFolder2DBImporter`, `UTEST_OpenCVImageSizer`,
 `UTEST_TypeHelper`) and three component test ones (`CTEST_Importers`,
@@ -42,13 +42,13 @@ ctest -N
 ```
 
 In order to run the cases of one particular binary, pass its name after the
-`-R` command line flag. For example, for the `UTEST_LibraryFacade` test it'll
+`-R` command line flag. For example, for the `UTEST_IADataImportersFacade` test it'll
 look something like this:
 
 ```
 # from the project build directory
 
-ctest -R UTEST_LibraryFacade
+ctest -R UTEST_IADataImportersFacade
 ```
 
 The same flag narrows the run down to a single case, because every test is
@@ -57,7 +57,7 @@ registered under its `<binary>.<case>.noArgs` name:
 ```
 # from the project build directory
 
-ctest -R UTEST_LibraryFacade.create_default_lib_success
+ctest -R UTEST_IADataImportersFacade.create_default_lib_success
 ```
 
 Add `--output-on-failure` to see the Google Test report of whatever failed.

@@ -1,14 +1,14 @@
 ## The dataset importers API
 
-The whole interface of the library is declared by the header files under [src/lib/facade/public](/src/lib/facade/public) and gets installed into the `include/ImagesAnnotatorDataImporters-0.13` sub-directory of the chosen install prefix. Nothing else leaves the shared object: every implementation class stays behind the abstract interfaces described here.
+The whole interface of the library is declared by the header files under [src/lib/facade/public](/src/lib/facade/public) and gets installed into the `include/ImagesAnnotatorDataImporters-0.14` sub-directory of the chosen install prefix. Nothing else leaves the shared object: every implementation class stays behind the abstract interfaces described here.
 
-All the installable declarations live in the `ImagesAnnotatorDataImporters013` namespace. The name carries the library major and minor version numbers (`0.13` gives the `013` suffix) so that two library versions may coexist in a single translation unit. Alias it once in your own code:
+All the installable declarations live in the `ImagesAnnotatorDataImporters014` namespace. The name carries the library major and minor version numbers (`0.14` gives the `014` suffix) so that two library versions may coexist in a single translation unit. Alias it once in your own code:
 
 ```cpp
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadi = ImagesAnnotatorDataImporters014;
 ```
 
-The records the importers build are not defined here. They come from the [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, whose interface namespace is `ImagesAnnotatorDataDrivers011` (aliased below as `iadd`). See the [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) subsection for the build side of that dependency.
+The records the importers build are not defined here. They come from the [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, whose interface namespace is `ImagesAnnotatorDataDrivers012` (aliased below as `iadd`). See the [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) subsection for the build side of that dependency.
 
 ### The installable header files
 
@@ -17,70 +17,70 @@ The records the importers build are not defined here. They come from the [Images
 | [ImportersAPI.h](/src/lib/facade/public/ImportersAPI.h) | the `IADI_API` visibility macro every installable declaration is marked with |
 | [IImporter.h](/src/lib/facade/public/IImporter.h) | the `IImporter` abstract importer interface |
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | the `IImageSizeFacility` interface the consuming project implements |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the `LibraryContext` in and out data class both entry points are driven with |
-| [PlainTxtImportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtImportLibraryContext.h) | the `LibraryContext` descendant of the plain text dataset layout |
-| [Yolo4ImportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ImportLibraryContext.h) | the `LibraryContext` descendant of the YOLO v4 (darknet) dataset layout |
-| [UltralyticsDetectImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO detection dataset layout |
-| [UltralyticsObbImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO oriented bounding box dataset layout |
-| [UltralyticsSegmentImportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO instance segmentation dataset layout |
-| [CocoImportLibraryContext.h](/src/lib/facade/public/contexts/CocoImportLibraryContext.h) | the `LibraryContext` descendant of the COCO object detection dataset layout |
-| [PascalVocImportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocImportLibraryContext.h) | the `LibraryContext` descendant of the Pascal VOC dataset layout |
-| [CreateMLImportLibraryContext.h](/src/lib/facade/public/contexts/CreateMLImportLibraryContext.h) | the `LibraryContext` descendant of the Create ML object detection dataset layout |
-| [PyTorchImportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchImportLibraryContext.h) | the `LibraryContext` descendant of the PyTorch Vision dataset layout |
-| [ILib.h](/src/lib/facade/public/ILib.h) | the `ILib` abstract library interface with its `perform_import` method |
-| [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` factory class, the entry point of the library |
+| [IADataImportersContext.h](/src/lib/facade/public/IADataImportersContext.h) | the `IADataImportersContext` in and out data class both entry points are driven with |
+| [PlainTxtImportContext.h](/src/lib/facade/public/contexts/PlainTxtImportContext.h) | the `IADataImportersContext` descendant of the plain text dataset layout |
+| [Yolo4ImportContext.h](/src/lib/facade/public/contexts/Yolo4ImportContext.h) | the `IADataImportersContext` descendant of the YOLO v4 (darknet) dataset layout |
+| [UltralyticsDetectImportContext.h](/src/lib/facade/public/contexts/UltralyticsDetectImportContext.h) | the `IADataImportersContext` descendant of the Ultralytics YOLO detection dataset layout |
+| [UltralyticsObbImportContext.h](/src/lib/facade/public/contexts/UltralyticsObbImportContext.h) | the `IADataImportersContext` descendant of the Ultralytics YOLO oriented bounding box dataset layout |
+| [UltralyticsSegmentImportContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentImportContext.h) | the `IADataImportersContext` descendant of the Ultralytics YOLO instance segmentation dataset layout |
+| [CocoImportContext.h](/src/lib/facade/public/contexts/CocoImportContext.h) | the `IADataImportersContext` descendant of the COCO object detection dataset layout |
+| [PascalVocImportContext.h](/src/lib/facade/public/contexts/PascalVocImportContext.h) | the `IADataImportersContext` descendant of the Pascal VOC dataset layout |
+| [CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | the `IADataImportersContext` descendant of the Create ML object detection dataset layout |
+| [PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | the `IADataImportersContext` descendant of the PyTorch Vision dataset layout |
+| [IADataImportersLib.h](/src/lib/facade/public/IADataImportersLib.h) | the `IADataImportersLib` abstract library interface with its `perform_import` method |
+| [IADataImportersFacade.h](/src/lib/facade/public/IADataImportersFacade.h) | the `IADataImportersFacade` factory class, the entry point of the library |
 
-Including `LibraryFacade.h` pulls in every other header of the list.
+Including `IADataImportersFacade.h` pulls in every other header of the list.
 
 ### The dataset layouts
 
 ```cpp
-class PlainTxtImportLibraryContext : public LibraryContext;
-class Yolo4ImportLibraryContext : public LibraryContext;
-class UltralyticsDetectImportLibraryContext : public LibraryContext;
-class UltralyticsObbImportLibraryContext : public LibraryContext;
-class UltralyticsSegmentImportLibraryContext : public LibraryContext;
-class CocoImportLibraryContext : public LibraryContext;
-class PascalVocImportLibraryContext : public LibraryContext;
-class CreateMLImportLibraryContext : public LibraryContext;
-class PyTorchImportLibraryContext : public LibraryContext;
+class PlainTxtImportContext : public IADataImportersContext;
+class Yolo4ImportContext : public IADataImportersContext;
+class UltralyticsDetectImportContext : public IADataImportersContext;
+class UltralyticsObbImportContext : public IADataImportersContext;
+class UltralyticsSegmentImportContext : public IADataImportersContext;
+class CocoImportContext : public IADataImportersContext;
+class PascalVocImportContext : public IADataImportersContext;
+class CreateMLImportContext : public IADataImportersContext;
+class PyTorchImportContext : public IADataImportersContext;
 ```
 
-The nine `LibraryContext` descendants name the nine dataset layouts the library is able to read. Instantiating one is what picks the layout, and the library maps that type onto the importer which reads it. None of them adds anything to `LibraryContext`, since everything an import needs - the source directory, the destination database and the image measuring instance - is held by the base class. What each of them expects to find on the disk is described in the [The read dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-read-dataset-layouts.md) subsection.
+The nine `IADataImportersContext` descendants name the nine dataset layouts the library is able to read. Instantiating one is what picks the layout, and the library maps that type onto the importer which reads it. None of them adds anything to `IADataImportersContext`, since everything an import needs - the source directory, the destination database and the image measuring instance - is held by the base class. What each of them expects to find on the disk is described in the [The read dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-read-dataset-layouts.md) subsection.
 
 The nine are the reverse of the nine layouts the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library writes - one for one, under the very same names - and the pair round trips: a project exported into any of them and imported back yields the annotations it started with, up to what the layout itself is able to carry.
 
-The five which can not be read without knowing how large each image is - see `IImageSizeFacility` below - are `Yolo4ImportLibraryContext`, the three `Ultralytics*ImportLibraryContext` ones, whose geometry is stored divided by that size, and `PyTorchImportLibraryContext`, whose annotation is the cropped image itself. `CocoImportLibraryContext` and `PascalVocImportLibraryContext` read the dimensions out of their own descriptors, and `PlainTxtImportLibraryContext` and `CreateMLImportLibraryContext` need no measurement at all, since both store their rectangles in the image own pixels, exactly as the internal project format keeps them.
+The five which can not be read without knowing how large each image is - see `IImageSizeFacility` below - are `Yolo4ImportContext`, the three `Ultralytics*ImportContext` ones, whose geometry is stored divided by that size, and `PyTorchImportContext`, whose annotation is the cropped image itself. `CocoImportContext` and `PascalVocImportContext` read the dimensions out of their own descriptors, and `PlainTxtImportContext` and `CreateMLImportContext` need no measurement at all, since both store their rectangles in the image own pixels, exactly as the internal project format keeps them.
 
-### LibraryContext
+### IADataImportersContext
 
-The single data class of the library, the one both of its entry points are driven with: the one shot `ILib::perform_import()` and the `IImporter::import_db()` of an importer built by hand. Create it with the `LibraryFacade` factory method of the wanted layout - the nine `create_*_library_context()` ones listed below - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
+The single data class of the library, the one both of its entry points are driven with: the one shot `IADataImportersLib::perform_import()` and the `IImporter::import_db()` of an importer built by hand. Create it with the `IADataImportersFacade` factory method of the wanted layout - the nine `create_*_library_context()` ones listed below - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
 
 The data it carries is private and reached through accessors only. Every getter hands out a `const` reference to what the context holds, every setter copies the given value in:
 
 | Accessors | Direction | Meaning |
 | --- | --- | --- |
 | `get_import_path()`, `set_import_path()` | in | the source directory of the import, a `std::string`, mandatory |
-| `get_db()`, `set_db()` | in-out | the annotations database the recovered records are merged into, an `ImagesAnnotatorDataDrivers011::IAnnotationsDBPtr`, mandatory |
+| `get_db()`, `set_db()` | in-out | the annotations database the recovered records are merged into, an `ImagesAnnotatorDataDrivers012::IAnnotationsDBPtr`, mandatory |
 | `get_image_sizer()`, `set_image_sizer()` | in | the image measuring service, an `IImageSizeFacilityPtr`. Mandatory for the layouts which can not be read without it, unless the library was built with OpenCV |
 | `get_importer()`, `set_importer()` | out | the importer instance the last `perform_import` ran, an `IImporterPtr` |
 | `get_imported_records()`, `set_imported_records()` | out | how many image records the last import recovered and handed to the database, a `std::size_t` |
 
-`LibraryContextPtr` is the `std::shared_ptr<LibraryContext>` alias.
+`IADataImportersContextPtr` is the `std::shared_ptr<IADataImportersContext>` alias.
 
-The database is an `IAnnotationsDB` and not the read only `IImagesPathsDBProvider` the exporters library takes, because an import has to **add** records: they are handed over through `IAnnotationsDB::add_images_db()`, which skips an image the database already holds and keeps the result sorted by the image paths. Importing one and the same dataset twice therefore adds its images once, and importing into the database of a project being edited appends to it rather than replacing it. Obtain an empty one from `iadd::LibraryFacade::create_annotations_db()`.
+The database is an `IAnnotationsDB` and not the read only `IImagesPathsDBProvider` the exporters library takes, because an import has to **add** records: they are handed over through `IAnnotationsDB::add_images_db()`, which skips an image the database already holds and keeps the result sorted by the image paths. Importing one and the same dataset twice therefore adds its images once, and importing into the database of a project being edited appends to it rather than replacing it. Obtain an empty one from `iadd::IADataDriversFacade::create_annotations_db()`.
 
 `get_imported_records()` counts what the import recovered out of the dataset, not the growth of the database - the two differ by the records the merge above found already there.
 
 ### IImporter
 
 ```cpp
-virtual bool import_db(LibraryContextPtr ictx) = 0;
+virtual bool import_db(IADataImportersContextPtr ictx) = 0;
 ```
 
 The single method of an importer. It reads the dataset named by the context in the layout that importer implements, merges the records it recovers into the database of that very same context and returns `true` when the run as a whole went through. Entries it cannot process - a malformed line, an image file that is not there, a picture it cannot measure - are skipped and reported through the library log, they do not fail the run. A `false` means the context is incomplete, the import path holds no directory, or the directory holds no dataset of that layout at all - the descriptor the layout is built around missing or unreadable. The database is left untouched then.
 
-The layout the context type names is not looked at here: the layout read is the one of the importer itself, so even the `LibraryContext` base class, which names no layout of its own, drives an `import_db()` just fine. An implementation must not keep the context beyond the call, since a context holding that importer back would close a pointer cycle. `IImporterPtr` is the `std::shared_ptr<IImporter>` alias.
+The layout the context type names is not looked at here: the layout read is the one of the importer itself, so even the `IADataImportersContext` base class, which names no layout of its own, drives an `import_db()` just fine. An implementation must not keep the context beyond the call, since a context holding that importer back would close a pointer cycle. `IImporterPtr` is the `std::shared_ptr<IImporter>` alias.
 
 ### IImageSizeFacility
 
@@ -104,28 +104,28 @@ A library built with OpenCV ships an implementation of its own, so this interfac
 
 `clone()` has to produce a copy sharing no mutable decoding state with the original. The importers shipped today only ever call `read_image_size()`, but the method is a part of the interface and has to be implemented.
 
-### ILib
+### IADataImportersLib
 
-`ILib::perform_import(LibraryContextPtr ctx)` is the single shot entry point of the library. It builds the importer of the layout the context names, publishes it through `ctx->set_importer()` and runs the import over that very same context, whose `get_imported_records()` then carries the count. It returns `false` when the context names no known layout or the import itself failed. Projects that want a finer grained control should rather build the importer directly with `LibraryFacade::create_importer()` and call `import_db()` on it - with the same context in both hands.
+`IADataImportersLib::perform_import(IADataImportersContextPtr ctx)` is the single shot entry point of the library. It builds the importer of the layout the context names, publishes it through `ctx->set_importer()` and runs the import over that very same context, whose `get_imported_records()` then carries the count. It returns `false` when the context names no known layout or the import itself failed. Projects that want a finer grained control should rather build the importer directly with `IADataImportersFacade::create_importer()` and call `import_db()` on it - with the same context in both hands.
 
-### LibraryFacade
+### IADataImportersFacade
 
 A class of static factory methods only, and the only entry point a consuming project needs:
 
 | Method | Returns |
 | --- | --- |
-| `create_plain_txt_library_context()` | a new empty `PlainTxtImportLibraryContextPtr` |
-| `create_yolo4_library_context()` | a new empty `Yolo4ImportLibraryContextPtr` |
-| `create_ultralytics_detect_library_context()` | a new empty `UltralyticsDetectImportLibraryContextPtr` |
-| `create_ultralytics_obb_library_context()` | a new empty `UltralyticsObbImportLibraryContextPtr` |
-| `create_ultralytics_segment_library_context()` | a new empty `UltralyticsSegmentImportLibraryContextPtr` |
-| `create_coco_library_context()` | a new empty `CocoImportLibraryContextPtr` |
-| `create_pascal_voc_library_context()` | a new empty `PascalVocImportLibraryContextPtr` |
-| `create_createml_library_context()` | a new empty `CreateMLImportLibraryContextPtr` |
-| `create_pytorch_library_context()` | a new empty `PyTorchImportLibraryContextPtr` |
-| `create_default_lib()` | the default `ILibPtr` implementation |
-| `create_library(LibraryContextPtr ctx)` | the `ILibPtr` implementation appropriate for the given context |
-| `create_importer(const LibraryContextPtr& ctx)` | a new `IImporterPtr` for the layout of the context, or a `nullptr` for a context naming no known layout |
+| `create_plain_txt_library_context()` | a new empty `PlainTxtImportContextPtr` |
+| `create_yolo4_library_context()` | a new empty `Yolo4ImportContextPtr` |
+| `create_ultralytics_detect_library_context()` | a new empty `UltralyticsDetectImportContextPtr` |
+| `create_ultralytics_obb_library_context()` | a new empty `UltralyticsObbImportContextPtr` |
+| `create_ultralytics_segment_library_context()` | a new empty `UltralyticsSegmentImportContextPtr` |
+| `create_coco_library_context()` | a new empty `CocoImportContextPtr` |
+| `create_pascal_voc_library_context()` | a new empty `PascalVocImportContextPtr` |
+| `create_createml_library_context()` | a new empty `CreateMLImportContextPtr` |
+| `create_pytorch_library_context()` | a new empty `PyTorchImportContextPtr` |
+| `create_default_lib()` | the default `IADataImportersLibPtr` implementation |
+| `create_library(IADataImportersContextPtr ctx)` | the `IADataImportersLibPtr` implementation appropriate for the given context |
+| `create_importer(const IADataImportersContextPtr& ctx)` | a new `IImporterPtr` for the layout of the context, or a `nullptr` for a context naming no known layout |
 | `create_image_sizer()` | the image size reader the library ships itself, or a `nullptr` in a build without OpenCV |
 | `library_version()` | the version string of the library binary in use |
 
@@ -134,14 +134,14 @@ A class of static factory methods only, and the only entry point a consuming pro
 The program below reads a YOLO v4 training directory back and writes the recovered annotations out as an ImagesAnnotator project file through the data drivers library. See the [Using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) section for the CMake side of it.
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>
 
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iadi = ImagesAnnotatorDataImporters014;
 
 int main(int argc, char** argv)
 {
@@ -150,19 +150,19 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  auto db = iadd::LibraryFacade::create_annotations_db();
+  auto db = iadd::IADataDriversFacade::create_annotations_db();
 
   if (db == nullptr) {
     std::cerr << "fail to create the annotations database\n";
     return 1;
   }
 
-  auto ctx = iadi::LibraryFacade::create_yolo4_library_context();
+  auto ctx = iadi::IADataImportersFacade::create_yolo4_library_context();
 
   ctx->set_import_path(argv[1]);
   ctx->set_db(db);
 
-  auto importer = iadi::LibraryFacade::create_importer(ctx);
+  auto importer = iadi::IADataImportersFacade::create_importer(ctx);
 
   if (importer == nullptr) {
     std::cerr << "no importer available for the requested layout\n";
@@ -181,7 +181,7 @@ int main(int argc, char** argv)
 
   std::cout << "imported " << ctx->get_imported_records()
             << " image records by the importers library version "
-            << iadi::LibraryFacade::library_version() << '\n';
+            << iadi::IADataImportersFacade::library_version() << '\n';
 
   return 0;
 }
@@ -189,19 +189,19 @@ int main(int argc, char** argv)
 
 No image size reader is handed over here, so the program above needs a library built with OpenCV. Give one of your own to `ctx->set_image_sizer()` otherwise - the next subsection shows how - or start from one of the four layouts which need none: the plain text, the COCO, the Pascal VOC and the Create ML ones.
 
-Note that an existing project file may be imported **into**: open it with `iadd::LibraryFacade::open_annotations_db()` instead of creating an empty database, and the import appends the images the project does not hold yet.
+Note that an existing project file may be imported **into**: open it with `iadd::IADataDriversFacade::open_annotations_db()` instead of creating an empty database, and the import appends the images the project does not hold yet.
 
 ### Implementing an image size reader
 
 The sketch below wires one up over the imaging routines the consuming project already has - substitute your own decoding calls for the `my_imaging` ones:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.13/IImageSizeFacility.h>
+#include <ImagesAnnotatorDataImporters-0.14/IImageSizeFacility.h>
 
 #include <memory>
 #include <string>
 
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadi = ImagesAnnotatorDataImporters014;
 
 class MySizer : public iadi::IImageSizeFacility
 {
@@ -231,7 +231,7 @@ class MySizer : public iadi::IImageSizeFacility
 Hand the instance over through the context and every importer picks it up:
 
 ```cpp
-auto ctx = iadi::LibraryFacade::create_yolo4_library_context();
+auto ctx = iadi::IADataImportersFacade::create_yolo4_library_context();
 
 ctx->set_image_sizer(std::make_shared<MySizer>());
 ```

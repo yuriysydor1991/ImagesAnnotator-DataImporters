@@ -46,7 +46,7 @@ namespace iannotator::importers::sizers
  * @return Returns a new OpenCVImageSizer when the build found OpenCV, and a
  * nullptr when it did not. A nullptr is not an error - it only means the
  * consumer has to supply a reader of its own through
- * LibraryContext::set_image_sizer().
+ * IADataImportersContext::set_image_sizer().
  */
 IImageSizeFacilityPtr create_builtin_image_sizer();
 

@@ -15,9 +15,9 @@ target_include_directories(
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/facade/public>
     # Both the plain include root and the versioned sub-directory are exported,
     # so a consumer may write either
-    #   #include <ImagesAnnotatorDataImporters-0.13/LibraryFacade.h>  (recommended)
+    #   #include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>  (recommended)
     # or the short
-    #   #include <LibraryFacade.h>
+    #   #include <IADataImportersFacade.h>
     # The prefixed form is the safe one: header names such as IImporter.h are
     # generic enough to collide in a busy include path.
     $<INSTALL_INTERFACE:include>

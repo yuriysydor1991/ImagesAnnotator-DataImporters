@@ -1,6 +1,6 @@
 ## The read dataset layouts
 
-Each `LibraryContext` descendant is implemented by one importer class under [src/importers](/src/importers). This subsection describes what every one of them expects to find inside the directory named by `LibraryContext::set_import_path()`, and what it makes of it. The interface that drives them is described in the [The dataset importers API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-importers-api.md) subsection.
+Each `IADataImportersContext` descendant is implemented by one importer class under [src/importers](/src/importers). This subsection describes what every one of them expects to find inside the directory named by `IADataImportersContext::set_import_path()`, and what it makes of it. The interface that drives them is described in the [The dataset importers API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-importers-api.md) subsection.
 
 ### What they all have in common
 
@@ -19,7 +19,7 @@ The examples below all describe the very same two record result, which is what t
 | `/home/user/images/street.png` | 640 x 400 | `dog` (50, 20, 100, 40), `dog` (300, 25, 90, 45) |
 | `/home/user/images/park.jpg` | 640 x 480 | `cat` (200, 130, 48, 52), `dog` (12, 8, 64, 64) |
 
-### PlainTxtImportLibraryContext
+### PlainTxtImportContext
 
 The simplest layout: one plain text file per annotation name, lying straight in the import directory and named `<annotation-name>.txt`.
 
@@ -56,7 +56,7 @@ The image path is written unquoted and the file names no separator, so **the cou
 
 The layout carries no image size, so `iwidth` and `iheight` stay at zero unless an `IImageSizeFacility` is there, in which case every recovered image is measured with it. The rectangles are complete either way, since this layout stores them in the pixels the internal format wants them in.
 
-### Yolo4ImportLibraryContext
+### Yolo4ImportContext
 
 The darknet training directory of the YOLO v4 detector:
 
@@ -166,7 +166,7 @@ A line naming a class index the descriptor does not declare, a line carrying a n
 - **A coordinate outside the `0..1` range is cut down to the image.** An Ultralytics release refuses a whole image over such a coordinate, so this only ever reaches a dataset written by something else - and a box reaching over an edge is cut there exactly as the exporting side cuts it.
 - A box left with no area inside the image is dropped, and the image and the rest of its rectangles are imported as usual.
 
-### UltralyticsDetectImportLibraryContext
+### UltralyticsDetectImportContext
 
 The detection dataset. Every line carries the class index and the box:
 
@@ -183,7 +183,7 @@ which is the very four numbers the darknet layout writes as well. So a `labels/t
 
 over a 640 x 400 `street.png` gives the `dog` rectangles (50, 20, 100, 40) and (300, 25, 90, 45) back: the centre and the extent are multiplied by the measured size, the origin is the centre less half of that extent, and each of the four is rounded to the nearest pixel. A line carrying anything other than four numbers behind its class index is dropped.
 
-### UltralyticsObbImportLibraryContext
+### UltralyticsObbImportContext
 
 The oriented bounding box dataset. Every line carries the class index and the four corners of the box, clockwise from the top left one:
 
@@ -200,7 +200,7 @@ So a `labels/train/street.txt` of
 
 gives those same two `dog` rectangles back. The annotations database knows axis aligned rectangles only, so **what comes back is the upright rectangle holding the four corners** - which for a box written by the sibling exporters library, whose rotation angle is always zero, is the very rectangle it was drawn as. A box some other tool wrote with a real angle comes back as the upright one holding it, which is wider than the object it marks. A line carrying anything other than eight numbers behind its class index is dropped.
 
-### UltralyticsSegmentImportLibraryContext
+### UltralyticsSegmentImportContext
 
 The instance segmentation dataset. Every line carries the class index and the points of the polygon which outlines the object, of any three or more of them:
 
@@ -212,7 +212,7 @@ The instance segmentation dataset. Every line carries the class index and the po
 
 A line carrying fewer than six numbers behind its class index, or an odd count of them, is dropped: neither is a ring of `x y` pairs of three points or more.
 
-### CocoImportLibraryContext
+### CocoImportContext
 
 The COCO object detection dataset: a directory of pictures and the single JSON descriptor over them.
 
@@ -235,7 +235,7 @@ The `file_name` of an image is taken relative to the first of these directories 
 
 ```json
 {
-"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.11.0"},
+"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.12.0"},
 "licenses": [],
 "images": [
   {"id": 1, "file_name": "street.png", "width": 640, "height": 400},
@@ -262,7 +262,7 @@ That descriptor gives back the two records of the table above, and nothing of a 
 - **`area`**, **`iscrowd`** and **`segmentation`** are read over: the first is the box multiplied out, and the annotations database holds neither a crowd flag nor a mask.
 - An annotation naming an image the descriptor does not declare, and one carrying no four numbers in its `bbox`, are each dropped and logged. An image no annotation names becomes a record with no rectangles.
 
-### PascalVocImportLibraryContext
+### PascalVocImportContext
 
 The Pascal VOC dataset, in the devkit directory shape: the pictures, one XML descriptor per picture and the image lists naming those.
 
@@ -320,7 +320,7 @@ Every `*.xml` file of `Annotations/` is read, in the sorted order of the names. 
 - **`truncated`**, **`difficult`**, **`pose`**, **`segmented`** and **`source`** are read over. The first marks a box the image edge cut down, which the annotations database holds nothing of, and a `difficult` rectangle is imported like every other one: a project is edited and not evaluated.
 - A file which is no `annotation` element, and one naming no image, are each skipped whole and logged, while the rest of the directory is imported as usual.
 
-### CreateMLImportLibraryContext
+### CreateMLImportContext
 
 The Create ML object detection dataset: the pictures and the one JSON descriptor beside them, in a single flat directory.
 
@@ -353,7 +353,7 @@ The flatness is the format: this is the `directoryWithImagesAndJsonAnnotation` d
 - **Both spellings of the two keys are read**: the singular `imagefilename` and `annotation` pair Apple documents, and the plural `image` and `annotations` one some converters emit instead.
 - The layout carries no image size anywhere, so the record dimensions are filled in from a reader when the consumer supplied one and stay at zero when they are not. An image whose `annotation` array is empty becomes a record with no rectangles.
 
-### PyTorchImportLibraryContext
+### PyTorchImportContext
 
 The classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name, holding the images cropped down to the rectangles of that name.
 

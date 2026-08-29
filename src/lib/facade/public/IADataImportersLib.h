@@ -25,19 +25,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ILIB_ABSTRACT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ILIB_ABSTRACT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSLIB_ABSTRACT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSLIB_ABSTRACT_CLASS_H
 
 #include <memory>
 
+#include "IADataImportersContext.h"
 #include "ImportersAPI.h"
-#include "LibraryContext.h"
 
 /**
  * @brief The implementation part of the library.
  * Hides all the guts of particular implementation code.
  */
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
@@ -48,36 +48,36 @@ namespace ImagesAnnotatorDataImporters013
  * takes a filled context, builds the importer of the layout that context
  * stands for and runs that importer over the directory it points at. Projects
  * that need a finer grained control should rather build the importer directly
- * through the LibraryFacade factory methods.
+ * through the IADataImportersFacade factory methods.
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API ILib
+class IADI_API IADataImportersLib
 {
  public:
-  using ILibPtr = std::shared_ptr<ILib>;
+  using IADataImportersLibPtr = std::shared_ptr<IADataImportersLib>;
 
-  virtual ~ILib() = default;
-  ILib() = default;
+  virtual ~IADataImportersLib() = default;
+  IADataImportersLib() = default;
 
   /**
-   * @brief The library interface method which every ILib descendant
-   * must implement in order to provide it's functionality.
+   * @brief The library interface method which every IADataImportersLib
+   * descendant must implement in order to provide it's functionality.
    *
-   * @param ctx A filled LibraryContext descendant of the wanted dataset
-   * layout. On success its LibraryContext::get_importer() gives the importer
-   * instance the import was performed with and its
-   * LibraryContext::get_imported_records() the number of the image records
-   * that import handed to the database.
+   * @param ctx A filled IADataImportersContext descendant of the wanted dataset
+   * layout. On success its IADataImportersContext::get_importer() gives the
+   * importer instance the import was performed with and its
+   * IADataImportersContext::get_imported_records() the number of the image
+   * records that import handed to the database.
    *
    * @return Should return a true value on the success and false
    * in case of any error.
    */
-  virtual bool perform_import(LibraryContextPtr ctx) = 0;
+  virtual bool perform_import(IADataImportersContextPtr ctx) = 0;
 };
 
-using ILibPtr = ILib::ILibPtr;
+using IADataImportersLibPtr = IADataImportersLib::IADataImportersLibPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ILIB_ABSTRACT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSLIB_ABSTRACT_CLASS_H

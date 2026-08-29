@@ -30,15 +30,15 @@
 #include <cassert>
 #include <memory>
 
-#include "contexts/CocoImportLibraryContext.h"
-#include "contexts/CreateMLImportLibraryContext.h"
-#include "contexts/PascalVocImportLibraryContext.h"
-#include "contexts/PlainTxtImportLibraryContext.h"
-#include "contexts/PyTorchImportLibraryContext.h"
-#include "contexts/UltralyticsDetectImportLibraryContext.h"
-#include "contexts/UltralyticsObbImportLibraryContext.h"
-#include "contexts/UltralyticsSegmentImportLibraryContext.h"
-#include "contexts/Yolo4ImportLibraryContext.h"
+#include "contexts/CocoImportContext.h"
+#include "contexts/CreateMLImportContext.h"
+#include "contexts/PascalVocImportContext.h"
+#include "contexts/PlainTxtImportContext.h"
+#include "contexts/PyTorchImportContext.h"
+#include "contexts/UltralyticsDetectImportContext.h"
+#include "contexts/UltralyticsObbImportContext.h"
+#include "contexts/UltralyticsSegmentImportContext.h"
+#include "contexts/Yolo4ImportContext.h"
 #include "src/importers/Coco/CocoFolder2DBImporter.h"
 #include "src/importers/CreateML/CreateMLFolder2DBImporter.h"
 #include "src/importers/PascalVoc/PascalVocFolder2DBImporter.h"
@@ -55,69 +55,66 @@
 namespace iadi0impl
 {
 
-using namespace ImagesAnnotatorDataImporters013;
+using namespace ImagesAnnotatorDataImporters014;
 
-LibFactory::ILibPtr LibFactory::create_default_lib()
+LibFactory::IADataImportersLibPtr LibFactory::create_default_lib()
 {
   return LibMain::create();
 }
 
-LibFactory::PlainTxtImportLibraryContextPtr
+LibFactory::PlainTxtImportContextPtr
 LibFactory::create_plain_txt_library_context()
 {
-  return std::make_shared<PlainTxtImportLibraryContext>();
+  return std::make_shared<PlainTxtImportContext>();
 }
 
-LibFactory::Yolo4ImportLibraryContextPtr
-LibFactory::create_yolo4_library_context()
+LibFactory::Yolo4ImportContextPtr LibFactory::create_yolo4_library_context()
 {
-  return std::make_shared<Yolo4ImportLibraryContext>();
+  return std::make_shared<Yolo4ImportContext>();
 }
 
-LibFactory::UltralyticsDetectImportLibraryContextPtr
+LibFactory::UltralyticsDetectImportContextPtr
 LibFactory::create_ultralytics_detect_library_context()
 {
-  return std::make_shared<UltralyticsDetectImportLibraryContext>();
+  return std::make_shared<UltralyticsDetectImportContext>();
 }
 
-LibFactory::UltralyticsObbImportLibraryContextPtr
+LibFactory::UltralyticsObbImportContextPtr
 LibFactory::create_ultralytics_obb_library_context()
 {
-  return std::make_shared<UltralyticsObbImportLibraryContext>();
+  return std::make_shared<UltralyticsObbImportContext>();
 }
 
-LibFactory::UltralyticsSegmentImportLibraryContextPtr
+LibFactory::UltralyticsSegmentImportContextPtr
 LibFactory::create_ultralytics_segment_library_context()
 {
-  return std::make_shared<UltralyticsSegmentImportLibraryContext>();
+  return std::make_shared<UltralyticsSegmentImportContext>();
 }
 
-LibFactory::CocoImportLibraryContextPtr
-LibFactory::create_coco_library_context()
+LibFactory::CocoImportContextPtr LibFactory::create_coco_library_context()
 {
-  return std::make_shared<CocoImportLibraryContext>();
+  return std::make_shared<CocoImportContext>();
 }
 
-LibFactory::PascalVocImportLibraryContextPtr
+LibFactory::PascalVocImportContextPtr
 LibFactory::create_pascal_voc_library_context()
 {
-  return std::make_shared<PascalVocImportLibraryContext>();
+  return std::make_shared<PascalVocImportContext>();
 }
 
-LibFactory::CreateMLImportLibraryContextPtr
+LibFactory::CreateMLImportContextPtr
 LibFactory::create_createml_library_context()
 {
-  return std::make_shared<CreateMLImportLibraryContext>();
+  return std::make_shared<CreateMLImportContext>();
 }
 
-LibFactory::PyTorchImportLibraryContextPtr
-LibFactory::create_pytorch_library_context()
+LibFactory::PyTorchImportContextPtr LibFactory::create_pytorch_library_context()
 {
-  return std::make_shared<PyTorchImportLibraryContext>();
+  return std::make_shared<PyTorchImportContext>();
 }
 
-LibFactory::ILibPtr LibFactory::create_appropriate_lib(
-    [[maybe_unused]] LibraryContextPtr ctx)
+LibFactory::IADataImportersLibPtr LibFactory::create_appropriate_lib(
+    [[maybe_unused]] IADataImportersContextPtr ctx)
 {
   assert(ctx != nullptr);
 
@@ -128,7 +125,7 @@ LibFactory::ILibPtr LibFactory::create_appropriate_lib(
 // layout keeps that knowledge here, where the concrete importer classes are
 // already known, instead of in the installed headers.
 LibFactory::IImporterPtr LibFactory::create_importer(
-    const LibraryContextPtr& ctx)
+    const IADataImportersContextPtr& ctx)
 {
   auto importer = create_plain_importer(ctx);
 
@@ -148,17 +145,17 @@ LibFactory::IImporterPtr LibFactory::create_importer(
 }
 
 LibFactory::IImporterPtr LibFactory::create_plain_importer(
-    const LibraryContextPtr& ctx)
+    const IADataImportersContextPtr& ctx)
 {
-  if (std::dynamic_pointer_cast<PlainTxtImportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<PlainTxtImportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::importers::PlainTxtFolder2DBImporter>();
   }
 
-  if (std::dynamic_pointer_cast<Yolo4ImportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<Yolo4ImportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::importers::Yolo4Folder2DBImporter>();
   }
 
-  if (std::dynamic_pointer_cast<PyTorchImportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<PyTorchImportContext>(ctx) != nullptr) {
     return std::make_shared<
         iannotator::importers::PyTorchVisionFolder2DBImporter>();
   }
@@ -167,21 +164,20 @@ LibFactory::IImporterPtr LibFactory::create_plain_importer(
 }
 
 LibFactory::IImporterPtr LibFactory::create_ultralytics_importer(
-    const LibraryContextPtr& ctx)
+    const IADataImportersContextPtr& ctx)
 {
-  if (std::dynamic_pointer_cast<UltralyticsDetectImportLibraryContext>(ctx) !=
+  if (std::dynamic_pointer_cast<UltralyticsDetectImportContext>(ctx) !=
       nullptr) {
     return std::make_shared<
         iannotator::importers::UltralyticsDetectFolder2DBImporter>();
   }
 
-  if (std::dynamic_pointer_cast<UltralyticsObbImportLibraryContext>(ctx) !=
-      nullptr) {
+  if (std::dynamic_pointer_cast<UltralyticsObbImportContext>(ctx) != nullptr) {
     return std::make_shared<
         iannotator::importers::UltralyticsObbFolder2DBImporter>();
   }
 
-  if (std::dynamic_pointer_cast<UltralyticsSegmentImportLibraryContext>(ctx) !=
+  if (std::dynamic_pointer_cast<UltralyticsSegmentImportContext>(ctx) !=
       nullptr) {
     return std::make_shared<
         iannotator::importers::UltralyticsSegmentFolder2DBImporter>();
@@ -191,19 +187,18 @@ LibFactory::IImporterPtr LibFactory::create_ultralytics_importer(
 }
 
 LibFactory::IImporterPtr LibFactory::create_descriptor_importer(
-    const LibraryContextPtr& ctx)
+    const IADataImportersContextPtr& ctx)
 {
-  if (std::dynamic_pointer_cast<CocoImportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<CocoImportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::importers::CocoFolder2DBImporter>();
   }
 
-  if (std::dynamic_pointer_cast<PascalVocImportLibraryContext>(ctx) !=
-      nullptr) {
+  if (std::dynamic_pointer_cast<PascalVocImportContext>(ctx) != nullptr) {
     return std::make_shared<
         iannotator::importers::PascalVocFolder2DBImporter>();
   }
 
-  if (std::dynamic_pointer_cast<CreateMLImportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<CreateMLImportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::importers::CreateMLFolder2DBImporter>();
   }
 

@@ -25,40 +25,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PASCALVOCIMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PASCALVOCIMPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTCONTEXT_CLASS_H
 
 #include <memory>
 
+#include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
-#include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
- * @brief The library context which reads the Pascal VOC dataset - one XML
- * descriptor per image, under the `Annotations` directory of the devkit shape
- * or beside the pictures themselves - back into image records.
- *
- * A descriptor carries the size of its image, so this is one of the layouts
- * which need no IImageSizeFacility.
+ * @brief The library context which reads the darknet training directory of the
+ * YOLO v4 detector back into image records. Requires an IImageSizeFacility
+ * unless the library was built with its own, since the layout stores its
+ * boxes normalised.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataImportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API PascalVocImportLibraryContext : public LibraryContext
+class IADI_API Yolo4ImportContext : public IADataImportersContext
 {
  public:
-  using PascalVocImportLibraryContextPtr =
-      std::shared_ptr<PascalVocImportLibraryContext>;
+  using Yolo4ImportContextPtr = std::shared_ptr<Yolo4ImportContext>;
 };
 
-using PascalVocImportLibraryContextPtr =
-    PascalVocImportLibraryContext::PascalVocImportLibraryContextPtr;
+using Yolo4ImportContextPtr = Yolo4ImportContext::Yolo4ImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PASCALVOCIMPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTCONTEXT_CLASS_H

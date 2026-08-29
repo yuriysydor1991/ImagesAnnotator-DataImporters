@@ -18,7 +18,7 @@ to the CMake configure arguments of the IDE profile (CLion: `Settings` ->
 CMake Tools extension: the `cmake.configureArgs` setting; Qt Creator: the
 `Initial CMake parameters` of the kit). Without it the configure stage stops
 with a `Could not find a package configuration file provided by
-"ImagesAnnotatorDataDrivers-0.11"` error.
+"ImagesAnnotatorDataDrivers-0.12"` error.
 
 The prefix may be omitted only when the data drivers library is already
 installed into a location CMake searches by default, for example `/usr` or

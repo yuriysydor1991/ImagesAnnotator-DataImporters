@@ -1,4 +1,4 @@
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -11,14 +11,14 @@
 #include "src/importers/PyTorch/PyTorchVisionFolder2DBImporter.h"
 
 using namespace testing;
+using iannotator::importers::IADataImportersContext;
 using iannotator::importers::IAnnotationsDBPtr;
 using iannotator::importers::IImageSizeFacility;
 using iannotator::importers::IImageSizeFacilityPtr;
 using iannotator::importers::ImageRecordPtr;
-using iannotator::importers::LibraryContext;
 using iannotator::importers::PyTorchVisionFolder2DBImporter;
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
+namespace iadd = ImagesAnnotatorDataDrivers012;
 
 namespace
 {
@@ -74,7 +74,7 @@ class UTEST_PyTorchVisionFolder2DBImporter : public Test
     fs::remove_all(dir);
     fs::create_directories(dir);
 
-    db = iadd::LibraryFacade::create_annotations_db();
+    db = iadd::IADataDriversFacade::create_annotations_db();
 
     ASSERT_NE(db, nullptr);
   }
@@ -89,9 +89,10 @@ class UTEST_PyTorchVisionFolder2DBImporter : public Test
     f << "cropped";
   }
 
-  std::shared_ptr<LibraryContext> context(int width = 20, int height = 10)
+  std::shared_ptr<IADataImportersContext> context(int width = 20,
+                                                  int height = 10)
   {
-    auto ctx = std::make_shared<LibraryContext>();
+    auto ctx = std::make_shared<IADataImportersContext>();
     ctx->set_import_path(dir.string());
     ctx->set_db(db);
     ctx->set_image_sizer(std::make_shared<FixedSizer>(width, height));

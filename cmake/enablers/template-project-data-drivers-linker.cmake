@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.13)
 # target, which only exists once src/ has been added.
 
 # PUBLIC on purpose, unlike every other dependency of this library: the
-# installable LibraryContext.h and IImageSizeFacility.h headers name the
+# installable IADataImportersContext.h and IImageSizeFacility.h headers name the
 # ImagesAnnotatorDataDrivers database and record types, so a consumer needs
 # both its include path and its shared object.
 target_link_libraries(

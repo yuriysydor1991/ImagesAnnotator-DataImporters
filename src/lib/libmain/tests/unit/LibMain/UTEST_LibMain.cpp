@@ -3,12 +3,12 @@
 
 #include <memory>
 
+#include "IADataImportersContext.h"
 #include "IImporter.h"
-#include "LibraryContext.h"
 #include "src/lib/libmain/LibFactory.h"
 #include "src/lib/libmain/LibMain.h"
 
-using namespace ImagesAnnotatorDataImporters013;
+using namespace ImagesAnnotatorDataImporters014;
 using namespace iadi0impl;
 using namespace testing;
 
@@ -18,7 +18,7 @@ namespace
 class ImporterMock : public IImporter
 {
  public:
-  MOCK_METHOD(bool, import_db, (LibraryContextPtr ctx), (override));
+  MOCK_METHOD(bool, import_db, (IADataImportersContextPtr ctx), (override));
 };
 
 }  // namespace
@@ -30,9 +30,9 @@ class UTEST_LibMain : public Test
 
   ~UTEST_LibMain() { LibFactory::onMockCreate = {}; }
 
-  LibraryContextPtr filled_context()
+  IADataImportersContextPtr filled_context()
   {
-    auto ctx = std::make_shared<LibraryContext>();
+    auto ctx = std::make_shared<IADataImportersContext>();
     ctx->set_import_path("/tmp/some-import-dir");
     return ctx;
   }

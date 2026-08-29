@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "LibraryFacade.h"
+#include "IADataImportersFacade.h"
 
 #include <cassert>
 #include <memory>
@@ -35,11 +35,11 @@
 #include "src/lib/libmain/LibFactory.h"
 #include "src/log/log.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
-PlainTxtImportLibraryContextPtr
-LibraryFacade::create_plain_txt_library_context()
+PlainTxtImportContextPtr
+IADataImportersFacade::create_plain_txt_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -48,7 +48,7 @@ LibraryFacade::create_plain_txt_library_context()
   return libFactory->create_plain_txt_library_context();
 }
 
-Yolo4ImportLibraryContextPtr LibraryFacade::create_yolo4_library_context()
+Yolo4ImportContextPtr IADataImportersFacade::create_yolo4_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -57,8 +57,8 @@ Yolo4ImportLibraryContextPtr LibraryFacade::create_yolo4_library_context()
   return libFactory->create_yolo4_library_context();
 }
 
-UltralyticsDetectImportLibraryContextPtr
-LibraryFacade::create_ultralytics_detect_library_context()
+UltralyticsDetectImportContextPtr
+IADataImportersFacade::create_ultralytics_detect_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -67,8 +67,8 @@ LibraryFacade::create_ultralytics_detect_library_context()
   return libFactory->create_ultralytics_detect_library_context();
 }
 
-UltralyticsObbImportLibraryContextPtr
-LibraryFacade::create_ultralytics_obb_library_context()
+UltralyticsObbImportContextPtr
+IADataImportersFacade::create_ultralytics_obb_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -77,8 +77,8 @@ LibraryFacade::create_ultralytics_obb_library_context()
   return libFactory->create_ultralytics_obb_library_context();
 }
 
-UltralyticsSegmentImportLibraryContextPtr
-LibraryFacade::create_ultralytics_segment_library_context()
+UltralyticsSegmentImportContextPtr
+IADataImportersFacade::create_ultralytics_segment_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -87,7 +87,7 @@ LibraryFacade::create_ultralytics_segment_library_context()
   return libFactory->create_ultralytics_segment_library_context();
 }
 
-CocoImportLibraryContextPtr LibraryFacade::create_coco_library_context()
+CocoImportContextPtr IADataImportersFacade::create_coco_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -96,8 +96,8 @@ CocoImportLibraryContextPtr LibraryFacade::create_coco_library_context()
   return libFactory->create_coco_library_context();
 }
 
-PascalVocImportLibraryContextPtr
-LibraryFacade::create_pascal_voc_library_context()
+PascalVocImportContextPtr
+IADataImportersFacade::create_pascal_voc_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -106,7 +106,8 @@ LibraryFacade::create_pascal_voc_library_context()
   return libFactory->create_pascal_voc_library_context();
 }
 
-CreateMLImportLibraryContextPtr LibraryFacade::create_createml_library_context()
+CreateMLImportContextPtr
+IADataImportersFacade::create_createml_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -115,7 +116,7 @@ CreateMLImportLibraryContextPtr LibraryFacade::create_createml_library_context()
   return libFactory->create_createml_library_context();
 }
 
-PyTorchImportLibraryContextPtr LibraryFacade::create_pytorch_library_context()
+PyTorchImportContextPtr IADataImportersFacade::create_pytorch_library_context()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -124,7 +125,7 @@ PyTorchImportLibraryContextPtr LibraryFacade::create_pytorch_library_context()
   return libFactory->create_pytorch_library_context();
 }
 
-ILibPtr LibraryFacade::create_default_lib()
+IADataImportersLibPtr IADataImportersFacade::create_default_lib()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -133,7 +134,8 @@ ILibPtr LibraryFacade::create_default_lib()
   return libFactory->create_default_lib();
 }
 
-ILibPtr LibraryFacade::create_library(LibraryContextPtr ctx)
+IADataImportersLibPtr IADataImportersFacade::create_library(
+    IADataImportersContextPtr ctx)
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -142,7 +144,8 @@ ILibPtr LibraryFacade::create_library(LibraryContextPtr ctx)
   return libFactory->create_appropriate_lib(ctx);
 }
 
-IImporterPtr LibraryFacade::create_importer(const LibraryContextPtr& ctx)
+IImporterPtr IADataImportersFacade::create_importer(
+    const IADataImportersContextPtr& ctx)
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -151,7 +154,7 @@ IImporterPtr LibraryFacade::create_importer(const LibraryContextPtr& ctx)
   return libFactory->create_importer(ctx);
 }
 
-IImageSizeFacilityPtr LibraryFacade::create_image_sizer()
+IImageSizeFacilityPtr IADataImportersFacade::create_image_sizer()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();
 
@@ -160,15 +163,15 @@ IImageSizeFacilityPtr LibraryFacade::create_image_sizer()
   return libFactory->create_image_sizer();
 }
 
-std::string LibraryFacade::library_version()
+std::string IADataImportersFacade::library_version()
 {
   return project_decls::PROJECT_BUILD_VERSION;
 }
 
-void LibraryFacade::accept_real_logger(
+void IADataImportersFacade::accept_real_logger(
     const std::shared_ptr<logger::ILogger>& realLogger)
 {
   LOG_INIT_REAL_LOGGER(realLogger);
 }
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014

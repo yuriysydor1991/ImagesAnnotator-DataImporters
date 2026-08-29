@@ -54,7 +54,7 @@ class Folder2DBImporter : virtual public IImporter
   virtual ~Folder2DBImporter() = default;
   Folder2DBImporter() = default;
 
-  virtual bool import_db(LibraryContextPtr ictx) override;
+  virtual bool import_db(IADataImportersContextPtr ictx) override;
 
  protected:
   /**

@@ -1,6 +1,6 @@
 ## Enabling the OpenCV image size reader
 
-The library decodes no image format of its own. That is why `LibraryContext::set_image_sizer()` exists: an annotation of the internal project format is a rectangle in the pixels of the image it was drawn over, so a dataset which does not store those pixels can not be read back without measuring the picture. The library asks its consumer to take that measurement over whatever imaging stack that project already links - the GTKmm, the Qt or the wxWidgets loader of the ImagesAnnotator application, for instance.
+The library decodes no image format of its own. That is why `IADataImportersContext::set_image_sizer()` exists: an annotation of the internal project format is a rectangle in the pixels of the image it was drawn over, so a dataset which does not store those pixels can not be read back without measuring the picture. The library asks its consumer to take that measurement over whatever imaging stack that project already links - the GTKmm, the Qt or the wxWidgets loader of the ImagesAnnotator application, for instance.
 
 A consumer that has no imaging stack to lend was stuck. So, when the build finds OpenCV, the library also ships an image size reader of its own, and that consumer needs to supply nothing.
 
@@ -28,7 +28,7 @@ Point the probe at a prefix of your own with `-DOpenCV_DIR=<dir>` when the insta
 
 The rule is one line: **a reader you supply always wins.**
 
-1. A reader was handed over through `LibraryContext::set_image_sizer()` - that reader is used. A project that already decodes images its own way keeps doing exactly that, whether the library has OpenCV or not.
+1. A reader was handed over through `IADataImportersContext::set_image_sizer()` - that reader is used. A project that already decodes images its own way keeps doing exactly that, whether the library has OpenCV or not.
 1. The slot was left empty and the library has the OpenCV reader - the import uses it, and you had to configure nothing.
 1. The slot was left empty and the library has no reader - an import of a layout that needs one fails at once with a log line saying so. An import of the plain text layout runs on and only leaves the image dimensions of its records at zero.
 
@@ -36,17 +36,17 @@ So a new consumer may simply leave the field alone.
 
 ### Asking for it directly
 
-`LibraryFacade::create_image_sizer()` hands out the same reader, or a `nullptr` in a build without OpenCV. It is the way to find out whether a build has one:
+`IADataImportersFacade::create_image_sizer()` hands out the same reader, or a `nullptr` in a build without OpenCV. It is the way to find out whether a build has one:
 
 ```cpp
-namespace iadi = ImagesAnnotatorDataImporters013;
+namespace iadi = ImagesAnnotatorDataImporters014;
 
-auto ctx = iadi::LibraryFacade::create_yolo4_library_context();
+auto ctx = iadi::IADataImportersFacade::create_yolo4_library_context();
 ctx->set_import_path("/tmp/yolo-dataset");
 ctx->set_db(db);
 
 // Optional. Leaving the field alone gets the very same reader.
-ctx->set_image_sizer(iadi::LibraryFacade::create_image_sizer());
+ctx->set_image_sizer(iadi::IADataImportersFacade::create_image_sizer());
 
 if (ctx->get_image_sizer() == nullptr) {
   // This build has no OpenCV - supply a reader of your own, or pick an

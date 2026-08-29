@@ -25,10 +25,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSCONTEXT_CLASS_H
 
-#include <ImagesAnnotatorDataDrivers-0.11/IAnnotationsDB.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IAnnotationsDB.h>
 
 #include <cstddef>
 #include <memory>
@@ -38,7 +38,7 @@
 #include "IImporter.h"
 #include "ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
@@ -46,13 +46,13 @@ namespace ImagesAnnotatorDataImporters013
  * the library underlying implementation.
  *
  * The very same instance drives both entry points of the library: the one
- * shot ILib::perform_import and the IImporter::import_db of an importer built
- * by hand through the LibraryFacade factory methods.
+ * shot IADataImportersLib::perform_import and the IImporter::import_db of an
+ * importer built by hand through the IADataImportersFacade factory methods.
  *
  * The dataset layout to read is named by the descendant instantiated. What
  * every layout needs is held here; a descendant adds only what its own layout
- * asks for. See PlainTxtImportLibraryContext, Yolo4ImportLibraryContext and
- * PyTorchImportLibraryContext. This class itself names no layout, so an import
+ * asks for. See PlainTxtImportContext, Yolo4ImportContext and
+ * PyTorchImportContext. This class itself names no layout, so an import
  * driven by it finds no importer.
  *
  * The image size reader sits here rather than in a single descendant, unlike
@@ -62,14 +62,14 @@ namespace ImagesAnnotatorDataImporters013
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API LibraryContext
+class IADI_API IADataImportersContext
 {
  public:
-  using LibraryContextPtr = std::shared_ptr<LibraryContext>;
-  using IAnnotationsDBPtr = ImagesAnnotatorDataDrivers011::IAnnotationsDBPtr;
+  using IADataImportersContextPtr = std::shared_ptr<IADataImportersContext>;
+  using IAnnotationsDBPtr = ImagesAnnotatorDataDrivers012::IAnnotationsDBPtr;
 
-  virtual ~LibraryContext() = default;
-  LibraryContext() = default;
+  virtual ~IADataImportersContext() = default;
+  IADataImportersContext() = default;
 
   /// @brief In: the source directory of the import, mandatory
   const std::string& get_import_path() const;
@@ -78,8 +78,8 @@ class IADI_API LibraryContext
   /// @brief In-out: the annotations database the recovered records are merged
   /// into, mandatory. An already held record is kept as it is, so importing
   /// one and the same dataset twice adds it once. Obtain an empty one from
-  /// ImagesAnnotatorDataDrivers011::LibraryFacade::create_annotations_db(), or
-  /// hand over the database of the project being edited to import into it.
+  /// ImagesAnnotatorDataDrivers012::IADataDriversFacade::create_annotations_db(),
+  /// or hand over the database of the project being edited to import into it.
   const IAnnotationsDBPtr& get_db() const;
   void set_db(const IAnnotationsDBPtr& newDb);
 
@@ -89,11 +89,12 @@ class IADI_API LibraryContext
   /// - and optional for the rest, where it only fills in the image dimensions
   /// of the produced records. A build of the library which found OpenCV falls
   /// back to a reader of its own when this slot is left empty, see
-  /// LibraryFacade::create_image_sizer().
+  /// IADataImportersFacade::create_image_sizer().
   const IImageSizeFacilityPtr& get_image_sizer() const;
   void set_image_sizer(const IImageSizeFacilityPtr& newSizer);
 
-  /// @brief Out: the importer instance the last ILib::perform_import ran
+  /// @brief Out: the importer instance the last
+  /// IADataImportersLib::perform_import ran
   const IImporterPtr& get_importer() const;
   void set_importer(const IImporterPtr& newImporter);
 
@@ -109,8 +110,9 @@ class IADI_API LibraryContext
   std::size_t importedRecords{0};
 };
 
-using LibraryContextPtr = LibraryContext::LibraryContextPtr;
+using IADataImportersContextPtr =
+    IADataImportersContext::IADataImportersContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSCONTEXT_CLASS_H

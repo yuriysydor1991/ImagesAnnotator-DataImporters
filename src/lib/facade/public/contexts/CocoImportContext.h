@@ -25,41 +25,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_CREATEMLIMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_CREATEMLIMPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_COCOIMPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_COCOIMPORTCONTEXT_CLASS_H
 
 #include <memory>
 
+#include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
-#include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
- * @brief The library context which reads the Create ML object detection
- * dataset - the flat directory of the pictures and the one JSON descriptor
- * beside them - back into image records.
+ * @brief The library context which reads the COCO object detection dataset -
+ * the single JSON descriptor over a directory of pictures - back into image
+ * records.
  *
- * The boxes are held in the pixels of their image, so an IImageSizeFacility is
- * optional here: it only fills the image dimensions of the produced records
- * in, since the layout carries no size of its own anywhere.
+ * The descriptor carries the size of every image it names, so this is one of
+ * the layouts which need no IImageSizeFacility.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataImportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API CreateMLImportLibraryContext : public LibraryContext
+class IADI_API CocoImportContext : public IADataImportersContext
 {
  public:
-  using CreateMLImportLibraryContextPtr =
-      std::shared_ptr<CreateMLImportLibraryContext>;
+  using CocoImportContextPtr = std::shared_ptr<CocoImportContext>;
 };
 
-using CreateMLImportLibraryContextPtr =
-    CreateMLImportLibraryContext::CreateMLImportLibraryContextPtr;
+using CocoImportContextPtr = CocoImportContext::CocoImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_CREATEMLIMPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_COCOIMPORTCONTEXT_CLASS_H

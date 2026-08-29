@@ -45,7 +45,7 @@ namespace
 namespace fs = std::filesystem;
 }
 
-bool Folder2DBImporter::import_db(LibraryContextPtr ictx)
+bool Folder2DBImporter::import_db(IADataImportersContextPtr ictx)
 {
   assert(ictx != nullptr);
   assert(!ictx->get_import_path().empty());

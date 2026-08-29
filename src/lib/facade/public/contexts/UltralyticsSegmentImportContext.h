@@ -25,38 +25,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PYTORCHIMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PYTORCHIMPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSSEGMENTIMPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSSEGMENTIMPORTCONTEXT_CLASS_H
 
 #include <memory>
 
+#include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
-#include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
- * @brief The library context which reads the PyTorch Vision ImageFolder layout
- * of cropped out rectangles back into image records. Requires an
- * IImageSizeFacility unless the library was built with its own, since the
- * annotation of such a record is the cropped image itself.
+ * @brief The library context which reads the Ultralytics YOLO instance
+ * segmentation dataset back into image records. Every label file line carries
+ * the polygon outlining an object there, and what comes back of it is the
+ * rectangle holding that polygon. Requires an IImageSizeFacility unless the
+ * library was built with its own, since the layout stores its points
+ * normalised.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataImportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API PyTorchImportLibraryContext : public LibraryContext
+class IADI_API UltralyticsSegmentImportContext : public IADataImportersContext
 {
  public:
-  using PyTorchImportLibraryContextPtr =
-      std::shared_ptr<PyTorchImportLibraryContext>;
+  using UltralyticsSegmentImportContextPtr =
+      std::shared_ptr<UltralyticsSegmentImportContext>;
 };
 
-using PyTorchImportLibraryContextPtr =
-    PyTorchImportLibraryContext::PyTorchImportLibraryContextPtr;
+using UltralyticsSegmentImportContextPtr =
+    UltralyticsSegmentImportContext::UltralyticsSegmentImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PYTORCHIMPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSSEGMENTIMPORTCONTEXT_CLASS_H

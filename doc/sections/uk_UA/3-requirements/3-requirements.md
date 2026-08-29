@@ -4,7 +4,7 @@
 
 Одна залежність є обов'язковою - без неї крок конфігурування CMake завершується помилкою:
 
-- Бібліотека **ImagesAnnotatorDataDrivers**. Імпортери будують через неї записи зображень і заповнюють базу даних їхніх анотацій, тому вона знаходиться за допомогою `find_package(ImagesAnnotatorDataDrivers-0.11 REQUIRED CONFIG)` і лінкується як `PUBLIC`, оскільки заголовкові файли, які встановлюються, згадують її тип бази даних. Спершу побудуй і встанови її з [https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) і вкажи даному проекту її префікс встановлення за допомогою `-DCMAKE_PREFIX_PATH=<prefix>`. Переглянь підсекцію [Залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md).
+- Бібліотека **ImagesAnnotatorDataDrivers**. Імпортери будують через неї записи зображень і заповнюють базу даних їхніх анотацій, тому вона знаходиться за допомогою `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` і лінкується як `PUBLIC`, оскільки заголовкові файли, які встановлюються, згадують її тип бази даних. Спершу побудуй і встанови її з [https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) і вкажи даному проекту її префікс встановлення за допомогою `-DCMAKE_PREFIX_PATH=<prefix>`. Переглянь підсекцію [Залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md).
 
 Усе перелічене нижче є або базовим інструментом побудови, або необов'язковим доповненням, потрібним лише для окремої задачі розробки.
 

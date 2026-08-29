@@ -33,7 +33,7 @@
 
 #include "ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
@@ -87,6 +87,6 @@ class IADI_API IImageSizeFacility
 
 using IImageSizeFacilityPtr = IImageSizeFacility::IImageSizeFacilityPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IIMAGESIZEFACILITY_ABSTRACT_CLASS_H

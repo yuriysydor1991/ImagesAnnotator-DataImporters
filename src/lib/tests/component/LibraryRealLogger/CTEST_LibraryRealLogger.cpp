@@ -6,13 +6,13 @@
 #include <string>
 #include <vector>
 
-#include "LibraryFacade.h"
+#include "IADataImportersFacade.h"
 #include "src/log/ILogger.h"
 #include "src/log/default-logger/real-default-logger/RealDefaultLogger.h"
 #include "src/log/severity-macro-consts.h"
 
 using namespace testing;
-using namespace ImagesAnnotatorDataImporters013;
+using namespace ImagesAnnotatorDataImporters014;
 using namespace default_logger;
 
 namespace
@@ -91,8 +91,8 @@ class RecordingLogger : public logger::ILogger
  * owned by the library user is really used by the library code itself.
  *
  * The test links the produced shared library and drives it through the public
- * LibraryFacade only, so the logger crosses the very same boundary it crosses
- * inside a consuming application.
+ * IADataImportersFacade only, so the logger crosses the very same boundary it
+ * crosses inside a consuming application.
  */
 class CTEST_LibraryRealLogger : public Test
 {
@@ -110,7 +110,8 @@ class CTEST_LibraryRealLogger : public Test
     // The instance adopted by the shared library can not be read back through
     // its public interface, so a fresh default logger is handed over instead
     // to keep the tests independent of each other.
-    LibraryFacade::accept_real_logger(std::make_shared<RealDefaultLogger>());
+    IADataImportersFacade::accept_real_logger(
+        std::make_shared<RealDefaultLogger>());
     clear_log_file();
   }
 
@@ -121,7 +122,7 @@ class CTEST_LibraryRealLogger : public Test
    */
   IImporterPtr create_no_context_importer()
   {
-    return LibraryFacade::create_importer({});
+    return IADataImportersFacade::create_importer({});
   }
 
   std::string log_contents()
@@ -153,7 +154,7 @@ TEST_F(CTEST_LibraryRealLogger, library_logs_reach_the_given_real_logger)
 {
   const auto appLogger = std::make_shared<RecordingRealLogger>();
 
-  LibraryFacade::accept_real_logger(appLogger);
+  IADataImportersFacade::accept_real_logger(appLogger);
 
   EXPECT_EQ(create_no_context_importer(), nullptr);
 
@@ -165,8 +166,8 @@ TEST_F(CTEST_LibraryRealLogger, null_real_logger_leaves_the_previous_one)
 {
   const auto appLogger = std::make_shared<RecordingRealLogger>();
 
-  LibraryFacade::accept_real_logger(appLogger);
-  LibraryFacade::accept_real_logger(nullptr);
+  IADataImportersFacade::accept_real_logger(appLogger);
+  IADataImportersFacade::accept_real_logger(nullptr);
 
   EXPECT_EQ(create_no_context_importer(), nullptr);
 
@@ -177,7 +178,7 @@ TEST_F(CTEST_LibraryRealLogger, library_logs_reach_the_given_interface_logger)
 {
   const auto appLogger = std::make_shared<RecordingLogger>();
 
-  LibraryFacade::accept_real_logger(appLogger);
+  IADataImportersFacade::accept_real_logger(appLogger);
 
   EXPECT_EQ(create_no_context_importer(), nullptr);
 
@@ -191,7 +192,7 @@ TEST_F(CTEST_LibraryRealLogger, library_logs_land_in_the_application_log_file)
 
   appLogger->init(app_log_file, MACRO_LVL_ERROR, false);
 
-  LibraryFacade::accept_real_logger(appLogger);
+  IADataImportersFacade::accept_real_logger(appLogger);
 
   EXPECT_EQ(create_no_context_importer(), nullptr);
 

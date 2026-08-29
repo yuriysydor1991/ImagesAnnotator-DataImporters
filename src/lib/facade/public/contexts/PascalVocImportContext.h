@@ -25,39 +25,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSOBBIMPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSOBBIMPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PASCALVOCIMPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PASCALVOCIMPORTCONTEXT_CLASS_H
 
 #include <memory>
 
+#include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
-#include "../LibraryContext.h"
 
-namespace ImagesAnnotatorDataImporters013
+namespace ImagesAnnotatorDataImporters014
 {
 
 /**
- * @brief The library context which reads the Ultralytics YOLO oriented
- * bounding box dataset back into image records. Every label file line carries
- * the four corners of a box there, and what comes back of it is the upright
- * rectangle holding them. Requires an IImageSizeFacility unless the library was
- * built with its own, since the layout stores its corners normalised.
+ * @brief The library context which reads the Pascal VOC dataset - one XML
+ * descriptor per image, under the `Annotations` directory of the devkit shape
+ * or beside the pictures themselves - back into image records.
+ *
+ * A descriptor carries the size of its image, so this is one of the layouts
+ * which need no IImageSizeFacility.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataImportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADI_API UltralyticsObbImportLibraryContext : public LibraryContext
+class IADI_API PascalVocImportContext : public IADataImportersContext
 {
  public:
-  using UltralyticsObbImportLibraryContextPtr =
-      std::shared_ptr<UltralyticsObbImportLibraryContext>;
+  using PascalVocImportContextPtr = std::shared_ptr<PascalVocImportContext>;
 };
 
-using UltralyticsObbImportLibraryContextPtr =
-    UltralyticsObbImportLibraryContext::UltralyticsObbImportLibraryContextPtr;
+using PascalVocImportContextPtr =
+    PascalVocImportContext::PascalVocImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters013
+}  // namespace ImagesAnnotatorDataImporters014
 
-#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSOBBIMPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PASCALVOCIMPORTCONTEXT_CLASS_H
