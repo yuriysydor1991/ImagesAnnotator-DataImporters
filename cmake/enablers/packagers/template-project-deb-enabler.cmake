@@ -21,6 +21,11 @@ set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${PROJECT_MAINTAINER} ${PROJECT_MAINTAINER_
 set(CPACK_DEB_COMPONENT_INSTALL ON)
 set(CPACK_PACKAGE_DESCRIPTION ${CMAKE_PROJECT_DESCRIPTION})
 set(CPACK_DEB_PACKAGE_ARCHITECTURE "amd64")  # Or arm64
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "")
+
+# The produced shared object links the zlib, the ImagesAnnotatorDataDrivers
+# library and, when it was found, OpenCV, so let dpkg-shlibdeps read those
+# dependencies out of the binary instead of spelling distribution package names
+# out here.
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
 include(CPack)

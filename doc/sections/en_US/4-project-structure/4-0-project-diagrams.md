@@ -7,8 +7,8 @@ The class diagram of the `lib` component - the installable interface, the implem
 Four groups are drawn:
 
 - `ImagesAnnotatorDataDrivers012` - the database the importers fill and the records they build (`IAnnotationsDB`, `ImageRecord`), owned by the dependency;
-- `ImagesAnnotatorDataImporters014` - everything installed from [src/lib/facade/public](/src/lib/facade/public): `IADataImportersFacade`, `IADataImportersLib`, `IADataImportersContext` with its nine layout descendants, `IImporter` and the consumer implemented `IImageSizeFacility`;
-- the implementation, whose symbols stay inside the shared object: `LibMain`, `LibFactory`, the nine importers sharing the `Folder2DBImporter` base - with the `JsonDescriptor2DBImporter` and the `UltralyticsFolder2DBImporter` halves the layout families of them share on top of it - and the `OpenCVImageSizer` a build which found OpenCV ships;
+- `ImagesAnnotatorDataImporters014` - everything installed from [src/lib/facade/public](/src/lib/facade/public): `IADataImportersFacade`, `IADataImportersLib`, `IADataImportersContext` with its thirteen layout descendants, `IImporter` and the consumer implemented `IImageSizeFacility`;
+- the implementation, whose symbols stay inside the shared object: `LibMain`, `LibFactory`, the thirteen importers sharing the `Folder2DBImporter` base - with the `JsonDescriptor2DBImporter` and the `UltralyticsFolder2DBImporter` halves the layout families of them share on top of it - and the `OpenCVImageSizer` a build which found OpenCV ships;
 - the document readers, hidden just as much: `IJsonParser` with `JsonParser` and the `JsonValue` tree behind it, and `IXmlParser` with `XmlParser` and `XmlNode`, which the descriptor layouts are read through.
 
 The image is rendered from the PlantUML source at [doc/diagrams/plantuml/lib-class-structure.puml](/doc/diagrams/plantuml/lib-class-structure.puml). Edit that file and render it again whenever the public interface changes - the checked in image is the rendering of that source and is not produced by the build:

@@ -6,6 +6,10 @@
 #include "IADataImportersContext.h"
 #include "contexts/CocoImportContext.h"
 #include "contexts/CreateMLImportContext.h"
+#include "contexts/Dxxwjz2ImportContext.h"
+#include "contexts/Dxxwjz2pImportContext.h"
+#include "contexts/Dxxwjz3ImportContext.h"
+#include "contexts/Dxxwjz3pImportContext.h"
 #include "contexts/PascalVocImportContext.h"
 #include "contexts/PlainTxtImportContext.h"
 #include "contexts/PyTorchImportContext.h"
@@ -43,6 +47,10 @@ TEST_F(UTEST_LibFactory, create_library_context_of_every_layout_success)
   EXPECT_NE(factory->create_pascal_voc_library_context(), nullptr);
   EXPECT_NE(factory->create_createml_library_context(), nullptr);
   EXPECT_NE(factory->create_pytorch_library_context(), nullptr);
+  EXPECT_NE(factory->create_dxxwjz2p_library_context(), nullptr);
+  EXPECT_NE(factory->create_dxxwjz3p_library_context(), nullptr);
+  EXPECT_NE(factory->create_dxxwjz2_library_context(), nullptr);
+  EXPECT_NE(factory->create_dxxwjz3_library_context(), nullptr);
 }
 
 // Every layout context has to name its own importer, which is the whole reason
@@ -72,6 +80,16 @@ TEST_F(UTEST_LibFactory, every_created_context_names_its_own_importer)
       factory->create_importer(factory->create_createml_library_context()),
       nullptr);
   EXPECT_NE(factory->create_importer(factory->create_pytorch_library_context()),
+            nullptr);
+  EXPECT_NE(
+      factory->create_importer(factory->create_dxxwjz2p_library_context()),
+      nullptr);
+  EXPECT_NE(
+      factory->create_importer(factory->create_dxxwjz3p_library_context()),
+      nullptr);
+  EXPECT_NE(factory->create_importer(factory->create_dxxwjz2_library_context()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(factory->create_dxxwjz3_library_context()),
             nullptr);
 }
 
@@ -103,6 +121,14 @@ TEST_F(UTEST_LibFactory, create_importer_gives_an_instance_for_every_context)
   EXPECT_NE(factory->create_importer(std::make_shared<CreateMLImportContext>()),
             nullptr);
   EXPECT_NE(factory->create_importer(std::make_shared<PyTorchImportContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(std::make_shared<Dxxwjz2pImportContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(std::make_shared<Dxxwjz3pImportContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(std::make_shared<Dxxwjz2ImportContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_importer(std::make_shared<Dxxwjz3ImportContext>()),
             nullptr);
 }
 

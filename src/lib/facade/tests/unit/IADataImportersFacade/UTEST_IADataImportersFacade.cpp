@@ -153,6 +153,42 @@ TEST_F(UTEST_IADataImportersFacade, create_pytorch_library_context_success)
       [] { IADataImportersFacade::create_pytorch_library_context(); });
 }
 
+TEST_F(UTEST_IADataImportersFacade, create_dxxwjz2p_library_context_success)
+{
+  expect_reaches(
+      [](LibFactory& instance) {
+        EXPECT_CALL(instance, create_dxxwjz2p_library_context()).Times(1);
+      },
+      [] { IADataImportersFacade::create_dxxwjz2p_library_context(); });
+}
+
+TEST_F(UTEST_IADataImportersFacade, create_dxxwjz3p_library_context_success)
+{
+  expect_reaches(
+      [](LibFactory& instance) {
+        EXPECT_CALL(instance, create_dxxwjz3p_library_context()).Times(1);
+      },
+      [] { IADataImportersFacade::create_dxxwjz3p_library_context(); });
+}
+
+TEST_F(UTEST_IADataImportersFacade, create_dxxwjz2_library_context_success)
+{
+  expect_reaches(
+      [](LibFactory& instance) {
+        EXPECT_CALL(instance, create_dxxwjz2_library_context()).Times(1);
+      },
+      [] { IADataImportersFacade::create_dxxwjz2_library_context(); });
+}
+
+TEST_F(UTEST_IADataImportersFacade, create_dxxwjz3_library_context_success)
+{
+  expect_reaches(
+      [](LibFactory& instance) {
+        EXPECT_CALL(instance, create_dxxwjz3_library_context()).Times(1);
+      },
+      [] { IADataImportersFacade::create_dxxwjz3_library_context(); });
+}
+
 TEST_F(UTEST_IADataImportersFacade, create_importer_forwards_the_given_context)
 {
   const IADataImportersContextPtr ctx =

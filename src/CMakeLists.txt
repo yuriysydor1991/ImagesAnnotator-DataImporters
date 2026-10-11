@@ -55,6 +55,7 @@ set(IADI_PARSERS_SRC_DIR
 set(IADI_JSON_PARSER_SRC
   ${IADI_PARSERS_SRC_DIR}/json/JsonValue.cpp
   ${IADI_PARSERS_SRC_DIR}/json/JsonParser.cpp
+  ${IADI_PARSERS_SRC_DIR}/json/JsonMembersPicker.cpp
 )
 
 set(IADI_XML_PARSER_SRC
@@ -87,6 +88,28 @@ set(IADI_PASCAL_VOC_SRC
   ${IADI_IMPORTERS_SRC_DIR}/PascalVoc/PascalVocFolder2DBImporter.cpp
 )
 
+# The zlib controller of the cpp-app-template the darknetxx layouts read their
+# gzip compressed documents through. The darknetxx list below carries it, so a
+# test executable naming that list links the ZLIB::ZLIB target as well.
+set(IADI_ZLIB_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/zlib/GzipFileStreams.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/zlib/ZlibController.cpp
+)
+
+# The darknetxx layouts: the training projects of a single gzip compressed JSON
+# document and the training directories, which extend the YOLO v4 one.
+set(IADI_DARKNETXX_SRC
+  ${IADI_IMPORTERS_COMMON_SRC}
+  ${IADI_JSON_PARSER_SRC}
+  ${IADI_ZLIB_SRC}
+  ${IADI_IMPORTERS_SRC_DIR}/Yolo4/Yolo4Folder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/DxxwjzFileReader.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/Dxxwjz2pProject2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/Dxxwjz3pProject2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/Dxxwjz2Folder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/Dxxwjz3Folder2DBImporter.cpp
+)
+
 # The three Ultralytics YOLO layouts differ in one label file line only, so the
 # three importers of them are one source list: a unit test driving any of them
 # compiles all three.
@@ -115,6 +138,12 @@ set(IADI_IMPORTERS_SRC
   ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsDetectFolder2DBImporter.cpp
   ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsObbFolder2DBImporter.cpp
   ${IADI_IMPORTERS_SRC_DIR}/Ultralytics/UltralyticsSegmentFolder2DBImporter.cpp
+  ${IADI_ZLIB_SRC}
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/DxxwjzFileReader.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/Dxxwjz2pProject2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/Dxxwjz3pProject2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/Dxxwjz2Folder2DBImporter.cpp
+  ${IADI_IMPORTERS_SRC_DIR}/Darknetxx/Dxxwjz3Folder2DBImporter.cpp
 )
 
 # The installed context carries the accessors of the import data, so every test
@@ -153,6 +182,7 @@ endif()
 add_subdirectory(lib)
 
 add_subdirectory(helpers)
+add_subdirectory(zlib)
 add_subdirectory(sizers)
 add_subdirectory(parsers)
 add_subdirectory(importers)

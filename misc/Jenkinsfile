@@ -158,6 +158,26 @@ pipeline {
             sh 'cd $BUILDDIR && ctest -R "UTEST_TypeHelper\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_TypeHelper.junit.xml'
           }
         }
+        stage('UTEST_JsonMembersPicker') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_JsonMembersPicker\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_JsonMembersPicker.junit.xml'
+          }
+        }
+        stage('UTEST_ZlibController') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_ZlibController\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_ZlibController.junit.xml'
+          }
+        }
+        stage('UTEST_Dxxwjz2pProject2DBImporter') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_Dxxwjz2pProject2DBImporter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_Dxxwjz2pProject2DBImporter.junit.xml'
+          }
+        }
+        stage('UTEST_Dxxwjz2Folder2DBImporter') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_Dxxwjz2Folder2DBImporter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_Dxxwjz2Folder2DBImporter.junit.xml'
+          }
+        }
       }
       post { always { junit "$BUILDDIR/$BDJUNITOUT/UTEST_*.xml" } }
     }
@@ -178,6 +198,11 @@ pipeline {
         stage('CTEST_Importers') {
           steps {
             sh 'cd $BUILDDIR && ctest -R "CTEST_Importers\\." --output-on-failure --output-junit $BDJUNITOUT/CTEST_Importers.junit.xml'
+          }
+        }
+        stage('CTEST_ZlibController') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "CTEST_ZlibController\\." --output-on-failure --output-junit $BDJUNITOUT/CTEST_ZlibController.junit.xml'
           }
         }
       }

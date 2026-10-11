@@ -11,7 +11,7 @@
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | інтерфейс, який реалізує проект-споживач, щоб вимірювати зображення |
 | [ImportersAPI.h](/src/lib/facade/public/ImportersAPI.h) | макрос видимості `IADI_API` |
 
-Решта девʼять є нащадками `IADataImportersContext`, специфічними для розкладок - по одному на кожну розкладку набору даних, яку читає бібліотека, - і лежать разом у піддиректорії [contexts](/src/lib/facade/public/contexts), а не поруч із шістьма вище; саме таку розкладку має сусідня бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) для власних девʼяти:
+Решта тринадцять є нащадками `IADataImportersContext`, специфічними для розкладок - по одному на кожну розкладку набору даних, яку читає бібліотека, - і лежать разом у піддиректорії [contexts](/src/lib/facade/public/contexts), а не поруч із шістьма вище; саме таку розкладку має сусідня бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) для власних девʼяти:
 
 | Заголовок | Оголошує |
 |---|---|
@@ -25,7 +25,7 @@
 | [contexts/CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | `IADataImportersContext` розкладки виявлення обʼєктів Create ML |
 | [contexts/PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | `IADataImportersContext` розкладки PyTorch Vision |
 
-Кожен із тих девʼяти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataImporters-0.14/`, тож звичайне `#include "IADataImportersContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх девʼяти через `IADataImportersFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
+Кожен із тих тринадцяти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataImporters-0.14/`, тож звичайне `#include "IADataImportersContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх тринадцяти через `IADataImportersFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
 
 [src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) встановлює директорію цілком під `include/${PROJECT_LIBRARY_NAME}`, що для поточної назви і версії дає `include/ImagesAnnotatorDataImporters-0.14/`. І ту піддиректорію, і звичайний корінь підключення експортує ціль бібліотеки, тож споживач може писати будь-яку з двох форм:
 

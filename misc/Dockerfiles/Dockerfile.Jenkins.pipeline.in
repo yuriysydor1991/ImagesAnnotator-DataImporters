@@ -10,8 +10,9 @@ RUN apt install -y valgrind
 RUN apt install -y clang-tidy
 RUN apt install -y libgtest-dev
 RUN apt install -y libgmock-dev
-# The library optionally links OpenCV; the ImagesAnnotatorDataDrivers dependency is
-# built from source by the pipeline Dependencies stage.
+# The library links zlib and optionally OpenCV; the ImagesAnnotatorDataDrivers
+# dependency is built from source by the pipeline Dependencies stage.
+RUN apt install -y zlib1g-dev
 RUN apt install -y libopencv-dev
 
 CMD ["jenkins.sh"]

@@ -13,6 +13,10 @@
 #include "IImporter.h"
 #include "contexts/CocoImportContext.h"
 #include "contexts/CreateMLImportContext.h"
+#include "contexts/Dxxwjz2ImportContext.h"
+#include "contexts/Dxxwjz2pImportContext.h"
+#include "contexts/Dxxwjz3ImportContext.h"
+#include "contexts/Dxxwjz3pImportContext.h"
 #include "contexts/PascalVocImportContext.h"
 #include "contexts/PlainTxtImportContext.h"
 #include "contexts/PyTorchImportContext.h"
@@ -55,6 +59,14 @@ class LibFactorySynthParent
       ImagesAnnotatorDataImporters014::PascalVocImportContextPtr;
   using CreateMLImportContextPtr =
       ImagesAnnotatorDataImporters014::CreateMLImportContextPtr;
+  using Dxxwjz2pImportContextPtr =
+      ImagesAnnotatorDataImporters014::Dxxwjz2pImportContextPtr;
+  using Dxxwjz3pImportContextPtr =
+      ImagesAnnotatorDataImporters014::Dxxwjz3pImportContextPtr;
+  using Dxxwjz2ImportContextPtr =
+      ImagesAnnotatorDataImporters014::Dxxwjz2ImportContextPtr;
+  using Dxxwjz3ImportContextPtr =
+      ImagesAnnotatorDataImporters014::Dxxwjz3ImportContextPtr;
   using IImporterPtr = ImagesAnnotatorDataImporters014::IImporterPtr;
   using IImageSizeFacilityPtr =
       ImagesAnnotatorDataImporters014::IImageSizeFacilityPtr;
@@ -75,6 +87,10 @@ class LibFactorySynthParent
   virtual PascalVocImportContextPtr create_pascal_voc_library_context() = 0;
   virtual CreateMLImportContextPtr create_createml_library_context() = 0;
   virtual PyTorchImportContextPtr create_pytorch_library_context() = 0;
+  virtual Dxxwjz2pImportContextPtr create_dxxwjz2p_library_context() = 0;
+  virtual Dxxwjz3pImportContextPtr create_dxxwjz3p_library_context() = 0;
+  virtual Dxxwjz2ImportContextPtr create_dxxwjz2_library_context() = 0;
+  virtual Dxxwjz3ImportContextPtr create_dxxwjz3_library_context() = 0;
   virtual IADataImportersLibPtr create_appropriate_lib(
       IADataImportersContextPtr ctx) = 0;
   virtual IImporterPtr create_importer(
@@ -115,6 +131,14 @@ class LibFactory : public LibFactorySynthParent
   MOCK_METHOD(CreateMLImportContextPtr, create_createml_library_context, (),
               (override));
   MOCK_METHOD(PyTorchImportContextPtr, create_pytorch_library_context, (),
+              (override));
+  MOCK_METHOD(Dxxwjz2pImportContextPtr, create_dxxwjz2p_library_context, (),
+              (override));
+  MOCK_METHOD(Dxxwjz3pImportContextPtr, create_dxxwjz3p_library_context, (),
+              (override));
+  MOCK_METHOD(Dxxwjz2ImportContextPtr, create_dxxwjz2_library_context, (),
+              (override));
+  MOCK_METHOD(Dxxwjz3ImportContextPtr, create_dxxwjz3_library_context, (),
               (override));
   MOCK_METHOD(IADataImportersLibPtr, create_appropriate_lib,
               (IADataImportersContextPtr ctx), (override));

@@ -19,5 +19,6 @@ add_subdirectory(Ultralytics)
 add_subdirectory(Coco)
 add_subdirectory(PascalVoc)
 add_subdirectory(CreateML)
+add_subdirectory(Darknetxx)
 
 add_subdirectory(tests)

@@ -32,8 +32,9 @@ a `-DCMAKE_PREFIX_PATH` pointing at its install prefix.
     1. [Enabling WIX MSI package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-21-enabling-WIX-MSI-package-generation-with-cpack.md)
     1. [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
 1. Libraries
+    1. [Enabling the zlib library (mandatory)](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md)
     1. [Enabling the OpenCV image size reader (optional)](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md)
 
-The ImagesAnnotatorDataDrivers library is the only mandatory third party
-dependency this library has. OpenCV is optional: without it the library simply
+The ImagesAnnotatorDataDrivers library and zlib are the only mandatory third
+party dependencies this library has. OpenCV is optional: without it the library simply
 ships no image size reader of its own.

@@ -36,6 +36,10 @@
 #include "IImporter.h"
 #include "contexts/CocoImportContext.h"
 #include "contexts/CreateMLImportContext.h"
+#include "contexts/Dxxwjz2ImportContext.h"
+#include "contexts/Dxxwjz2pImportContext.h"
+#include "contexts/Dxxwjz3ImportContext.h"
+#include "contexts/Dxxwjz3pImportContext.h"
 #include "contexts/PascalVocImportContext.h"
 #include "contexts/PlainTxtImportContext.h"
 #include "contexts/PyTorchImportContext.h"
@@ -80,6 +84,14 @@ class LibFactory
       ImagesAnnotatorDataImporters014::PascalVocImportContextPtr;
   using CreateMLImportContextPtr =
       ImagesAnnotatorDataImporters014::CreateMLImportContextPtr;
+  using Dxxwjz2pImportContextPtr =
+      ImagesAnnotatorDataImporters014::Dxxwjz2pImportContextPtr;
+  using Dxxwjz3pImportContextPtr =
+      ImagesAnnotatorDataImporters014::Dxxwjz3pImportContextPtr;
+  using Dxxwjz2ImportContextPtr =
+      ImagesAnnotatorDataImporters014::Dxxwjz2ImportContextPtr;
+  using Dxxwjz3ImportContextPtr =
+      ImagesAnnotatorDataImporters014::Dxxwjz3ImportContextPtr;
   using IImporterPtr = ImagesAnnotatorDataImporters014::IImporterPtr;
   using IImageSizeFacilityPtr =
       ImagesAnnotatorDataImporters014::IImageSizeFacilityPtr;
@@ -168,6 +180,38 @@ class LibFactory
   virtual PyTorchImportContextPtr create_pytorch_library_context();
 
   /**
+   * @brief Creates an empty context of the darknetxx dxxwjz2p training project
+   * layout.
+   *
+   * @return Returns an empty Dxxwjz2pImportContext instance.
+   */
+  virtual Dxxwjz2pImportContextPtr create_dxxwjz2p_library_context();
+
+  /**
+   * @brief Creates an empty context of the darknetxx dxxwjz3p training project
+   * layout.
+   *
+   * @return Returns an empty Dxxwjz3pImportContext instance.
+   */
+  virtual Dxxwjz3pImportContextPtr create_dxxwjz3p_library_context();
+
+  /**
+   * @brief Creates an empty context of the darknetxx training directory layout
+   * of the dxxwjz2 network.
+   *
+   * @return Returns an empty Dxxwjz2ImportContext instance.
+   */
+  virtual Dxxwjz2ImportContextPtr create_dxxwjz2_library_context();
+
+  /**
+   * @brief Creates an empty context of the darknetxx training directory layout
+   * of the dxxwjz3 network.
+   *
+   * @return Returns an empty Dxxwjz3ImportContext instance.
+   */
+  virtual Dxxwjz3ImportContextPtr create_dxxwjz3_library_context();
+
+  /**
    * @brief Creates appropriate library implementation instance
    * with accordance of provided data in the given context.
    *
@@ -204,7 +248,7 @@ class LibFactory
    * @brief Creates the importer of one family of the dataset layouts.
    *
    * The wanted layout is the very type of the context descendant, so the
-   * lookup is a cast per layout - and the layouts are grouped into the three
+   * lookup is a cast per layout - and the layouts are grouped into the four
    * families they are written by, so that no single method carries the whole
    * list of them.
    *
@@ -220,6 +264,9 @@ class LibFactory
       const IADataImportersContextPtr& ctx);
   /// @copydoc LibFactory::create_plain_importer
   static IImporterPtr create_descriptor_importer(
+      const IADataImportersContextPtr& ctx);
+  /// @copydoc LibFactory::create_plain_importer
+  static IImporterPtr create_darknetxx_importer(
       const IADataImportersContextPtr& ctx);
 };
 

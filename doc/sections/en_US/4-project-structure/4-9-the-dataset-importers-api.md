@@ -27,6 +27,10 @@ The records the importers build are not defined here. They come from the [Images
 | [PascalVocImportContext.h](/src/lib/facade/public/contexts/PascalVocImportContext.h) | the `IADataImportersContext` descendant of the Pascal VOC dataset layout |
 | [CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | the `IADataImportersContext` descendant of the Create ML object detection dataset layout |
 | [PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | the `IADataImportersContext` descendant of the PyTorch Vision dataset layout |
+| [Dxxwjz2pImportContext.h](/src/lib/facade/public/contexts/Dxxwjz2pImportContext.h) | the `IADataImportersContext` descendant of the darknetxx dxxwjz2p training project |
+| [Dxxwjz3pImportContext.h](/src/lib/facade/public/contexts/Dxxwjz3pImportContext.h) | the `IADataImportersContext` descendant of the darknetxx dxxwjz3p training project |
+| [Dxxwjz2ImportContext.h](/src/lib/facade/public/contexts/Dxxwjz2ImportContext.h) | the `IADataImportersContext` descendant of the darknetxx training directory of the dxxwjz2 network |
+| [Dxxwjz3ImportContext.h](/src/lib/facade/public/contexts/Dxxwjz3ImportContext.h) | the `IADataImportersContext` descendant of the darknetxx training directory of the dxxwjz3 network |
 | [IADataImportersLib.h](/src/lib/facade/public/IADataImportersLib.h) | the `IADataImportersLib` abstract library interface with its `perform_import` method |
 | [IADataImportersFacade.h](/src/lib/facade/public/IADataImportersFacade.h) | the `IADataImportersFacade` factory class, the entry point of the library |
 
@@ -44,17 +48,23 @@ class CocoImportContext : public IADataImportersContext;
 class PascalVocImportContext : public IADataImportersContext;
 class CreateMLImportContext : public IADataImportersContext;
 class PyTorchImportContext : public IADataImportersContext;
+class Dxxwjz2pImportContext : public IADataImportersContext;
+class Dxxwjz3pImportContext : public IADataImportersContext;
+class Dxxwjz2ImportContext : public IADataImportersContext;
+class Dxxwjz3ImportContext : public IADataImportersContext;
 ```
 
-The nine `IADataImportersContext` descendants name the nine dataset layouts the library is able to read. Instantiating one is what picks the layout, and the library maps that type onto the importer which reads it. None of them adds anything to `IADataImportersContext`, since everything an import needs - the source directory, the destination database and the image measuring instance - is held by the base class. What each of them expects to find on the disk is described in the [The read dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-read-dataset-layouts.md) subsection.
+The thirteen `IADataImportersContext` descendants name the thirteen dataset layouts the library is able to read. Instantiating one is what picks the layout, and the library maps that type onto the importer which reads it. None of them adds anything to `IADataImportersContext`, since everything an import needs - the source directory, the destination database and the image measuring instance - is held by the base class. What each of them expects to find on the disk is described in the [The read dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-read-dataset-layouts.md) subsection.
 
-The nine are the reverse of the nine layouts the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library writes - one for one, under the very same names - and the pair round trips: a project exported into any of them and imported back yields the annotations it started with, up to what the layout itself is able to carry.
+The thirteen are the reverse of the thirteen layouts the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library writes - one for one, under the very same names - and the pair round trips: a project exported into any of them and imported back yields the annotations it started with, up to what the layout itself is able to carry.
 
-The five which can not be read without knowing how large each image is - see `IImageSizeFacility` below - are `Yolo4ImportContext`, the three `Ultralytics*ImportContext` ones, whose geometry is stored divided by that size, and `PyTorchImportContext`, whose annotation is the cropped image itself. `CocoImportContext` and `PascalVocImportContext` read the dimensions out of their own descriptors, and `PlainTxtImportContext` and `CreateMLImportContext` need no measurement at all, since both store their rectangles in the image own pixels, exactly as the internal project format keeps them.
+The import path of the two darknetxx training projects, `Dxxwjz2pImportContext` and `Dxxwjz3pImportContext`, names the project file itself or the directory holding it, since the darknetxx keeps a whole training project in one file; every other layout reads the directory the path names.
+
+The seven which can not be read without knowing how large each image is - see `IImageSizeFacility` below - are `Yolo4ImportContext`, the `Dxxwjz2ImportContext` and the `Dxxwjz3ImportContext` which extend it, the three `Ultralytics*ImportContext` ones, whose geometry is stored divided by that size, and `PyTorchImportContext`, whose annotation is the cropped image itself. `CocoImportContext` and `PascalVocImportContext` read the dimensions out of their own descriptors, and `PlainTxtImportContext` and `CreateMLImportContext` need no measurement at all, since both store their rectangles in the image own pixels, exactly as the internal project format keeps them.
 
 ### IADataImportersContext
 
-The single data class of the library, the one both of its entry points are driven with: the one shot `IADataImportersLib::perform_import()` and the `IImporter::import_db()` of an importer built by hand. Create it with the `IADataImportersFacade` factory method of the wanted layout - the nine `create_*_library_context()` ones listed below - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
+The single data class of the library, the one both of its entry points are driven with: the one shot `IADataImportersLib::perform_import()` and the `IImporter::import_db()` of an importer built by hand. Create it with the `IADataImportersFacade` factory method of the wanted layout - the thirteen `create_*_library_context()` ones listed below - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
 
 The data it carries is private and reached through accessors only. Every getter hands out a `const` reference to what the context holds, every setter copies the given value in:
 
@@ -123,6 +133,10 @@ A class of static factory methods only, and the only entry point a consuming pro
 | `create_pascal_voc_library_context()` | a new empty `PascalVocImportContextPtr` |
 | `create_createml_library_context()` | a new empty `CreateMLImportContextPtr` |
 | `create_pytorch_library_context()` | a new empty `PyTorchImportContextPtr` |
+| `create_dxxwjz2p_library_context()` | a new empty `Dxxwjz2pImportContextPtr` |
+| `create_dxxwjz3p_library_context()` | a new empty `Dxxwjz3pImportContextPtr` |
+| `create_dxxwjz2_library_context()` | a new empty `Dxxwjz2ImportContextPtr` |
+| `create_dxxwjz3_library_context()` | a new empty `Dxxwjz3ImportContextPtr` |
 | `create_default_lib()` | the default `IADataImportersLibPtr` implementation |
 | `create_library(IADataImportersContextPtr ctx)` | the `IADataImportersLibPtr` implementation appropriate for the given context |
 | `create_importer(const IADataImportersContextPtr& ctx)` | a new `IImporterPtr` for the layout of the context, or a `nullptr` for a context naming no known layout |

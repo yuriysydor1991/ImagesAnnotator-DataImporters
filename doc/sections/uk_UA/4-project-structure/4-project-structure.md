@@ -12,8 +12,9 @@
 | [src/lib/facade/IADataImportersFacade.cpp](/src/lib/facade/IADataImportersFacade.cpp) | реалізація фасаду, точка входу бібліотеки |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` та `LibFactory.cpp` - ядро реалізації |
 | [src/lib/cmake](/src/lib/cmake) | генерація встановлюваного CMake-пакунка бібліотеки |
-| [src/importers](/src/importers) | по одній піддиректорії на родину розкладок наборів даних - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco`, `PascalVoc`, `CreateML` та `PyTorch`, - кожна несе власні реалізації `IImporter`, свій `CMakeLists.txt` і свої модульні тести, плюс спільні для всіх `ImportersAliases.h` та базу `Folder2DBImporter`, а також `JsonDescriptor2DBImporter`, спільний для двох розкладок, описаних одним документом JSON |
-| [src/parsers](/src/parsers) | читачі документів JSON та XML, якими читаються дескрипторні розкладки, по одному підкомпоненту на кожного, і кожен випробовується на власних документах |
+| [src/importers](/src/importers) | по одній піддиректорії на родину розкладок наборів даних - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco`, `PascalVoc`, `CreateML`, `Darknetxx` та `PyTorch`, - кожна несе власні реалізації `IImporter`, свій `CMakeLists.txt` і свої модульні тести, плюс спільні для всіх `ImportersAliases.h` та базу `Folder2DBImporter`, а також `JsonDescriptor2DBImporter`, спільний для двох розкладок, описаних одним документом JSON |
+| [src/parsers](/src/parsers) | читачі документів JSON та XML, якими читаються дескрипторні розкладки, по одному підкомпоненту на кожного, і кожен випробовується на власних документах, та `JsonMembersPicker`, яким частина за частиною читаються документи darknetxx |
+| [src/zlib](/src/zlib) | `ZlibController` і його потоки gzip-файлів - контролер zlib з cpp-app-template, через який розкладки darknetxx читають свої gzip-файли |
 | [src/sizers](/src/sizers) | `create_builtin_image_sizer()` і необовʼязковий OpenCV-`IImageSizeFacility` за ним |
 | [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `StringHelper.h` та `Utf8Helper.h`, усі складаються лише із заголовків |
 | [src/log](/src/log) | макроси журналювання і простий логер, вкомпільований у бібліотеку |

@@ -27,6 +27,10 @@ namespace iadi = ImagesAnnotatorDataImporters014;
 | [PascalVocImportContext.h](/src/lib/facade/public/contexts/PascalVocImportContext.h) | нащадок `IADataImportersContext` розкладки Pascal VOC |
 | [CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | нащадок `IADataImportersContext` розкладки виявлення обʼєктів Create ML |
 | [PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | нащадок `IADataImportersContext` розкладки PyTorch Vision |
+| [Dxxwjz2pImportContext.h](/src/lib/facade/public/contexts/Dxxwjz2pImportContext.h) | нащадок `IADataImportersContext` тренувального проекту darknetxx dxxwjz2p |
+| [Dxxwjz3pImportContext.h](/src/lib/facade/public/contexts/Dxxwjz3pImportContext.h) | нащадок `IADataImportersContext` тренувального проекту darknetxx dxxwjz3p |
+| [Dxxwjz2ImportContext.h](/src/lib/facade/public/contexts/Dxxwjz2ImportContext.h) | нащадок `IADataImportersContext` тренувальної директорії darknetxx мережі dxxwjz2 |
+| [Dxxwjz3ImportContext.h](/src/lib/facade/public/contexts/Dxxwjz3ImportContext.h) | нащадок `IADataImportersContext` тренувальної директорії darknetxx мережі dxxwjz3 |
 | [IADataImportersLib.h](/src/lib/facade/public/IADataImportersLib.h) | абстрактний інтерфейс бібліотеки `IADataImportersLib` із методом `perform_import` |
 | [IADataImportersFacade.h](/src/lib/facade/public/IADataImportersFacade.h) | клас-фабрику `IADataImportersFacade`, точку входу бібліотеки |
 
@@ -44,17 +48,23 @@ class CocoImportContext : public IADataImportersContext;
 class PascalVocImportContext : public IADataImportersContext;
 class CreateMLImportContext : public IADataImportersContext;
 class PyTorchImportContext : public IADataImportersContext;
+class Dxxwjz2pImportContext : public IADataImportersContext;
+class Dxxwjz3pImportContext : public IADataImportersContext;
+class Dxxwjz2ImportContext : public IADataImportersContext;
+class Dxxwjz3ImportContext : public IADataImportersContext;
 ```
 
-Девʼять нащадків `IADataImportersContext` називають девʼять розкладок наборів даних, які бібліотека вміє читати. Інстанціація одного з них - це і є вибір розкладки, а бібліотека відображає цей тип на імпортер, який її читає. Жоден із них нічого не додає до `IADataImportersContext`, бо все, що потрібно імпорту - директорія-джерело, база даних-призначення та засіб вимірювання зображень - зберігається у базовому класі. Що саме кожен із них очікує знайти на диску, описано в підрозділі [Розкладки наборів даних, які читаються](/doc/sections/uk_UA/4-project-structure/4-10-the-read-dataset-layouts.md).
+Тринадцять нащадків `IADataImportersContext` називають тринадцять розкладок наборів даних, які бібліотека вміє читати. Інстанціація одного з них - це і є вибір розкладки, а бібліотека відображає цей тип на імпортер, який її читає. Жоден із них нічого не додає до `IADataImportersContext`, бо все, що потрібно імпорту - директорія-джерело, база даних-призначення та засіб вимірювання зображень - зберігається у базовому класі. Що саме кожен із них очікує знайти на диску, описано в підрозділі [Розкладки наборів даних, які читаються](/doc/sections/uk_UA/4-project-structure/4-10-the-read-dataset-layouts.md).
 
-Ці девʼять є оберненням тих самих девʼяти розкладок, які записує споріднена бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) - одна до одної, під тими самими назвами - і пара замикає коло: проект, експортований у будь-яку з них та імпортований назад, дає ті самі анотації, з якими починав - настільки, наскільки сама розкладка здатна їх нести.
+Ці тринадцять є оберненням тих самих тринадцяти розкладок, які записує споріднена бібліотека [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) - одна до одної, під тими самими назвами - і пара замикає коло: проект, експортований у будь-яку з них та імпортований назад, дає ті самі анотації, з якими починав - настільки, наскільки сама розкладка здатна їх нести.
 
-Пʼять розкладок, які неможливо прочитати, не знаючи розміру кожного зображення (див. `IImageSizeFacility` нижче), - це `Yolo4ImportContext`, три `Ultralytics*ImportContext`, чия геометрія зберігається поділеною на той розмір, та `PyTorchImportContext`, чиєю анотацією є саме обрізане зображення. `CocoImportContext` та `PascalVocImportContext` читають розміри з власних дескрипторів, а `PlainTxtImportContext` і `CreateMLImportContext` не потребують вимірювання взагалі, бо обидві зберігають свої прямокутники у власних пікселях зображення, точно так, як їх тримає внутрішній формат проекту.
+Шлях імпорту двох тренувальних проектів darknetxx, `Dxxwjz2pImportContext` і `Dxxwjz3pImportContext`, називає сам файл проекту або директорію, яка його містить, оскільки darknetxx зберігає цілий тренувальний проект в одному файлі; кожна інша розкладка читає директорію, яку називає шлях.
+
+Сім розкладок, які неможливо прочитати, не знаючи розміру кожного зображення (див. `IImageSizeFacility` нижче), - це `Yolo4ImportContext`, `Dxxwjz2ImportContext` і `Dxxwjz3ImportContext`, які її розширюють, три `Ultralytics*ImportContext`, чия геометрія зберігається поділеною на той розмір, та `PyTorchImportContext`, чиєю анотацією є саме обрізане зображення. `CocoImportContext` та `PascalVocImportContext` читають розміри з власних дескрипторів, а `PlainTxtImportContext` і `CreateMLImportContext` не потребують вимірювання взагалі, бо обидві зберігають свої прямокутники у власних пікселях зображення, точно так, як їх тримає внутрішній формат проекту.
 
 ### IADataImportersContext
 
-Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `IADataImportersLib::perform_import()` та `IImporter::import_db()` імпортера, зібраного вручну. Створіть його фабричним методом `IADataImportersFacade` потрібної розкладки - одним із девʼяти `create_*_library_context()`, перелічених нижче - або інстанціюйте нащадка самостійно, як це робить споживач, шаблонізований за типом розкладки.
+Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `IADataImportersLib::perform_import()` та `IImporter::import_db()` імпортера, зібраного вручну. Створіть його фабричним методом `IADataImportersFacade` потрібної розкладки - одним із тринадцяти `create_*_library_context()`, перелічених нижче - або інстанціюйте нащадка самостійно, як це робить споживач, шаблонізований за типом розкладки.
 
 Дані, які він несе, є приватними і доступні лише через методи доступу. Кожен геттер віддає `const`-посилання на те, що зберігає контекст, кожен сеттер копіює передане значення всередину:
 
@@ -123,6 +133,10 @@ virtual IImageSizeFacilityPtr clone() = 0;
 | `create_pascal_voc_library_context()` | новий порожній `PascalVocImportContextPtr` |
 | `create_createml_library_context()` | новий порожній `CreateMLImportContextPtr` |
 | `create_pytorch_library_context()` | новий порожній `PyTorchImportContextPtr` |
+| `create_dxxwjz2p_library_context()` | новий порожній `Dxxwjz2pImportContextPtr` |
+| `create_dxxwjz3p_library_context()` | новий порожній `Dxxwjz3pImportContextPtr` |
+| `create_dxxwjz2_library_context()` | новий порожній `Dxxwjz2ImportContextPtr` |
+| `create_dxxwjz3_library_context()` | новий порожній `Dxxwjz3ImportContextPtr` |
 | `create_default_lib()` | типову реалізацію `IADataImportersLibPtr` |
 | `create_library(IADataImportersContextPtr ctx)` | реалізацію `IADataImportersLibPtr`, відповідну до наданого контексту |
 | `create_importer(const IADataImportersContextPtr& ctx)` | новий `IImporterPtr` для розкладки контексту або `nullptr` для контексту, що не називає жодної відомої розкладки |

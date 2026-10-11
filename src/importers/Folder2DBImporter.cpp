@@ -68,8 +68,7 @@ bool Folder2DBImporter::import_db(IADataImportersContextPtr ictx)
 
   const fs::path importDir = ictx->get_import_path();
 
-  if (!fs::is_directory(importDir)) {
-    LOGE("No directory found under the import path: " << importDir.string());
+  if (!accepts_import_path(importDir)) {
     return false;
   }
 
@@ -114,6 +113,17 @@ bool Folder2DBImporter::import_db(IADataImportersContextPtr ictx)
 
   LOGI("Recovered " << records.size() << " image records out of "
                     << importDir.string());
+
+  return true;
+}
+
+bool Folder2DBImporter::accepts_import_path(
+    const std::filesystem::path& importPath) const
+{
+  if (!fs::is_directory(importPath)) {
+    LOGE("No directory found under the import path: " << importPath.string());
+    return false;
+  }
 
   return true;
 }
