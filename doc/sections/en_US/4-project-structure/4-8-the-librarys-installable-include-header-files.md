@@ -1,6 +1,6 @@
 ## The library's installable include header files
 
-The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - fifteen headers, all in the `ImagesAnnotatorDataImporters014` namespace. Six of them are the API proper and sit at the root of the directory:
+The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - nineteen headers, all in the `ImagesAnnotatorDataImporters014` namespace. Six of them are the API proper and sit at the root of the directory:
 
 | Header | Declares |
 |---|---|
@@ -23,6 +23,10 @@ The thirteen remaining ones are the layout specific `IADataImportersContext` des
 | [contexts/CocoImportContext.h](/src/lib/facade/public/contexts/CocoImportContext.h) | the `IADataImportersContext` of the COCO object detection dataset layout |
 | [contexts/PascalVocImportContext.h](/src/lib/facade/public/contexts/PascalVocImportContext.h) | the `IADataImportersContext` of the Pascal VOC dataset layout |
 | [contexts/CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | the `IADataImportersContext` of the Create ML object detection dataset layout |
+| [contexts/Dxxwjz2ImportContext.h](/src/lib/facade/public/contexts/Dxxwjz2ImportContext.h) | the `IADataImportersContext` of the darknetxx training directory layout, the one with the dxxwjz2 network to train |
+| [contexts/Dxxwjz3ImportContext.h](/src/lib/facade/public/contexts/Dxxwjz3ImportContext.h) | the `IADataImportersContext` of the darknetxx training directory layout, the one with the dxxwjz3 network to train |
+| [contexts/Dxxwjz2pImportContext.h](/src/lib/facade/public/contexts/Dxxwjz2pImportContext.h) | the `IADataImportersContext` of the darknetxx dxxwjz2p training project layout |
+| [contexts/Dxxwjz3pImportContext.h](/src/lib/facade/public/contexts/Dxxwjz3pImportContext.h) | the `IADataImportersContext` of the darknetxx dxxwjz3p training project layout |
 | [contexts/PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | the `IADataImportersContext` of the PyTorch Vision dataset layout |
 
 Each of the thirteen reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataImporters-0.14/`, so a plain `#include "IADataImportersContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all thirteen through `IADataImportersFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.

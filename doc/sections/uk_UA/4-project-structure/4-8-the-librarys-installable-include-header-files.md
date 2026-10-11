@@ -1,6 +1,6 @@
 ## Публічні інтерфейсні файли бібліотеки
 
-Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - пʼятнадцять заголовків, усі у просторі імен `ImagesAnnotatorDataImporters014`. Шість із них є власне API і лежать у корені директорії:
+Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - девʼятнадцять заголовків, усі у просторі імен `ImagesAnnotatorDataImporters014`. Шість із них є власне API і лежать у корені директорії:
 
 | Заголовок | Оголошує |
 |---|---|
@@ -23,6 +23,10 @@
 | [contexts/CocoImportContext.h](/src/lib/facade/public/contexts/CocoImportContext.h) | `IADataImportersContext` розкладки виявлення обʼєктів COCO |
 | [contexts/PascalVocImportContext.h](/src/lib/facade/public/contexts/PascalVocImportContext.h) | `IADataImportersContext` розкладки Pascal VOC |
 | [contexts/CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | `IADataImportersContext` розкладки виявлення обʼєктів Create ML |
+| [contexts/Dxxwjz2ImportContext.h](/src/lib/facade/public/contexts/Dxxwjz2ImportContext.h) | `IADataImportersContext` розкладки тренувальної директорії darknetxx, тієї, що з мережею для тренування dxxwjz2 |
+| [contexts/Dxxwjz3ImportContext.h](/src/lib/facade/public/contexts/Dxxwjz3ImportContext.h) | `IADataImportersContext` розкладки тренувальної директорії darknetxx, тієї, що з мережею для тренування dxxwjz3 |
+| [contexts/Dxxwjz2pImportContext.h](/src/lib/facade/public/contexts/Dxxwjz2pImportContext.h) | `IADataImportersContext` розкладки тренувального проекту dxxwjz2p від darknetxx |
+| [contexts/Dxxwjz3pImportContext.h](/src/lib/facade/public/contexts/Dxxwjz3pImportContext.h) | `IADataImportersContext` розкладки тренувального проекту dxxwjz3p від darknetxx |
 | [contexts/PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | `IADataImportersContext` розкладки PyTorch Vision |
 
 Кожен із тих тринадцяти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataImporters-0.14/`, тож звичайне `#include "IADataImportersContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх тринадцяти через `IADataImportersFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
