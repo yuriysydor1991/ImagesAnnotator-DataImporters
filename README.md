@@ -101,9 +101,12 @@ More on the API and on the read datasets is in the [dataset importers API](/doc/
 | CMake option | Library | Why it is needed |
 | --- | --- | --- |
 | (always on) | [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) | it defines the annotations database the importers fill and the image records they build |
+| `ENABLE_ZLIB` | [zlib](https://zlib.net/) | it decompresses the gzip [darknetxx](https://github.com/yuriysydor1991/darknetxx) dxxwjz files the darknetxx layouts read |
 | `ENABLE_OPENCV` | [OpenCV](https://opencv.org/) | optional: with it the library ships an image size reader of its own, so that a consumer with no imaging stack still gets the layouts which need one |
 
-The data drivers library is **mandatory**. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its database type. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
+The data drivers library and the zlib are **mandatory**. The data drivers library has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its database type. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
+
+The zlib is first probed system wide and, when it is not found, is pulled by the CMake `FetchContent`. It is linked **privately**: no public header exposes a zlib type. The library reaches it through the `ZlibController` of [src/zlib](/src/zlib), the zlib controller component of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `appZlib` branch in the adaptation the darknetxx made of it, whose gzip file stream reads the files of the hundreds of megabytes a chunk at a time - see the [enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md) section.
 
 OpenCV is **optional** and `ENABLE_OPENCV=ON` means *probe*, not *require*: a system without it configures and builds just the same, only without the built-in image size reader. It is linked **privately**: no public header exposes an OpenCV type, so a consuming project needs no OpenCV of its own. See the [enabling the OpenCV image size reader](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md) section.
 
@@ -184,6 +187,7 @@ Examine the `doc` directory for possible translations of a current md document:
         1. [Enabling WIX MSI package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-21-enabling-WIX-MSI-package-generation-with-cpack.md)
         1. [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
     1. Libraries
+        1. [Enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md)
         1. [Enabling the OpenCV image size reader](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md)
 1. Running the tests
     1. [Run tests by the ctest](/doc/sections/en_US/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)

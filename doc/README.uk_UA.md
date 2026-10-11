@@ -100,9 +100,12 @@ int main(int argc, char** argv)
 | CMake-опція | Бібліотека | Навіщо вона потрібна |
 | --- | --- | --- |
 | (завжди увімкнено) | [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) | вона оголошує базу даних анотацій, яку заповнюють імпортери, і записи зображень, які вони будують |
+| `ENABLE_ZLIB` | [zlib](https://zlib.net/) | вона розпаковує gzip-файли dxxwjz [darknetxx](https://github.com/yuriysydor1991/darknetxx), які читають розкладки darknetxx |
 | `ENABLE_OPENCV` | [OpenCV](https://opencv.org/) | необовʼязково: з ним бібліотека несе власний читач розмірів зображень, тож споживач без власних засобів роботи із зображеннями все одно отримує розкладки, яким той читач потрібен |
 
-Бібліотека драйверів даних є **обовʼязковою**. Вона має бути встановлена заздалегідь, знаходиться через `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` і лінкується **публічно**, оскільки встановлювані заголовки цієї бібліотеки згадують її тип бази даних. Вкажи конфігуруванню її префікс встановлення за допомогою `-DCMAKE_PREFIX_PATH=<prefix>`, коли вона не міститься у типовому системному префіксі. Секція [залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) розкриває це повністю, включно з іменем пакунка.
+Бібліотека драйверів даних і zlib є **обовʼязковими**. Бібліотека драйверів даних має бути встановлена заздалегідь, знаходиться через `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` і лінкується **публічно**, оскільки встановлювані заголовки цієї бібліотеки згадують її тип бази даних. Вкажи конфігуруванню її префікс встановлення за допомогою `-DCMAKE_PREFIX_PATH=<prefix>`, коли вона не міститься у типовому системному префіксі. Секція [залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) розкриває це повністю, включно з іменем пакунка.
+
+zlib спершу шукається у системі, і коли її не знайдено - затягується через CMake `FetchContent`. Вона лінкується **приватно**: жоден публічний заголовок не відкриває типів zlib. Бібліотека звертається до неї через `ZlibController` з [src/zlib](/src/zlib), компонент контролера zlib з гілки `appZlib` [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) в адаптації, яку зробив з нього darknetxx, потік gzip-файлів якого читає файли у сотні мегабайтів частина за частиною - див. секцію [вмикання бібліотеки zlib](/doc/sections/uk_UA/5-project-build/5-39-enabling-the-zlib-library.md).
 
 OpenCV є **необовʼязковим**, і `ENABLE_OPENCV=ON` означає *перевірити*, а не *вимагати*: система без нього конфігурується і збирається так само, лише без вбудованого читача розмірів зображень. Він лінкується **приватно**: жоден публічний заголовок не відкриває типів OpenCV, тож проекту-споживачу не потрібен власний OpenCV. Див. секцію [вмикання читача розмірів зображень на OpenCV](/doc/sections/uk_UA/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md).
 
@@ -183,6 +186,7 @@ cd build && ctest --output-on-failure
         1. [Вмикання підтримки генерування WIX MSI-пакетів з cpack](/doc/sections/uk_UA/5-project-build/packagers/5-21-enabling-WIX-MSI-package-generation-with-cpack.md)
         1. [Вмикання підтримки генерування RPM-пакунків з cpack](/doc/sections/uk_UA/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
     1. Бібліотеки
+        1. [Вмикання бібліотеки zlib](/doc/sections/uk_UA/5-project-build/5-39-enabling-the-zlib-library.md)
         1. [Вмикання читача розмірів зображень на OpenCV](/doc/sections/uk_UA/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md)
 1. Запуск тестів
     1. [Запуск тестів за допомогою ctest](/doc/sections/uk_UA/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)
