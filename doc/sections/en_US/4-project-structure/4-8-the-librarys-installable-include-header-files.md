@@ -11,7 +11,7 @@ The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole in
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | the interface the consuming project implements to measure images |
 | [ImportersAPI.h](/src/lib/facade/public/ImportersAPI.h) | the `IADI_API` visibility macro |
 
-The thirteen remaining ones are the layout specific `IADataImportersContext` descendants - one per dataset layout the library reads - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, which is the layout the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library carries for its own nine:
+The thirteen remaining ones are the layout specific `IADataImportersContext` descendants - one per dataset layout the library reads - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, which is the layout the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library carries for its own thirteen:
 
 | Header | Declares |
 |---|---|

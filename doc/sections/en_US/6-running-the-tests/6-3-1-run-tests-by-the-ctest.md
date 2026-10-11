@@ -11,7 +11,7 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers install prefix> \
 cmake --build build -j$(nproc)
 ```
 
-With both options on the suite holds 90 test cases and all 90 pass. Run them
+With both options on the suite holds 259 test cases and all 259 pass. Run them
 with the `ctest` command from the project build directory (GNU/Linux based):
 
 ```
@@ -27,13 +27,18 @@ directory (GNU/Linux based):
 ctest --tests-dir /path/to/the/project/build/directory
 ```
 
-The cases are distributed over eleven binaries: eight unit test ones
+The cases are distributed over twenty four binaries: twenty unit test ones
 (`UTEST_IADataImportersFacade`, `UTEST_LibFactory`, `UTEST_LibMain`,
 `UTEST_PlainTxtFolder2DBImporter`, `UTEST_Yolo4Folder2DBImporter`,
-`UTEST_PyTorchVisionFolder2DBImporter`, `UTEST_OpenCVImageSizer`,
-`UTEST_TypeHelper`) and three component test ones (`CTEST_Importers`,
-`CTEST_LibraryRealLogger`, `CTEST_DefaultLogger`). List them without running
-anything:
+`UTEST_UltralyticsFolder2DBImporter`, `UTEST_CocoFolder2DBImporter`,
+`UTEST_PascalVocFolder2DBImporter`, `UTEST_CreateMLFolder2DBImporter`,
+`UTEST_Dxxwjz2Folder2DBImporter`, `UTEST_Dxxwjz2pProject2DBImporter`,
+`UTEST_PyTorchVisionFolder2DBImporter`, `UTEST_JsonParser`,
+`UTEST_JsonMembersPicker`, `UTEST_XmlParser`, `UTEST_ZlibController`,
+`UTEST_OpenCVImageSizer`, `UTEST_TypeHelper`, `UTEST_StringHelper`,
+`UTEST_Utf8Helper`) and four component test ones (`CTEST_Importers`,
+`CTEST_LibraryRealLogger`, `CTEST_DefaultLogger`, `CTEST_ZlibController`).
+List them without running anything:
 
 ```
 # from the project build directory

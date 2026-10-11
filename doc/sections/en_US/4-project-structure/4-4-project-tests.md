@@ -27,7 +27,7 @@ The unit tests are built with `-DENABLE_UNIT_TESTS=ON`. They compile the compone
 | `UTEST_StringHelper` | the descriptor value trimming helper | [src/helpers/StringHelper.h](/src/helpers/StringHelper.h) |
 | `UTEST_Utf8Helper` | the code point writing helper | [src/helpers/Utf8Helper.h](/src/helpers/Utf8Helper.h) |
 
-The nine importer suites also cover the shared [src/importers/Folder2DBImporter.cpp](/src/importers/Folder2DBImporter.cpp) base, since every one of them compiles and drives it, and the two JSON described layouts cover the [src/importers/JsonDescriptor2DBImporter.cpp](/src/importers/JsonDescriptor2DBImporter.cpp) half they share on top of it. Each of them runs a stand-in image size reader of its own - one reporting a fixed size and one failing every call - so what an import makes of either is covered whether or not this build has OpenCV. The two parser suites compile no importer at all: neither reader knows anything of the layouts read through it, so both are driven with documents of their own, the malformed ones among them. Every case works over a directory tree the fixture builds under the Google Test temporary directory and removes again, so the suite touches nothing else and needs no test data of its own.
+The nine importer suites also cover the shared [src/importers/Folder2DBImporter.cpp](/src/importers/Folder2DBImporter.cpp) base, since every one of them compiles and drives it, and the two JSON described layouts cover the [src/importers/JsonDescriptor2DBImporter.cpp](/src/importers/JsonDescriptor2DBImporter.cpp) half they share on top of it. Each of them runs a stand-in image size reader of its own - one reporting a fixed size and one failing every call - so what an import makes of either is covered whether or not this build has OpenCV. The three parser suites compile no importer at all: no reader knows anything of the layouts read through it, so all three are driven with documents of their own, the malformed ones among them. Every case works over a directory tree the fixture builds under the Google Test temporary directory and removes again, so the suite touches nothing else and needs no test data of its own.
 
 The component tests are built with `-DENABLE_COMPONENT_TESTS=ON`:
 
@@ -40,7 +40,7 @@ The component tests are built with `-DENABLE_COMPONENT_TESTS=ON`:
 
 `CTEST_Importers` is the test that would notice a broken install interface - a header left out of the install set, or a symbol that never left the shared object because it lost its `IADI_API` mark.
 
-With both options on the suite counts 257 test cases:
+With both options on the suite counts 259 test cases:
 
 ```
 # from the project root directory

@@ -47,7 +47,7 @@ cmake -S . -B build \
 cmake --build build -j$(nproc)
 ```
 
-With both options on `ctest` reports 61 test cases, all of which are expected
+With both options on `ctest` reports 259 test cases, all of which are expected
 to pass. See
 [Run tests by the ctest](/doc/sections/en_US/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)
 for the run commands.
