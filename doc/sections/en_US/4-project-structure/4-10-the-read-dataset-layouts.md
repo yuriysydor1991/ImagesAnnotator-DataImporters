@@ -1,6 +1,6 @@
 ## The read dataset layouts
 
-Each `IADataImportersContext` descendant is implemented by one importer class under [src/importers](/src/importers). This subsection describes what every one of them expects to find inside the directory named by `IADataImportersContext::set_import_path()`, and what it makes of it. The interface that drives them is described in the [The dataset importers API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-importers-api.md) subsection.
+Each `IADataImportersContext` descendant is implemented by one importer class under [src/importers](/src/importers). This subsection describes what every one of them expects to find inside the directory named by `IADataImportersContext::set_import_path()` - or the file it names, for the darknetxx training projects - and what it makes of it. The interface that drives them is described in the [The dataset importers API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-importers-api.md) subsection.
 
 ### What they all have in common
 
@@ -9,8 +9,8 @@ Each `IADataImportersContext` descendant is implemented by one importer class un
 - The library decodes no image format itself. Nothing is copied, moved or rewritten inside the import directory: the produced records point at the image files where they already lie. An import is a read only pass over the dataset.
 - What can not be read is logged and skipped, the run itself carries on. A malformed line, an image file the dataset names but does not hold, a picture that can not be measured - each costs its own entry and nothing else.
 - The records are handed to the database through `IAnnotationsDB::add_images_db()`, which skips an image the database already holds. Importing one and the same dataset twice adds its images once.
-- Five of the nine layouts have to know how large each image is, and ask for it through the `IImageSizeFacility` of the context or the one a build with OpenCV ships: the YOLO v4 one and the three Ultralytics YOLO ones store their boxes normalised, and the PyTorch Vision one has the crop itself for an annotation. An import of such a layout with no reader at all fails at once, and a picture it can not measure is skipped whole.
-- The four remaining ones are complete without a measurement. The COCO and the Pascal VOC descriptors carry the size of every image they name, so a reader is only ever asked for the one a foreign tool left it out for; the plain text and the Create ML layouts carry no size anywhere, and their records take the image dimensions from a reader when there is one and stay at zero when there is not. Their rectangles are whole either way, since both layouts hold them in the very pixels the internal format wants them in.
+- Seven of the thirteen layouts have to know how large each image is, and ask for it through the `IImageSizeFacility` of the context or the one a build with OpenCV ships: the YOLO v4 one, the two darknetxx training directories which extend it and the three Ultralytics YOLO ones store their boxes normalised, and the PyTorch Vision one has the crop itself for an annotation. An import of such a layout with no reader at all fails at once, and a picture it can not measure is skipped whole.
+- The six remaining ones are complete without a measurement. The COCO and the Pascal VOC descriptors and the two darknetxx training projects carry the size of every image they name, so a reader is only ever asked for the one a foreign tool left it out for; the plain text and the Create ML layouts carry no size anywhere, and their records take the image dimensions from a reader when there is one and stay at zero when there is not. Their rectangles are whole either way, since both layouts hold them in the very pixels the internal format wants them in.
 
 The examples below all describe the very same two record result, which is what the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library was given when it wrote those datasets:
 
@@ -353,6 +353,63 @@ The flatness is the format: this is the `directoryWithImagesAndJsonAnnotation` d
 - **Both spellings of the two keys are read**: the singular `imagefilename` and `annotation` pair Apple documents, and the plural `image` and `annotations` one some converters emit instead.
 - The layout carries no image size anywhere, so the record dimensions are filled in from a reader when the consumer supplied one and stay at zero when they are not. An image whose `annotation` array is empty becomes a record with no rectangles.
 
+### The darknetxx layouts
+
+The [darknetxx](https://github.com/yuriysydor1991/darknetxx), the C++ port of the darknet trainer, keeps its networks and its training projects in the dxxwjz files: the gzip compressed JSON documents of a `format` and a `version` key of their own. Four of them are read here, the very four the sibling exporters library writes. Every one is decompressed by the zlib through the `ZlibController` of [src/zlib](/src/zlib) - the zlib controller component of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `appZlib` branch, in the adaptation the darknetxx made of it - a chunk at a time, and the `JsonMembersPicker` of [src/parsers/json](/src/parsers/json) steps over every member of the document but the few an import needs, of which the JSON reader of the library reads the values alone. The file of a trained network keeps the JSON text of every weight of it, hundreds of megabytes, so neither the file nor its text is ever held whole, and the reading stops once the wanted members are read. A file of the plain JSON text, which the darknetxx reads as well, is read too, with a warning. A document of another `format` or `version` than the one of the layout is refused, the way the darknetxx refuses it, and the database is left untouched.
+
+#### Dxxwjz2pImportContext and Dxxwjz3pImportContext
+
+The darknetxx training projects, the whole YOLO v4 training project but the images in one file: the network, the class names, the training record, the weights of a trained one and the annotations of the images. The import path is the project file itself, or the directory holding it - the `yolov4-obj.dxxwjz2p` the sibling exporters library writes first, the first `*.dxxwjz2p` file by the name otherwise (the `*.dxxwjz3p` ones of the `Dxxwjz3pImportContext`):
+
+```
+import_path/
+|-- yolov4-obj.dxxwjz2p
+|-- images/
+|   |-- park.jpg
+|   `-- street.png
+`-- backup/
+```
+
+The `annotations` member alone is read: the project structure of the ImagesAnnotator application (of its `0.12.0` version) the darknetxx keeps the boxes of the images in. `gzip -dc yolov4-obj.dxxwjz2p` shows it:
+
+```json
+  "annotations": {"ImagesAnnotator": {"version": "0.12.0"}, "annotations": [
+    {"db": {"path": "images"}, "annotations": [
+      {"rel_path": "park.jpg", "width": 640, "height": 480, "annotations": [{"name": "cat", "rect": {"x": 200, "y": 130, "width": 48, "height": 52}}, {"name": "dog", "rect": {"x": 12, "y": 8, "width": 64, "height": 64}}]},
+      {"rel_path": "street.png", "width": 640, "height": 400, "annotations": [{"name": "dog", "rect": {"x": 50, "y": 20, "width": 100, "height": 40}}, {"name": "dog", "rect": {"x": 300, "y": 25, "width": 90, "height": 45}}]}
+    ]}
+  ]}
+```
+
+- **`db.path`** is the folder of the images, relative to the folder of the project file or absolute, so the project moves as a whole. It becomes the `ImageRecord::abs_dir_path` of its images and **`rel_path`** - a path which may name the sub-folders of that folder - the `ImageRecord::path`, the very split the project file of the application keeps.
+- **`rect`** is the top left corner and the size of the box in the pixels of the image, the very four fields an `ImageRecordRect` holds. The darknetxx writes them as the floats of the pixels, which are rounded to the nearest pixel, and a box of no class name or of no area is dropped.
+- **`width`** and **`height`** are the size of the image, which is why this layout needs no measurement; the `0` of an unknown size is filled in by the image size reader when there is one.
+- The `validation` flag of an image and the `scale_factor` keys mean nothing to the annotations database and are read over, and so are the network, the training record and the weights. An image the folder does not hold becomes a record all the same.
+
+The dxxwjz3p project keeps the weights in the layers of its network, before the annotations member, so its import decompresses and steps over them; the dxxwjz2p one keeps them after it, so its import stops reading before them.
+
+#### Dxxwjz2ImportContext and Dxxwjz3ImportContext
+
+The darknetxx training directories: the YOLO v4 directory of the `Yolo4ImportContext` with the network to train beside its cfg file, `cfg/yolov4-obj.dxxwjz2` (`cfg/yolov4-obj.dxxwjz3` of the `Dxxwjz3ImportContext`).
+
+```
+import_path/
+|-- backup/
+|-- cfg/
+|   |-- yolov4-obj.cfg
+|   `-- yolov4-obj.dxxwjz2
+`-- data/
+    |-- obj.data
+    |-- obj.names
+    |-- train.txt
+    |-- park.jpg
+    |-- park.txt
+    |-- street.png
+    `-- street.txt
+```
+
+The directory is read the way the `Yolo4ImportContext` reads it, the measurement every normalised box needs included. The darknetxx keeps the class names of the label files in the network as well - the `classes` array of the `index` and the `name` objects of the dxxwjz2 one, the array of the names of the dxxwjz3 one - which is what a directory of no `data/obj.names` file is read with: the network of the `yolov4-obj` name, or the first one of the `cfg` directory by the name. A names file which is there wins over the network, the way the darknetxx reads a YOLO4 folder, and the names of the two which differ are warned of. A directory of no network is read as the YOLO v4 one it is.
+
 ### PyTorchImportContext
 
 The classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name, holding the images cropped down to the rectangles of that name.
@@ -380,4 +437,4 @@ This layout has lost the pictures the crops were cut out of, so **every crop bec
 
 That extent is the size of the file itself, which is why this import measures every crop and skips the ones it can not: a rectangle of an unknown extent is no annotation.
 
-This is the one layout of the nine which does not round trip into the records it was written from. The export cut the rectangles out and dropped everything around them, the original images among it, so what comes back is one image per rectangle rather than one image carrying its rectangles. The class of every crop survives in full, which is what that layout is for.
+This is the one layout of the thirteen which does not round trip into the records it was written from. The export cut the rectangles out and dropped everything around them, the original images among it, so what comes back is one image per rectangle rather than one image carrying its rectangles. The class of every crop survives in full, which is what that layout is for.

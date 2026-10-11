@@ -11,7 +11,7 @@ The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole in
 | [IImageSizeFacility.h](/src/lib/facade/public/IImageSizeFacility.h) | the interface the consuming project implements to measure images |
 | [ImportersAPI.h](/src/lib/facade/public/ImportersAPI.h) | the `IADI_API` visibility macro |
 
-The nine remaining ones are the layout specific `IADataImportersContext` descendants - one per dataset layout the library reads - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, which is the layout the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library carries for its own nine:
+The thirteen remaining ones are the layout specific `IADataImportersContext` descendants - one per dataset layout the library reads - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, which is the layout the sibling [ImagesAnnotator-DataExporters](https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git) library carries for its own nine:
 
 | Header | Declares |
 |---|---|
@@ -25,7 +25,7 @@ The nine remaining ones are the layout specific `IADataImportersContext` descend
 | [contexts/CreateMLImportContext.h](/src/lib/facade/public/contexts/CreateMLImportContext.h) | the `IADataImportersContext` of the Create ML object detection dataset layout |
 | [contexts/PyTorchImportContext.h](/src/lib/facade/public/contexts/PyTorchImportContext.h) | the `IADataImportersContext` of the PyTorch Vision dataset layout |
 
-Each of the nine reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataImporters-0.14/`, so a plain `#include "IADataImportersContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all nine through `IADataImportersFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.
+Each of the thirteen reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataImporters-0.14/`, so a plain `#include "IADataImportersContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all thirteen through `IADataImportersFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.
 
 [src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) installs the directory as a whole under `include/${PROJECT_LIBRARY_NAME}`, which for the current name and version is `include/ImagesAnnotatorDataImporters-0.14/`. Both that sub-directory and the plain include root are exported by the library target, so a consumer may write either form:
 

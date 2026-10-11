@@ -12,8 +12,9 @@ The top level layout:
 | [src/lib/facade/IADataImportersFacade.cpp](/src/lib/facade/IADataImportersFacade.cpp) | the facade implementation, the entry point of the library |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` and `LibFactory.cpp` - the implementation core |
 | [src/lib/cmake](/src/lib/cmake) | generation of the installable CMake package of the library |
-| [src/importers](/src/importers) | one sub-directory per dataset layout family - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco`, `PascalVoc`, `CreateML` and `PyTorch` - each carrying its own `IImporter` implementations, its `CMakeLists.txt` and its unit tests, plus the `ImportersAliases.h`, the `Folder2DBImporter` base they all share and the `JsonDescriptor2DBImporter` the two JSON described ones share |
-| [src/parsers](/src/parsers) | the JSON and the XML document readers the descriptor layouts are read through, one sub-component each, tested on their own documents |
+| [src/importers](/src/importers) | one sub-directory per dataset layout family - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco`, `PascalVoc`, `CreateML`, `Darknetxx` and `PyTorch` - each carrying its own `IImporter` implementations, its `CMakeLists.txt` and its unit tests, plus the `ImportersAliases.h`, the `Folder2DBImporter` base they all share and the `JsonDescriptor2DBImporter` the two JSON described ones share |
+| [src/parsers](/src/parsers) | the JSON and the XML document readers the descriptor layouts are read through, one sub-component each, tested on their own documents, and the `JsonMembersPicker` the darknetxx documents are read through a piece at a time |
+| [src/zlib](/src/zlib) | `ZlibController` and its gzip file streams - the zlib controller of the cpp-app-template the darknetxx layouts read their gzip files through |
 | [src/sizers](/src/sizers) | `create_builtin_image_sizer()` and the optional OpenCV `IImageSizeFacility` behind it |
 | [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `StringHelper.h` and `Utf8Helper.h`, all header only |
 | [src/log](/src/log) | the logging macros and the simple logger compiled into the library |
