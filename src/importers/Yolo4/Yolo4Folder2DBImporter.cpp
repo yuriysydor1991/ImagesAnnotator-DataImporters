@@ -57,7 +57,7 @@ bool Yolo4Folder2DBImporter::read_dataset(
 
   const fs::path namesPath = resolve(importDir, objData, "names", objNamesRel);
 
-  const ClassNames classes = read_class_names(namesPath);
+  const ClassNames classes = read_classes(importDir, namesPath);
 
   if (classes.empty()) {
     LOGE("No class names read out of " << namesPath.string()
@@ -146,6 +146,13 @@ fs::path Yolo4Folder2DBImporter::resolve(const std::filesystem::path& importDir,
       miter != objData.end() ? fs::path{miter->second} : fs::path{fallbackRel};
 
   return named.is_absolute() ? named : importDir / named;
+}
+
+Yolo4Folder2DBImporter::ClassNames Yolo4Folder2DBImporter::read_classes(
+    [[maybe_unused]] const std::filesystem::path& importDir,
+    const std::filesystem::path& namesPath)
+{
+  return read_class_names(namesPath);
 }
 
 Yolo4Folder2DBImporter::ClassNames Yolo4Folder2DBImporter::read_class_names(

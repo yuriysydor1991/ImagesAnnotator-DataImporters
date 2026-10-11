@@ -58,9 +58,24 @@ class Folder2DBImporter : virtual public IImporter
 
  protected:
   /**
+   * @brief Tells whether the import path names a source of the layout at all,
+   * logging why it does not.
+   *
+   * @param importPath The import path of the context.
+   *
+   * @return Should return true for the path read_dataset is able to read. The
+   * base accepts an existing directory, the source of every layout but the
+   * ones of a single file (the darknetxx training projects).
+   */
+  virtual bool accepts_import_path(
+      const std::filesystem::path& importPath) const;
+
+  /**
    * @brief Reads the dataset of the layout this importer implements.
    *
-   * @param importDir The already validated existing source directory.
+   * @param importDir The import path accepts_import_path has accepted: the
+   * existing source directory of every layout but the ones of a single file,
+   * which get that file or the directory holding it.
    * @param records Out: the records recovered out of it. A single unreadable
    * entry is to be logged and left out of this set instead of failing the
    * whole run.

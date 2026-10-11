@@ -71,13 +71,29 @@ class Yolo4Folder2DBImporter : public Folder2DBImporter,
   /// measurement of every image they belong to.
   virtual bool needs_image_sizer() const override;
 
+  using ClassNames = std::vector<std::string>;
+
+  inline static const std::string cfgRel = "cfg";
+
+  /**
+   * @brief Reads the class names the label files number the classes by.
+   *
+   * @param importDir The dataset root.
+   * @param namesPath The class names file the `obj.data` descriptor names, the
+   * `data/obj.names` one by default.
+   *
+   * @return Returns the names in the order of their indexes, none for the
+   * dataset of none. The YOLO v4 directory keeps them in the names file
+   * alone, while the darknetxx ones keep them in their networks as well.
+   */
+  virtual ClassNames read_classes(const std::filesystem::path& importDir,
+                                  const std::filesystem::path& namesPath);
+
  private:
   using ObjData = std::unordered_map<std::string, std::string>;
-  using ClassNames = std::vector<std::string>;
   using Paths = std::vector<std::filesystem::path>;
 
   inline static const std::string dataRel = "data";
-  inline static const std::string cfgRel = "cfg";
   inline static const std::string objNamesRel = dataRel + "/obj.names";
   inline static const std::string objDataRel = dataRel + "/obj.data";
   inline static const std::string trainTxtRel = dataRel + "/train.txt";
