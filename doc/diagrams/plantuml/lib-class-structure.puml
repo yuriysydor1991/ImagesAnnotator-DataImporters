@@ -52,6 +52,10 @@ package "ImagesAnnotatorDataImporters014 (installed interface)" {
   class PascalVocImportContext
   class CreateMLImportContext
   class PyTorchImportContext
+  class Dxxwjz2pImportContext
+  class Dxxwjz3pImportContext
+  class Dxxwjz2ImportContext
+  class Dxxwjz3ImportContext
 
   abstract class IADataImportersLib {
     +{abstract} bool perform_import(IADataImportersContextPtr ctx)
@@ -67,6 +71,10 @@ package "ImagesAnnotatorDataImporters014 (installed interface)" {
     +{static} PascalVocImportContextPtr create_pascal_voc_library_context()
     +{static} CreateMLImportContextPtr create_createml_library_context()
     +{static} PyTorchImportContextPtr create_pytorch_library_context()
+    +{static} Dxxwjz2pImportContextPtr create_dxxwjz2p_library_context()
+    +{static} Dxxwjz3pImportContextPtr create_dxxwjz3p_library_context()
+    +{static} Dxxwjz2ImportContextPtr create_dxxwjz2_library_context()
+    +{static} Dxxwjz3ImportContextPtr create_dxxwjz3_library_context()
     +{static} IADataImportersLibPtr create_default_lib()
     +{static} IADataImportersLibPtr create_library(IADataImportersContextPtr ctx)
     +{static} IImporterPtr create_importer(const IADataImportersContextPtr& ctx)
@@ -92,6 +100,10 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     +PascalVocImportContextPtr create_pascal_voc_library_context()
     +CreateMLImportContextPtr create_createml_library_context()
     +PyTorchImportContextPtr create_pytorch_library_context()
+    +Dxxwjz2pImportContextPtr create_dxxwjz2p_library_context()
+    +Dxxwjz3pImportContextPtr create_dxxwjz3p_library_context()
+    +Dxxwjz2ImportContextPtr create_dxxwjz2_library_context()
+    +Dxxwjz3ImportContextPtr create_dxxwjz3_library_context()
     +IADataImportersLibPtr create_appropriate_lib(IADataImportersContextPtr ctx)
     +IImporterPtr create_importer(const IADataImportersContextPtr& ctx)
     +IImageSizeFacilityPtr create_image_sizer()
@@ -100,6 +112,7 @@ package "Implementation (hidden symbols)" #F8F8F8 {
 
   abstract class Folder2DBImporter {
     +bool import_db(IADataImportersContextPtr ictx)
+    #virtual bool accepts_import_path(const std::filesystem::path& importPath) const
     #{abstract} bool read_dataset(const std::filesystem::path& importDir, ImageRecordsSet& records)
     #virtual bool needs_image_sizer() const
     #bool measure_image(const std::filesystem::path& imagePath, int& width, int& height)
@@ -131,7 +144,13 @@ package "Implementation (hidden symbols)" #F8F8F8 {
   }
 
   class PlainTxtFolder2DBImporter
-  class Yolo4Folder2DBImporter
+
+  class Yolo4Folder2DBImporter {
+    #bool read_dataset(const std::filesystem::path& importDir, ImageRecordsSet& records)
+    #bool needs_image_sizer() const
+    #virtual ClassNames read_classes(const std::filesystem::path& importDir, const std::filesystem::path& namesPath)
+  }
+
   class UltralyticsDetectFolder2DBImporter
   class UltralyticsObbFolder2DBImporter
   class UltralyticsSegmentFolder2DBImporter
@@ -139,6 +158,39 @@ package "Implementation (hidden symbols)" #F8F8F8 {
   class PascalVocFolder2DBImporter
   class CreateMLFolder2DBImporter
   class PyTorchVisionFolder2DBImporter
+
+  class Dxxwjz2Folder2DBImporter {
+    #ClassNames read_classes(const std::filesystem::path& importDir, const std::filesystem::path& namesPath)
+    #virtual const std::string& format_name() const
+    #virtual int format_version() const
+    #virtual const std::string& network_extension() const
+    #virtual bool read_network_classes(const JsonValue& classes, ClassNames& names) const
+  }
+
+  class Dxxwjz3Folder2DBImporter {
+    #const std::string& format_name() const
+    #int format_version() const
+    #const std::string& network_extension() const
+    #bool read_network_classes(const JsonValue& classes, ClassNames& names) const
+  }
+
+  class Dxxwjz2pProject2DBImporter {
+    #bool accepts_import_path(const std::filesystem::path& importPath) const
+    #bool read_dataset(const std::filesystem::path& importDir, ImageRecordsSet& records)
+    #virtual const std::string& format_name() const
+    #virtual int format_version() const
+    #virtual const std::string& project_extension() const
+  }
+
+  class Dxxwjz3pProject2DBImporter {
+    #const std::string& format_name() const
+    #int format_version() const
+    #const std::string& project_extension() const
+  }
+
+  class DxxwjzFileReader {
+    +bool read(const std::filesystem::path& fpath, const Paths& wanted, Members& members) const
+  }
 
   class OpenCVImageSizer {
     +bool read_image_size(const std::string& imagePath, int& width, int& height)
@@ -173,6 +225,10 @@ package "Document readers (hidden symbols)" #F8F8F8 {
     +{static} XmlParserPtr create()
   }
 
+  class JsonMembersPicker {
+    +bool pick(const std::vector<Path>& wanted, const Receiver& receiver)
+  }
+
   class XmlNode {
     +const std::string& get_name()
     +const std::string& get_text()
@@ -180,6 +236,13 @@ package "Document readers (hidden symbols)" #F8F8F8 {
     +const XmlNode* find(const std::string& name)
     +bool read_text(const std::string& name, std::string& value)
     +bool read_number(const std::string& name, double& value)
+  }
+}
+
+package "src/zlib (iadi0zlibi)" #F8F8F8 {
+  class ZlibController {
+    +buffer uncompress_from_file(const std::string& path)
+    +std::unique_ptr<GzipIStream> create_file_reader(const std::string& path)
   }
 }
 
@@ -218,9 +281,30 @@ end note
 
 note bottom of IJsonParser
   The library links no JSON or XML
-  library of its own. Neither reader
-  knows anything of the layouts read
-  through it.
+  library of its own. None of the
+  readers knows anything of the
+  layouts read through it.
+end note
+
+note bottom of Dxxwjz2Folder2DBImporter
+  A YOLO v4 directory the darknetxx
+  trains: the class names are read off
+  the network beside its cfg when no
+  data/obj.names is there.
+end note
+
+note bottom of Dxxwjz2pProject2DBImporter
+  One project file, or the directory
+  holding it: the network, the class
+  names and the annotations of the
+  images/ copies, no weights read.
+end note
+
+note bottom of JsonMembersPicker
+  Reads a document a piece at a time:
+  the darknetxx files stream through
+  it, so the weights of hundreds of
+  megabytes are stepped over unparsed.
 end note
 
 note bottom of OpenCVImageSizer
@@ -247,6 +331,11 @@ UltralyticsFolder2DBImporter <|-- UltralyticsDetectFolder2DBImporter
 UltralyticsFolder2DBImporter <|-- UltralyticsObbFolder2DBImporter
 UltralyticsFolder2DBImporter <|-- UltralyticsSegmentFolder2DBImporter
 
+Yolo4Folder2DBImporter <|-- Dxxwjz2Folder2DBImporter
+Dxxwjz2Folder2DBImporter <|-- Dxxwjz3Folder2DBImporter
+Folder2DBImporter <|-- Dxxwjz2pProject2DBImporter
+Dxxwjz2pProject2DBImporter <|-- Dxxwjz3pProject2DBImporter
+
 IJsonParser <|-- JsonParser
 IXmlParser <|-- XmlParser
 JsonParser ..> JsonValue : builds
@@ -264,6 +353,10 @@ LibFactory ..> CocoFolder2DBImporter : creates
 LibFactory ..> PascalVocFolder2DBImporter : creates
 LibFactory ..> CreateMLFolder2DBImporter : creates
 LibFactory ..> PyTorchVisionFolder2DBImporter : creates
+LibFactory ..> Dxxwjz2Folder2DBImporter : creates
+LibFactory ..> Dxxwjz3Folder2DBImporter : creates
+LibFactory ..> Dxxwjz2pProject2DBImporter : creates
+LibFactory ..> Dxxwjz3pProject2DBImporter : creates
 LibFactory ..> OpenCVImageSizer : creates
 
 IADataImportersContext <|-- PlainTxtImportContext
@@ -275,6 +368,10 @@ IADataImportersContext <|-- CocoImportContext
 IADataImportersContext <|-- PascalVocImportContext
 IADataImportersContext <|-- CreateMLImportContext
 IADataImportersContext <|-- PyTorchImportContext
+IADataImportersContext <|-- Dxxwjz2pImportContext
+IADataImportersContext <|-- Dxxwjz3pImportContext
+IADataImportersContext <|-- Dxxwjz2ImportContext
+IADataImportersContext <|-- Dxxwjz3ImportContext
 
 LibFactory ..> IADataImportersContext : creates and casts to pick the layout
 
@@ -285,6 +382,11 @@ IImporter --> IADataImportersContext : driven with
 UltralyticsFolder2DBImporter ..> UltralyticsDataYaml : reads the descriptor with
 JsonDescriptor2DBImporter ..> IJsonParser : reads the descriptor with
 PascalVocFolder2DBImporter ..> IXmlParser : reads the descriptors with
+Dxxwjz2Folder2DBImporter ..> DxxwjzFileReader : reads the network with
+Dxxwjz2pProject2DBImporter ..> DxxwjzFileReader : reads the project with
+DxxwjzFileReader ..> ZlibController : decompresses the file with
+DxxwjzFileReader ..> JsonMembersPicker : picks the members with
+DxxwjzFileReader ..> JsonParser : parses the picked values with
 
 IDB --> ImageRecord
 Folder2DBImporter ..> ImageRecord : builds

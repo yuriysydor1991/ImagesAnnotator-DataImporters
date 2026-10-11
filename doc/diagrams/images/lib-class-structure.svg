@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="1200" viewBox="0 0 1180 1200">
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1993" viewBox="0 0 1500 1993">
 <defs>
   <marker id="open" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
     <path d="M 0 0 L 10 4 L 0 8" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
@@ -17,9 +17,76 @@
   .edge { font-size: 10px; fill: #444444; }
   .note { font-size: 11px; fill: #4a4300; }
 </style>
-<rect width="1180" height="1200" fill="#ffffff"/>
-<rect x="20" y="20" width="1140" height="150" rx="4" fill="#eeeeee" stroke="#8a8a8a" stroke-width="1.5"/>
+<rect width="1500" height="1993" fill="#ffffff"/>
+<rect x="20" y="20" width="1460" height="150" rx="4" fill="#eeeeee" stroke="#8a8a8a" stroke-width="1.5"/>
 <text x="32" y="40" class="pkg">ImagesAnnotatorDataDrivers012 (dependency)</text>
+<rect x="20" y="190" width="1460" height="589" rx="4" fill="#ffffff" stroke="#8a8a8a" stroke-width="1.5"/>
+<text x="32" y="210" class="pkg">ImagesAnnotatorDataImporters014 (installed interface)</text>
+<rect x="20" y="799" width="1460" height="782" rx="4" fill="#f8f8f8" stroke="#8a8a8a" stroke-width="1.5"/>
+<text x="70" y="819" class="pkg">Implementation (hidden symbols)</text>
+<rect x="20" y="1625" width="1076" height="348" rx="4" fill="#f8f8f8" stroke="#8a8a8a" stroke-width="1.5"/>
+<text x="32" y="1645" class="pkg">Document readers (hidden symbols)</text>
+<rect x="1110" y="1625" width="370" height="142" rx="4" fill="#f8f8f8" stroke="#8a8a8a" stroke-width="1.5"/>
+<text x="1122" y="1645" class="pkg">src/zlib (iadi0zlibi)</text>
+<path d="M 460 96 L 620 96" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
+<path d="M 970 453 L 1000 453" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 970 491 L 1000 491" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 970 529 L 1000 529" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 970 567 L 1000 567" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 970 605 L 1000 605" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 970 643 L 1000 643" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 970 681 L 1000 681" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 1030 453 L 1000 453" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 1030 491 L 1000 491" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 1030 529 L 1000 529" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 1030 567 L 1000 567" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 1030 605 L 1000 605" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 1030 643 L 1000 643" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 1000 681 L 1000 412" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 420 300 L 800 300" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
+<path d="M 420 464 L 600 464 L 600 340 L 800 340" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
+<path d="M 800 385 L 640 385 L 640 556 L 420 556" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
+<path d="M 1000 218 L 1000 180 L 260 180 L 260 144" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
+<path d="M 150 893 L 150 923" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
+<path d="M 270 923 L 270 893" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 215 1069 L 215 1099" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 60 330 L 36 330 L 36 940 L 60 940" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
+<path d="M 60 860 L 46 860 L 46 721 L 60 721" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 60 1132 L 26 1132 L 26 566 L 60 566" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 445 827 L 445 480 L 420 480" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 600 827 L 600 789 L 1468 789 L 1468 174 L 900 174 L 900 130" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 416 1052 L 398 1052" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 416 1090 L 398 1090" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 416 1136 L 398 1136" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 416 1424 L 398 1424" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 398 1424 L 398 947 L 416 947" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 436 1252 L 426 1252" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 436 1290 L 426 1290" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 426 1290 L 426 1219" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 1000 1071 L 1000 1095" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 788 1210 L 780 1210" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 788 1248 L 780 1248" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 788 1286 L 780 1286" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 780 1286 L 780 1071" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 1286.5 973 L 1286.5 949" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 1286.5 1095 L 1286.5 1071" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 1286.5 1407 L 1286.5 1383" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 1445 908 L 1462 908" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 1445 1326 L 1462 1326" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 772 1015 L 758 1015" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 758 1015 L 758 847" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+<path d="M 1462 1326 L 1462 847 L 726 847" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 1128 1334 L 1110 1334" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5"/>
+<path d="M 1128 1022 L 1110 1022 L 1110 1418 L 920 1418 L 920 1450" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 215 1737 L 215 1717" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 215 1803 L 215 1823" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 571 1737 L 571 1717" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
+<path d="M 571 1803 L 571 1823" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 726 1424 L 740 1424 L 740 1591 L 330 1591 L 330 1653" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 726 1171 L 748 1171 L 748 1605 L 571 1605 L 571 1653" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 790 1500 L 790 1770 L 726 1770" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 1000 1500 L 1000 1653" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
+<path d="M 1060 1500 L 1060 1598 L 1300 1598 L 1300 1670" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
 <rect x="60" y="48" width="400" height="96" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
 <text x="260.0" y="64" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
 <text x="260.0" y="81" class="cname italic" text-anchor="middle">IAnnotationsDB</text>
@@ -33,129 +100,317 @@
 <text x="628" y="90" class="member">+ ImageRecordRectSet rects</text>
 <text x="628" y="106" class="member">+ int iwidth, iheight</text>
 <text x="628" y="122" class="member">+ {static} ImageRecordPtr create(path, absPath)</text>
-<path d="M 460 96 L 620 96" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
-<rect x="20" y="190" width="1140" height="500" rx="4" fill="#ffffff" stroke="#8a8a8a" stroke-width="1.5"/>
-<text x="32" y="210" class="pkg">ImagesAnnotatorDataImporters014 (installed interface)</text>
-<rect x="60" y="218" width="400" height="162" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="260.0" y="237" class="cname" text-anchor="middle">IADataImportersFacade</text>
-<line x1="60" y1="245" x2="460" y2="245" stroke="#3a3a3a" stroke-width="1"/>
-<text x="68" y="260" class="member">+ {static} create_plain_txt_library_context()</text>
-<text x="68" y="276" class="member">+ {static} create_yolo4_library_context()</text>
-<text x="68" y="292" class="member">+ {static} create_pytorch_library_context()</text>
-<text x="68" y="308" class="member">+ {static} create_default_lib()</text>
-<text x="68" y="324" class="member">+ {static} create_library(ctx)</text>
-<text x="68" y="340" class="member">+ {static} create_importer(ctx)</text>
-<text x="68" y="356" class="member">+ {static} create_image_sizer()</text>
-<text x="68" y="372" class="member">+ {static} std::string library_version()</text>
-<rect x="60" y="400" width="400" height="64" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="260.0" y="416" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
-<text x="260.0" y="433" class="cname italic" text-anchor="middle">IADataImportersLib</text>
-<line x1="60" y1="441" x2="460" y2="441" stroke="#3a3a3a" stroke-width="1"/>
-<text x="68" y="456" class="member">+ bool perform_import(IADataImportersContextPtr ctx)</text>
-<rect x="60" y="484" width="400" height="64" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="260.0" y="500" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
-<text x="260.0" y="517" class="cname italic" text-anchor="middle">IImporter</text>
-<line x1="60" y1="525" x2="460" y2="525" stroke="#3a3a3a" stroke-width="1"/>
-<text x="68" y="540" class="member">+ bool import_db(IADataImportersContextPtr ictx)</text>
-<rect x="60" y="568" width="400" height="80" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="260.0" y="584" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
-<text x="260.0" y="601" class="cname italic" text-anchor="middle">IImageSizeFacility</text>
-<line x1="60" y1="609" x2="460" y2="609" stroke="#3a3a3a" stroke-width="1"/>
-<text x="68" y="624" class="member">+ bool read_image_size(path, int&amp; w, int&amp; h)</text>
-<text x="68" y="640" class="member">+ IImageSizeFacilityPtr clone()</text>
-<rect x="620" y="218" width="400" height="194" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="820.0" y="237" class="cname" text-anchor="middle">IADataImportersContext</text>
-<line x1="620" y1="245" x2="1020" y2="245" stroke="#3a3a3a" stroke-width="1"/>
-<text x="628" y="260" class="member">- std::string import_path</text>
-<text x="628" y="276" class="member">- IAnnotationsDBPtr db</text>
-<text x="628" y="292" class="member">- IImageSizeFacilityPtr imageSizer</text>
-<text x="628" y="308" class="member">- IImporterPtr importer</text>
-<text x="628" y="324" class="member">- std::size_t importedRecords</text>
-<text x="628" y="340" class="member">+ get_import_path() / set_import_path()</text>
-<text x="628" y="356" class="member">+ get_db() / set_db()</text>
-<text x="628" y="372" class="member">+ get_image_sizer() / set_image_sizer()</text>
-<text x="628" y="388" class="member">+ get_importer() / set_importer()</text>
-<text x="628" y="404" class="member">+ get_imported_records() / set_imported_records()</text>
-<rect x="620" y="450" width="400" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="820.0" y="469" class="cname" text-anchor="middle">PlainTxtImportContext</text>
-<rect x="620" y="495" width="400" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="820.0" y="514" class="cname" text-anchor="middle">Yolo4ImportContext</text>
-<rect x="620" y="540" width="400" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="820.0" y="559" class="cname" text-anchor="middle">PyTorchImportContext</text>
-<path d="M 460 280 L 620 280" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
-<text x="500" y="274" class="edge">hands out</text>
-<path d="M 460 500 L 560 500 L 560 330 L 620 330" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
-<text x="466" y="494" class="edge">driven with</text>
-<path d="M 620 380 L 540 380 L 540 600 L 460 600" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
-<text x="486" y="374" class="edge">uses</text>
-<path d="M 1020 250 L 1100 250 L 1100 170 L 260 170 L 260 144" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
-<text x="1040" y="244" class="edge">fills</text>
-<path d="M 1020 463 L 1060 463" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
-<path d="M 1020 508 L 1060 508" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
-<path d="M 1020 553 L 1060 553" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
-<path d="M 1060 553 L 1060 425 L 820 425 L 820 412" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
-<path d="M 620 600 L 1008 600 L 1020 612 L 1020 657 L 620 657 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
-<path d="M 1008 600 L 1008 612 L 1020 612" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
-<text x="628" y="622" class="note">The type instantiated is what names the</text>
-<text x="628" y="637" class="note">wanted dataset layout, so no importer</text>
-<text x="628" y="652" class="note">class reaches the public interface.</text>
-<rect x="20" y="710" width="1140" height="460" rx="4" fill="#f8f8f8" stroke="#8a8a8a" stroke-width="1.5"/>
-<text x="32" y="730" class="pkg">Implementation (hidden symbols)</text>
-<rect x="60" y="738" width="400" height="66" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="260.0" y="757" class="cname" text-anchor="middle">LibMain</text>
-<line x1="60" y1="765" x2="460" y2="765" stroke="#3a3a3a" stroke-width="1"/>
-<text x="68" y="780" class="member">+ bool perform_import(IADataImportersContextPtr ctx)</text>
-<text x="68" y="796" class="member">+ {static} LibMainPtr create()</text>
-<rect x="60" y="830" width="400" height="130" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="260.0" y="849" class="cname" text-anchor="middle">LibFactory</text>
-<line x1="60" y1="857" x2="460" y2="857" stroke="#3a3a3a" stroke-width="1"/>
-<text x="68" y="872" class="member">+ create_plain_txt_library_context()</text>
-<text x="68" y="888" class="member">+ create_yolo4_library_context()</text>
-<text x="68" y="904" class="member">+ create_pytorch_library_context()</text>
-<text x="68" y="920" class="member">+ create_appropriate_lib(IADataImportersContextPtr)</text>
-<text x="68" y="936" class="member">+ create_importer(ctx)</text>
-<text x="68" y="952" class="member">+ create_image_sizer()</text>
-<rect x="620" y="738" width="400" height="144" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="820.0" y="754" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
-<text x="820.0" y="771" class="cname italic" text-anchor="middle">Folder2DBImporter</text>
-<line x1="620" y1="779" x2="1020" y2="779" stroke="#3a3a3a" stroke-width="1"/>
-<text x="628" y="794" class="member">+ bool import_db(IADataImportersContextPtr ictx)</text>
-<text x="628" y="810" class="member"># bool read_dataset(importDir, ImageRecordsSet&amp;)</text>
-<text x="628" y="826" class="member"># bool needs_image_sizer() const</text>
-<text x="628" y="842" class="member"># bool measure_image(path, int&amp; w, int&amp; h)</text>
-<text x="628" y="858" class="member"># {static} ImageRecordPtr create_record(path)</text>
-<text x="628" y="874" class="member"># {static} read_lines(path)</text>
-<rect x="620" y="920" width="400" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="820.0" y="939" class="cname" text-anchor="middle">PlainTxtFolder2DBImporter</text>
-<rect x="620" y="965" width="400" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="820.0" y="984" class="cname" text-anchor="middle">Yolo4Folder2DBImporter</text>
-<rect x="620" y="1010" width="400" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="820.0" y="1029" class="cname" text-anchor="middle">PyTorchVisionFolder2DBImporter</text>
-<rect x="620" y="1070" width="400" height="66" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
-<text x="820.0" y="1089" class="cname" text-anchor="middle">OpenCVImageSizer</text>
-<line x1="620" y1="1097" x2="1020" y2="1097" stroke="#3a3a3a" stroke-width="1"/>
-<text x="628" y="1112" class="member">+ bool read_image_size(path, int&amp; w, int&amp; h)</text>
-<text x="628" y="1128" class="member">+ IImageSizeFacilityPtr clone()</text>
-<path d="M 60 760 L 40 760 L 40 432 L 60 432" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
-<path d="M 620 760 L 580 760 L 580 516 L 460 516" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
-<path d="M 460 770 L 540 770 L 540 870 L 460 870" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#open)"/>
-<text x="470" y="764" class="edge">creates</text>
-<path d="M 460 900 L 560 900 L 560 933 L 620 933" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
-<text x="470" y="894" class="edge">creates</text>
-<path d="M 460 940 L 520 940 L 520 1090 L 620 1090" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
-<text x="470" y="934" class="edge">creates</text>
-<path d="M 620 1115 L 500 1115 L 500 608 L 460 608" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
-<path d="M 1020 933 L 1060 933" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
-<path d="M 1020 978 L 1060 978" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
-<path d="M 1020 1023 L 1060 1023" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
-<path d="M 1060 1023 L 1060 900 L 820 900 L 820 882" fill="none" stroke="#3a3a3a" stroke-width="1.3" marker-end="url(#hollow)"/>
-<path d="M 1020 800 L 1120 800 L 1120 155 L 900 155 L 900 130" fill="none" stroke="#3a3a3a" stroke-width="1.3" stroke-dasharray="6,5" marker-end="url(#open)"/>
-<text x="1060" y="794" class="edge">builds</text>
-<path d="M 60 1000 L 448 1000 L 460 1012 L 460 1087 L 60 1087 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
-<path d="M 448 1000 L 448 1012 L 460 1012" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
-<text x="68" y="1022" class="note">Only the IADI_API marked interface above</text>
-<text x="68" y="1037" class="note">leaves the shared object. The factory lives</text>
-<text x="68" y="1052" class="note">in iadi0impl so that the weak make_shared</text>
-<text x="68" y="1067" class="note">instantiations never collide with the ones</text>
-<text x="68" y="1082" class="note">of the data drivers library.</text>
+<rect x="60" y="218" width="360" height="194" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="240.0" y="237" class="cname" text-anchor="middle">IADataImportersFacade</text>
+<line x1="60" y1="245" x2="420" y2="245" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="260" class="member">+ {static} create_&lt;layout&gt;_library_context()</text>
+<text x="94.5" y="276" class="member">plain_txt, yolo4, ultralytics_detect,</text>
+<text x="94.5" y="292" class="member">ultralytics_obb, ultralytics_segment,</text>
+<text x="94.5" y="308" class="member">coco, pascal_voc, createml, pytorch,</text>
+<text x="94.5" y="324" class="member">dxxwjz2p, dxxwjz3p, dxxwjz2, dxxwjz3</text>
+<text x="68" y="340" class="member">+ {static} create_default_lib()</text>
+<text x="68" y="356" class="member">+ {static} create_library(ctx)</text>
+<text x="68" y="372" class="member">+ {static} create_importer(ctx)</text>
+<text x="68" y="388" class="member">+ {static} create_image_sizer()</text>
+<text x="68" y="404" class="member">+ {static} std::string library_version()</text>
+<rect x="60" y="432" width="360" height="64" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="240.0" y="448" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
+<text x="240.0" y="465" class="cname italic" text-anchor="middle">IImporter</text>
+<line x1="60" y1="473" x2="420" y2="473" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="488" class="member">+ bool import_db(IADataImportersContextPtr ictx)</text>
+<rect x="60" y="516" width="360" height="80" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="240.0" y="532" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
+<text x="240.0" y="549" class="cname italic" text-anchor="middle">IImageSizeFacility</text>
+<line x1="60" y1="557" x2="420" y2="557" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="572" class="member">+ bool read_image_size(path, int&amp; w, int&amp; h)</text>
+<text x="68" y="588" class="member">+ IImageSizeFacilityPtr clone()</text>
+<path d="M 60 612 L 408 612 L 420 624 L 420 669 L 60 669 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 408 612 L 408 624 L 420 624" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="68" y="634" class="note">Implemented by the consuming project.</text>
+<text x="68" y="649" class="note">The library decodes no image format</text>
+<text x="68" y="664" class="note">of its own.</text>
+<rect x="60" y="689" width="360" height="64" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="240.0" y="705" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
+<text x="240.0" y="722" class="cname italic" text-anchor="middle">IADataImportersLib</text>
+<line x1="60" y1="730" x2="420" y2="730" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="745" class="member">+ bool perform_import(IADataImportersContextPtr)</text>
+<path d="M 440 218 L 714 218 L 726 230 L 726 275 L 440 275 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 714 218 L 714 230 L 726 230" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="448" y="240" class="note">The only entry point a consuming</text>
+<text x="448" y="255" class="note">project needs. Everything else stays</text>
+<text x="448" y="270" class="note">behind these abstract interfaces.</text>
+<rect x="800" y="218" width="400" height="194" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1000.0" y="237" class="cname" text-anchor="middle">IADataImportersContext</text>
+<line x1="800" y1="245" x2="1200" y2="245" stroke="#3a3a3a" stroke-width="1"/>
+<text x="808" y="260" class="member">- std::string import_path</text>
+<text x="808" y="276" class="member">- IAnnotationsDBPtr db</text>
+<text x="808" y="292" class="member">- IImageSizeFacilityPtr imageSizer</text>
+<text x="808" y="308" class="member">- IImporterPtr importer</text>
+<text x="808" y="324" class="member">- std::size_t importedRecords</text>
+<text x="808" y="340" class="member">+ get_import_path() / set_import_path()</text>
+<text x="808" y="356" class="member">+ get_db() / set_db()</text>
+<text x="808" y="372" class="member">+ get_image_sizer() / set_image_sizer()</text>
+<text x="808" y="388" class="member">+ get_importer() / set_importer()</text>
+<text x="808" y="404" class="member">+ get_imported_records() / set_imported_records()</text>
+<rect x="690.0" y="440" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="830.0" y="459" class="cname" text-anchor="middle">PlainTxtImportContext</text>
+<rect x="690.0" y="478" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="830.0" y="497" class="cname" text-anchor="middle">Yolo4ImportContext</text>
+<rect x="690.0" y="516" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="830.0" y="535" class="cname" text-anchor="middle">UltralyticsDetectImportContext</text>
+<rect x="690.0" y="554" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="830.0" y="573" class="cname" text-anchor="middle">UltralyticsObbImportContext</text>
+<rect x="690.0" y="592" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="830.0" y="611" class="cname" text-anchor="middle">UltralyticsSegmentImportContext</text>
+<rect x="690.0" y="630" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="830.0" y="649" class="cname" text-anchor="middle">CocoImportContext</text>
+<rect x="690.0" y="668" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="830.0" y="687" class="cname" text-anchor="middle">PascalVocImportContext</text>
+<rect x="1030.0" y="440" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1170.0" y="459" class="cname" text-anchor="middle">CreateMLImportContext</text>
+<rect x="1030.0" y="478" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1170.0" y="497" class="cname" text-anchor="middle">PyTorchImportContext</text>
+<rect x="1030.0" y="516" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1170.0" y="535" class="cname" text-anchor="middle">Dxxwjz2pImportContext</text>
+<rect x="1030.0" y="554" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1170.0" y="573" class="cname" text-anchor="middle">Dxxwjz3pImportContext</text>
+<rect x="1030.0" y="592" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1170.0" y="611" class="cname" text-anchor="middle">Dxxwjz2ImportContext</text>
+<rect x="1030.0" y="630" width="280" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1170.0" y="649" class="cname" text-anchor="middle">Dxxwjz3ImportContext</text>
+<path d="M 1030.0 668 L 1298.0 668 L 1310.0 680 L 1310.0 740 L 1030.0 740 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 1298.0 668 L 1298.0 680 L 1310.0 680" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="1038.0" y="690" class="note">The type instantiated is what names</text>
+<text x="1038.0" y="705" class="note">the wanted dataset layout, so no</text>
+<text x="1038.0" y="720" class="note">importer class reaches the public</text>
+<text x="1038.0" y="735" class="note">interface.</text>
+<rect x="60" y="827" width="310" height="66" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="215.0" y="846" class="cname" text-anchor="middle">LibMain</text>
+<line x1="60" y1="854" x2="370" y2="854" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="869" class="member">+ bool perform_import(ctx)</text>
+<text x="68" y="885" class="member">+ {static} LibMainPtr create()</text>
+<rect x="60" y="923" width="310" height="146" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="215.0" y="942" class="cname" text-anchor="middle">LibFactory</text>
+<line x1="60" y1="950" x2="370" y2="950" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="965" class="member">+ create_default_lib()</text>
+<text x="68" y="981" class="member">+ create_&lt;layout&gt;_library_context()</text>
+<text x="94.5" y="997" class="member">one per layout, as the facade's</text>
+<text x="68" y="1013" class="member">+ create_appropriate_lib(ctx)</text>
+<text x="68" y="1029" class="member">+ create_importer(ctx)</text>
+<text x="68" y="1045" class="member">+ create_image_sizer()</text>
+<text x="68" y="1061" class="member">+ {static} LibFactoryPtr create_factory()</text>
+<rect x="60" y="1099" width="310" height="66" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="215.0" y="1118" class="cname" text-anchor="middle">OpenCVImageSizer</text>
+<line x1="60" y1="1126" x2="370" y2="1126" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="1141" class="member">+ bool read_image_size(path, w, h)</text>
+<text x="68" y="1157" class="member">+ IImageSizeFacilityPtr clone()</text>
+<path d="M 60 1181 L 358 1181 L 370 1193 L 370 1238 L 60 1238 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 358 1181 L 358 1193 L 370 1193" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="68" y="1203" class="note">Compiled only into a build which found</text>
+<text x="68" y="1218" class="note">OpenCV. A reader the consumer sets</text>
+<text x="68" y="1233" class="note">always wins over it.</text>
+<path d="M 60 1258 L 358 1258 L 370 1270 L 370 1330 L 60 1330 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 358 1258 L 358 1270 L 370 1270" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="68" y="1280" class="note">The factory casts the context to pick</text>
+<text x="68" y="1295" class="note">the layout: the importer it creates is</text>
+<text x="68" y="1310" class="note">the one of the thirteen concrete</text>
+<text x="68" y="1325" class="note">classes the context type names.</text>
+<path d="M 60 1350 L 358 1350 L 370 1362 L 370 1437 L 60 1437 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 358 1350 L 358 1362 L 370 1362" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="68" y="1372" class="note">Only the IADI_API marked interface above</text>
+<text x="68" y="1387" class="note">leaves the shared object. The factory lives</text>
+<text x="68" y="1402" class="note">in iadi0impl so that the weak make_shared</text>
+<text x="68" y="1417" class="note">instantiations never collide with the ones</text>
+<text x="68" y="1432" class="note">of the data drivers library.</text>
+<rect x="416" y="827" width="310" height="192" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="571.0" y="843" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
+<text x="571.0" y="860" class="cname italic" text-anchor="middle">Folder2DBImporter</text>
+<line x1="416" y1="868" x2="726" y2="868" stroke="#3a3a3a" stroke-width="1"/>
+<text x="424" y="883" class="member">+ bool import_db(ictx)</text>
+<text x="424" y="899" class="member"># bool accepts_import_path(path) const</text>
+<text x="424" y="915" class="member"># bool read_dataset(importDir, records)</text>
+<text x="424" y="931" class="member"># bool needs_image_sizer() const</text>
+<text x="424" y="947" class="member"># bool measure_image(path, w, h)</text>
+<text x="424" y="963" class="member"># void measure_unsized(records)</text>
+<text x="424" y="979" class="member"># {static} create_record(path)</text>
+<text x="424" y="995" class="member"># {static} bool read_file(path, contents)</text>
+<text x="424" y="1011" class="member"># {static} read_lines(path)</text>
+<rect x="416" y="1039" width="310" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="571.0" y="1058" class="cname" text-anchor="middle">PlainTxtFolder2DBImporter</text>
+<rect x="416" y="1077" width="310" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="571.0" y="1096" class="cname" text-anchor="middle">PyTorchVisionFolder2DBImporter</text>
+<rect x="416" y="1123" width="310" height="96" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="571.0" y="1139" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
+<text x="571.0" y="1156" class="cname italic" text-anchor="middle">JsonDescriptor2DBImporter</text>
+<line x1="416" y1="1164" x2="726" y2="1164" stroke="#3a3a3a" stroke-width="1"/>
+<text x="424" y="1179" class="member"># read_descriptor(candidates, path)</text>
+<text x="424" y="1195" class="member"># bool holds_dataset(root) const</text>
+<text x="424" y="1211" class="member"># {static} collect_descriptors(dir, paths)</text>
+<rect x="436" y="1239" width="290" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="581.0" y="1258" class="cname" text-anchor="middle">CocoFolder2DBImporter</text>
+<rect x="436" y="1277" width="290" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="581.0" y="1296" class="cname" text-anchor="middle">CreateMLFolder2DBImporter</text>
+<path d="M 416 1319 L 714 1319 L 726 1331 L 726 1391 L 416 1391 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 714 1319 L 714 1331 L 726 1331" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="424" y="1341" class="note">What the two layouts described by a</text>
+<text x="424" y="1356" class="note">single JSON document share: locating</text>
+<text x="424" y="1371" class="note">that document among the files such a</text>
+<text x="424" y="1386" class="note">dataset may arrive with.</text>
+<rect x="416" y="1411" width="310" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="571.0" y="1430" class="cname" text-anchor="middle">PascalVocFolder2DBImporter</text>
+<path d="M 772 867 L 1070 867 L 1082 879 L 1082 939 L 772 939 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 1070 867 L 1070 879 L 1082 879" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="780" y="889" class="note">Everything an import does around the</text>
+<text x="780" y="904" class="note">reading of its one layout: the guards,</text>
+<text x="780" y="919" class="note">the image measuring, the merge into</text>
+<text x="780" y="934" class="note">the database and the count.</text>
+<rect x="772" y="959" width="310" height="112" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="927.0" y="975" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
+<text x="927.0" y="992" class="cname italic" text-anchor="middle">UltralyticsFolder2DBImporter</text>
+<line x1="772" y1="1000" x2="1082" y2="1000" stroke="#3a3a3a" stroke-width="1"/>
+<text x="780" y="1015" class="member"># bool read_dataset(importDir, records)</text>
+<text x="780" y="1031" class="member"># bool needs_image_sizer() const</text>
+<text x="780" y="1047" class="member"># read_rectangle(values, nrect) const</text>
+<text x="780" y="1063" class="member"># {static} read_corners(values, nrect)</text>
+<rect x="788" y="1095" width="294" height="82" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="935.0" y="1114" class="cname" text-anchor="middle">UltralyticsDataYaml</text>
+<line x1="788" y1="1122" x2="1082" y2="1122" stroke="#3a3a3a" stroke-width="1"/>
+<text x="796" y="1137" class="member">+ bool read(lines)</text>
+<text x="796" y="1153" class="member">+ const ClassNames&amp; get_class_names()</text>
+<text x="796" y="1169" class="member">+ get_root() / get_train() / get_val()</text>
+<rect x="788" y="1197" width="294" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="935.0" y="1216" class="cname" text-anchor="middle">UltralyticsDetectFolder2DBImporter</text>
+<rect x="788" y="1235" width="294" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="935.0" y="1254" class="cname" text-anchor="middle">UltralyticsObbFolder2DBImporter</text>
+<rect x="788" y="1273" width="294" height="26" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="935.0" y="1292" class="cname" text-anchor="middle">UltralyticsSegmentFolder2DBImporter</text>
+<path d="M 772 1315 L 1070 1315 L 1082 1327 L 1082 1387 L 772 1387 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 1070 1315 L 1070 1327 L 1082 1327" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="780" y="1337" class="note">The three Ultralytics YOLO layouts</text>
+<text x="780" y="1352" class="note">differ in one label file line only,</text>
+<text x="780" y="1367" class="note">which is the one thing the base</text>
+<text x="780" y="1382" class="note">leaves to its descendants.</text>
+<rect x="772" y="1450" width="310" height="50" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="927.0" y="1469" class="cname" text-anchor="middle">DxxwjzFileReader</text>
+<line x1="772" y1="1477" x2="1082" y2="1477" stroke="#3a3a3a" stroke-width="1"/>
+<text x="780" y="1492" class="member">+ bool read(fpath, wanted, members) const</text>
+<rect x="1128" y="867" width="317" height="82" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1286.5" y="886" class="cname" text-anchor="middle">Yolo4Folder2DBImporter</text>
+<line x1="1128" y1="894" x2="1445" y2="894" stroke="#3a3a3a" stroke-width="1"/>
+<text x="1136" y="909" class="member"># bool read_dataset(importDir, records)</text>
+<text x="1136" y="925" class="member"># bool needs_image_sizer() const</text>
+<text x="1136" y="941" class="member"># virtual read_classes(dir, namesPath)</text>
+<rect x="1128" y="973" width="317" height="98" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1286.5" y="992" class="cname" text-anchor="middle">Dxxwjz2Folder2DBImporter</text>
+<line x1="1128" y1="1000" x2="1445" y2="1000" stroke="#3a3a3a" stroke-width="1"/>
+<text x="1136" y="1015" class="member"># read_classes(dir, namesPath)</text>
+<text x="1136" y="1031" class="member"># virtual format_name() / format_version()</text>
+<text x="1136" y="1047" class="member"># virtual network_extension()</text>
+<text x="1136" y="1063" class="member"># virtual read_network_classes(json, names)</text>
+<rect x="1128" y="1095" width="317" height="82" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1286.5" y="1114" class="cname" text-anchor="middle">Dxxwjz3Folder2DBImporter</text>
+<line x1="1128" y1="1122" x2="1445" y2="1122" stroke="#3a3a3a" stroke-width="1"/>
+<text x="1136" y="1137" class="member"># format_name() / format_version()</text>
+<text x="1136" y="1153" class="member"># network_extension()</text>
+<text x="1136" y="1169" class="member"># read_network_classes(json, names)</text>
+<path d="M 1128 1193 L 1433 1193 L 1445 1205 L 1445 1265 L 1128 1265 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 1433 1193 L 1433 1205 L 1445 1205" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="1136" y="1215" class="note">A YOLO v4 directory the darknetxx</text>
+<text x="1136" y="1230" class="note">trains: the class names are read off</text>
+<text x="1136" y="1245" class="note">the network beside its cfg when no</text>
+<text x="1136" y="1260" class="note">data/obj.names is there.</text>
+<rect x="1128" y="1285" width="317" height="98" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1286.5" y="1304" class="cname" text-anchor="middle">Dxxwjz2pProject2DBImporter</text>
+<line x1="1128" y1="1312" x2="1445" y2="1312" stroke="#3a3a3a" stroke-width="1"/>
+<text x="1136" y="1327" class="member"># bool accepts_import_path(path) const</text>
+<text x="1136" y="1343" class="member"># bool read_dataset(importDir, records)</text>
+<text x="1136" y="1359" class="member"># virtual format_name() / format_version()</text>
+<text x="1136" y="1375" class="member"># virtual project_extension()</text>
+<rect x="1128" y="1407" width="317" height="66" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1286.5" y="1426" class="cname" text-anchor="middle">Dxxwjz3pProject2DBImporter</text>
+<line x1="1128" y1="1434" x2="1445" y2="1434" stroke="#3a3a3a" stroke-width="1"/>
+<text x="1136" y="1449" class="member"># format_name() / format_version()</text>
+<text x="1136" y="1465" class="member"># project_extension()</text>
+<path d="M 1128 1489 L 1433 1489 L 1445 1501 L 1445 1561 L 1128 1561 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 1433 1489 L 1433 1501 L 1445 1501" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="1136" y="1511" class="note">One project file, or the directory</text>
+<text x="1136" y="1526" class="note">holding it: the network, the class</text>
+<text x="1136" y="1541" class="note">names and the annotations of the</text>
+<text x="1136" y="1556" class="note">images/ copies, no weights read.</text>
+<rect x="60" y="1653" width="310" height="64" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="215.0" y="1669" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
+<text x="215.0" y="1686" class="cname italic" text-anchor="middle">IXmlParser</text>
+<line x1="60" y1="1694" x2="370" y2="1694" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="1709" class="member">+ XmlNodePtr parse(document)</text>
+<rect x="60" y="1737" width="310" height="66" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="215.0" y="1756" class="cname" text-anchor="middle">XmlParser</text>
+<line x1="60" y1="1764" x2="370" y2="1764" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="1779" class="member">+ XmlNodePtr parse(document)</text>
+<text x="68" y="1795" class="member">+ {static} XmlParserPtr create()</text>
+<rect x="60" y="1823" width="310" height="130" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="215.0" y="1842" class="cname" text-anchor="middle">XmlNode</text>
+<line x1="60" y1="1850" x2="370" y2="1850" stroke="#3a3a3a" stroke-width="1"/>
+<text x="68" y="1865" class="member">+ const std::string&amp; get_name()</text>
+<text x="68" y="1881" class="member">+ const std::string&amp; get_text()</text>
+<text x="68" y="1897" class="member">+ const Children&amp; get_children()</text>
+<text x="68" y="1913" class="member">+ const XmlNode* find(name)</text>
+<text x="68" y="1929" class="member">+ bool read_text(name, std::string&amp; value)</text>
+<text x="68" y="1945" class="member">+ bool read_number(name, double&amp; value)</text>
+<rect x="416" y="1653" width="310" height="64" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="571.0" y="1669" class="stereo" text-anchor="middle">&#171;abstract&#187;</text>
+<text x="571.0" y="1686" class="cname italic" text-anchor="middle">IJsonParser</text>
+<line x1="416" y1="1694" x2="726" y2="1694" stroke="#3a3a3a" stroke-width="1"/>
+<text x="424" y="1709" class="member">+ JsonValuePtr parse(document)</text>
+<rect x="416" y="1737" width="310" height="66" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="571.0" y="1756" class="cname" text-anchor="middle">JsonParser</text>
+<line x1="416" y1="1764" x2="726" y2="1764" stroke="#3a3a3a" stroke-width="1"/>
+<text x="424" y="1779" class="member">+ JsonValuePtr parse(document)</text>
+<text x="424" y="1795" class="member">+ {static} JsonParserPtr create()</text>
+<rect x="416" y="1823" width="310" height="114" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="571.0" y="1842" class="cname" text-anchor="middle">JsonValue</text>
+<line x1="416" y1="1850" x2="726" y2="1850" stroke="#3a3a3a" stroke-width="1"/>
+<text x="424" y="1865" class="member">+ const Kind&amp; get_kind()</text>
+<text x="424" y="1881" class="member">+ const JsonValue* find(key)</text>
+<text x="424" y="1897" class="member">+ bool read_number(key, double&amp; value)</text>
+<text x="424" y="1913" class="member">+ bool read_text(key, std::string&amp; value)</text>
+<text x="424" y="1929" class="member">+ bool read_numbers(key, values)</text>
+<rect x="830" y="1653" width="252" height="50" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="956.0" y="1672" class="cname" text-anchor="middle">JsonMembersPicker</text>
+<line x1="830" y1="1680" x2="1082" y2="1680" stroke="#3a3a3a" stroke-width="1"/>
+<text x="838" y="1695" class="member">+ bool pick(wanted, receiver)</text>
+<path d="M 830 1719 L 1070 1719 L 1082 1731 L 1082 1791 L 830 1791 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 1070 1719 L 1070 1731 L 1082 1731" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="838" y="1741" class="note">Reads a document a piece at a time:</text>
+<text x="838" y="1756" class="note">the darknetxx files stream through</text>
+<text x="838" y="1771" class="note">it, so the weights of hundreds of</text>
+<text x="838" y="1786" class="note">megabytes are stepped over unparsed.</text>
+<path d="M 830 1807 L 1070 1807 L 1082 1819 L 1082 1879 L 830 1879 Z" fill="#fffbe6" stroke="#b8a54a" stroke-width="1.1"/>
+<path d="M 1070 1807 L 1070 1819 L 1082 1819" fill="none" stroke="#b8a54a" stroke-width="1.1"/>
+<text x="838" y="1829" class="note">The library links no JSON or XML</text>
+<text x="838" y="1844" class="note">library of its own. None of the</text>
+<text x="838" y="1859" class="note">readers knows anything of the</text>
+<text x="838" y="1874" class="note">layouts read through it.</text>
+<rect x="1128" y="1670" width="317" height="66" fill="#fdfdf6" stroke="#3a3a3a" stroke-width="1.2"/>
+<text x="1286.5" y="1689" class="cname" text-anchor="middle">ZlibController</text>
+<line x1="1128" y1="1697" x2="1445" y2="1697" stroke="#3a3a3a" stroke-width="1"/>
+<text x="1136" y="1712" class="member">+ buffer uncompress_from_file(path)</text>
+<text x="1136" y="1728" class="member">+ create_file_reader(path)</text>
+<text x="440" y="294" class="edge">hands out</text>
+<text x="428" y="458.0" class="edge">driven with</text>
+<text x="650" y="379" class="edge">uses</text>
+<text x="1008.0" y="208" class="edge">fills</text>
+<text x="156" y="912" class="edge">creates</text>
+<text x="276" y="912" class="edge">creates</text>
+<text x="221" y="1088" class="edge">creates</text>
+<text x="33" y="470" class="edge" text-anchor="middle" transform="rotate(-90 33 470)">creates</text>
+<text x="606" y="816" class="edge">builds</text>
+<text x="990" y="1088" class="edge" text-anchor="end">reads the descriptor with</text>
+<text x="930" y="1412" class="edge">read their dxxwjz files with</text>
+<text x="221.0" y="1817" class="edge">builds</text>
+<text x="577.0" y="1817" class="edge">builds</text>
+<text x="340" y="1602" class="edge">reads the descriptors with</text>
+<text x="580.0" y="1618" class="edge">reads the descriptor with</text>
+<text x="796" y="1522" class="edge">parses the picked values with</text>
+<text x="990" y="1647" class="edge" text-anchor="end">picks the members with</text>
+<text x="1310" y="1664" class="edge">decompresses the file with</text>
 </svg>
