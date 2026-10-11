@@ -158,6 +158,11 @@ pipeline {
             sh 'cd $BUILDDIR && ctest -R "UTEST_TypeHelper\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_TypeHelper.junit.xml'
           }
         }
+        stage('UTEST_JsonMembersPicker') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_JsonMembersPicker\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_JsonMembersPicker.junit.xml'
+          }
+        }
         stage('UTEST_ZlibController') {
           steps {
             sh 'cd $BUILDDIR && ctest -R "UTEST_ZlibController\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_ZlibController.junit.xml'

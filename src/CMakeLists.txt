@@ -55,6 +55,7 @@ set(IADI_PARSERS_SRC_DIR
 set(IADI_JSON_PARSER_SRC
   ${IADI_PARSERS_SRC_DIR}/json/JsonValue.cpp
   ${IADI_PARSERS_SRC_DIR}/json/JsonParser.cpp
+  ${IADI_PARSERS_SRC_DIR}/json/JsonMembersPicker.cpp
 )
 
 set(IADI_XML_PARSER_SRC

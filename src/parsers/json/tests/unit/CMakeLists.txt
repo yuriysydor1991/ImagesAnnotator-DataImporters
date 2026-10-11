@@ -8,3 +8,4 @@ endif()
 add_compile_options(-DNDEBUG=1)
 
 add_subdirectory(JsonParser)
+add_subdirectory(JsonMembersPicker)
