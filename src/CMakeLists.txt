@@ -153,6 +153,7 @@ endif()
 add_subdirectory(lib)
 
 add_subdirectory(helpers)
+add_subdirectory(zlib)
 add_subdirectory(sizers)
 add_subdirectory(parsers)
 add_subdirectory(importers)

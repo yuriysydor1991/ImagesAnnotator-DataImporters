@@ -10,10 +10,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/enablers/packagers")
 include(template-project-enabler-function)
 include(template-project-git-enabler)
 
-# The one mandatory library dependency. It is made available here, before src/
-# is added, so that both the library target and the test executables declared
-# inside it can be linked against it.
+# Mandatory library dependencies. They are made available here, before src/ is
+# added, so that both the library target and the test executables declared
+# inside it can be linked against them.
 include(template-project-data-drivers-enabler)
+include(template-project-zlib-enabler)
 
 # Optional: when OpenCV is there the library also ships an image size reader of
 # its own, so a consumer with no imaging stack of its own still gets the
