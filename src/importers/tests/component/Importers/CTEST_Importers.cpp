@@ -1,6 +1,7 @@
 #include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <zlib.h>
 
 #include <filesystem>
 #include <fstream>
@@ -117,6 +118,40 @@ class CTEST_Importers : public testing::Test
                "  1: 'dog'\n");
     given_file("ultralytics/images/train/a.png", "not-a-real-image");
     given_file("ultralytics/labels/train/a.txt", labelLine);
+  }
+
+  /// @brief Writes the gzip compressed document, the way the darknetxx keeps
+  /// its dxxwjz files
+  void given_gzip(const std::string& relPath, const std::string& document)
+  {
+    const fs::path fpath = root / relPath;
+
+    fs::create_directories(fpath.parent_path());
+
+    gzFile file = gzopen(fpath.string().c_str(), "wb");
+
+    ASSERT_NE(file, nullptr);
+    ASSERT_EQ(
+        gzwrite(file, document.data(), static_cast<unsigned>(document.size())),
+        static_cast<int>(document.size()));
+    ASSERT_EQ(gzclose(file), Z_OK);
+  }
+
+  /// @brief The darknetxx training project document of the format and of the
+  /// network given, of one image of 640x480 and its one box
+  static std::string project_of(const std::string& format,
+                                const std::string& network)
+  {
+    return R"({"format": ")" + format + R"(", "version": 1,
+"generator": "darknetxx 0.11.0",
+"network": )" +
+           network + R"(,
+"training": {"seconds": 0, "loss": [], "avg_loss": []},
+"annotations": {"ImagesAnnotator": {"version": "0.12.0"}, "annotations": [
+  {"db": {"path": "images"}, "annotations": [
+    {"rel_path": "a.png", "width": 640, "height": 480, "annotations": [{"name": "dog", "rect": {"x": 50, "y": 20, "width": 100, "height": 40}}]}
+  ]}
+]}})";
   }
 
   /// @brief The one rectangle of the one imported record
@@ -400,6 +435,85 @@ TEST_F(CTEST_Importers, ultralytics_segment_import_reads_the_polygon)
   EXPECT_EQ(irr->name, "cat");
   EXPECT_EQ(irr->x, 50);
   EXPECT_EQ(irr->y, 20);
+  EXPECT_EQ(irr->width, 100);
+  EXPECT_EQ(irr->height, 40);
+}
+
+// The darknetxx training projects, the gzip compressed JSON documents of the
+// annotations of the images: the import path names the directory of the
+// project the exporters library writes, or the project file itself. The
+// network of the dxxwjz3p one keeps the weights before the annotations.
+TEST_F(CTEST_Importers, darknetxx_project_imports_read_the_project_files)
+{
+  given_file("dxxwjz2p/images/a.png", "not-a-real-image");
+  given_gzip("dxxwjz2p/yolov4-obj.dxxwjz2p",
+             project_of("dxxwjz2p",
+                        R"({"cfg": "[net]\nbatch=64\n", "classes": [
+                          {"index": 0, "name": "dog"}]})"));
+
+  given_file("dxxwjz3p/images/a.png", "not-a-real-image");
+  given_gzip("dxxwjz3p/trained.dxxwjz3p",
+             project_of("dxxwjz3p", R"({"net": {"batch": 64}, "layers": [
+               {"type": "convolutional", "options": {"filters": 1},
+                "arrays": {"biases": [0.5], "weights": [0.25, -1e-3]}}],
+               "classes": ["dog"]})"));
+
+  auto ctx2p =
+      filled(iadi::IADataImportersFacade::create_dxxwjz2p_library_context(),
+             "dxxwjz2p");
+  auto ctx3p =
+      filled(iadi::IADataImportersFacade::create_dxxwjz3p_library_context(),
+             "dxxwjz3p/trained.dxxwjz3p");
+
+  for (const iadi::IADataImportersContextPtr& ctx :
+       {iadi::IADataImportersContextPtr{ctx2p},
+        iadi::IADataImportersContextPtr{ctx3p}}) {
+    auto importer = iadi::IADataImportersFacade::create_importer(ctx);
+
+    ASSERT_NE(importer, nullptr);
+    ASSERT_TRUE(importer->import_db(ctx)) << ctx->get_import_path();
+    EXPECT_EQ(ctx->get_imported_records(), 1U) << ctx->get_import_path();
+  }
+
+  ASSERT_EQ(db->get_images_db().size(), 2U);
+
+  for (const auto& ir : db->get_images_db()) {
+    EXPECT_EQ(ir->path, "a.png");
+    EXPECT_EQ(ir->iwidth, 640);
+    EXPECT_EQ(ir->iheight, 480);
+
+    ASSERT_EQ(ir->rects.size(), 1U);
+    EXPECT_EQ(ir->rects.front()->name, "dog");
+    EXPECT_EQ(ir->rects.front()->x, 50);
+    EXPECT_EQ(ir->rects.front()->width, 100);
+  }
+}
+
+// The darknetxx training directory of no names file: the label files number
+// the classes of the dxxwjz2 network beside the cfg file.
+TEST_F(CTEST_Importers, dxxwjz2_import_reads_the_classes_of_the_network)
+{
+  given_file("dxxwjz2/data/obj/a.png", "not-a-real-image");
+  given_file("dxxwjz2/data/obj/a.txt", "1 0.5 0.5 0.5 0.4\n");
+  given_file("dxxwjz2/data/train.txt", "data/obj/a.png\n");
+  given_gzip("dxxwjz2/cfg/yolov4-obj.dxxwjz2", R"({"format": "dxxwjz2",
+"version": 2, "network": {"cfg": "[net]\nbatch=64\n", "classes": [
+  {"index": 0, "name": "cat"}, {"index": 1, "name": "dog"}]}})");
+
+  auto ctx = filled(
+      iadi::IADataImportersFacade::create_dxxwjz2_library_context(), "dxxwjz2");
+
+  auto importer = iadi::IADataImportersFacade::create_importer(ctx);
+
+  ASSERT_NE(importer, nullptr);
+  ASSERT_TRUE(importer->import_db(ctx));
+
+  auto irr = the_rectangle();
+
+  ASSERT_NE(irr, nullptr);
+  EXPECT_EQ(irr->name, "dog");
+  EXPECT_EQ(irr->x, 50);
+  EXPECT_EQ(irr->y, 30);
   EXPECT_EQ(irr->width, 100);
   EXPECT_EQ(irr->height, 40);
 }

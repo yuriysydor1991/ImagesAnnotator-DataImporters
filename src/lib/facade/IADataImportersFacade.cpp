@@ -125,6 +125,44 @@ PyTorchImportContextPtr IADataImportersFacade::create_pytorch_library_context()
   return libFactory->create_pytorch_library_context();
 }
 
+Dxxwjz2pImportContextPtr
+IADataImportersFacade::create_dxxwjz2p_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_dxxwjz2p_library_context();
+}
+
+Dxxwjz3pImportContextPtr
+IADataImportersFacade::create_dxxwjz3p_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_dxxwjz3p_library_context();
+}
+
+Dxxwjz2ImportContextPtr IADataImportersFacade::create_dxxwjz2_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_dxxwjz2_library_context();
+}
+
+Dxxwjz3ImportContextPtr IADataImportersFacade::create_dxxwjz3_library_context()
+{
+  auto libFactory = iadi0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_dxxwjz3_library_context();
+}
+
 IADataImportersLibPtr IADataImportersFacade::create_default_lib()
 {
   auto libFactory = iadi0impl::LibFactory::create_factory();

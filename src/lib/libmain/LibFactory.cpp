@@ -32,6 +32,10 @@
 
 #include "contexts/CocoImportContext.h"
 #include "contexts/CreateMLImportContext.h"
+#include "contexts/Dxxwjz2ImportContext.h"
+#include "contexts/Dxxwjz2pImportContext.h"
+#include "contexts/Dxxwjz3ImportContext.h"
+#include "contexts/Dxxwjz3pImportContext.h"
 #include "contexts/PascalVocImportContext.h"
 #include "contexts/PlainTxtImportContext.h"
 #include "contexts/PyTorchImportContext.h"
@@ -41,6 +45,10 @@
 #include "contexts/Yolo4ImportContext.h"
 #include "src/importers/Coco/CocoFolder2DBImporter.h"
 #include "src/importers/CreateML/CreateMLFolder2DBImporter.h"
+#include "src/importers/Darknetxx/Dxxwjz2Folder2DBImporter.h"
+#include "src/importers/Darknetxx/Dxxwjz2pProject2DBImporter.h"
+#include "src/importers/Darknetxx/Dxxwjz3Folder2DBImporter.h"
+#include "src/importers/Darknetxx/Dxxwjz3pProject2DBImporter.h"
 #include "src/importers/PascalVoc/PascalVocFolder2DBImporter.h"
 #include "src/importers/PlainTxt/PlainTxtFolder2DBImporter.h"
 #include "src/importers/PyTorch/PyTorchVisionFolder2DBImporter.h"
@@ -113,6 +121,28 @@ LibFactory::PyTorchImportContextPtr LibFactory::create_pytorch_library_context()
   return std::make_shared<PyTorchImportContext>();
 }
 
+LibFactory::Dxxwjz2pImportContextPtr
+LibFactory::create_dxxwjz2p_library_context()
+{
+  return std::make_shared<Dxxwjz2pImportContext>();
+}
+
+LibFactory::Dxxwjz3pImportContextPtr
+LibFactory::create_dxxwjz3p_library_context()
+{
+  return std::make_shared<Dxxwjz3pImportContext>();
+}
+
+LibFactory::Dxxwjz2ImportContextPtr LibFactory::create_dxxwjz2_library_context()
+{
+  return std::make_shared<Dxxwjz2ImportContext>();
+}
+
+LibFactory::Dxxwjz3ImportContextPtr LibFactory::create_dxxwjz3_library_context()
+{
+  return std::make_shared<Dxxwjz3ImportContext>();
+}
+
 LibFactory::IADataImportersLibPtr LibFactory::create_appropriate_lib(
     [[maybe_unused]] IADataImportersContextPtr ctx)
 {
@@ -135,6 +165,10 @@ LibFactory::IImporterPtr LibFactory::create_importer(
 
   if (importer == nullptr) {
     importer = create_descriptor_importer(ctx);
+  }
+
+  if (importer == nullptr) {
+    importer = create_darknetxx_importer(ctx);
   }
 
   if (importer == nullptr) {
@@ -200,6 +234,30 @@ LibFactory::IImporterPtr LibFactory::create_descriptor_importer(
 
   if (std::dynamic_pointer_cast<CreateMLImportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::importers::CreateMLFolder2DBImporter>();
+  }
+
+  return nullptr;
+}
+
+LibFactory::IImporterPtr LibFactory::create_darknetxx_importer(
+    const IADataImportersContextPtr& ctx)
+{
+  if (std::dynamic_pointer_cast<Dxxwjz2pImportContext>(ctx) != nullptr) {
+    return std::make_shared<
+        iannotator::importers::Dxxwjz2pProject2DBImporter>();
+  }
+
+  if (std::dynamic_pointer_cast<Dxxwjz3pImportContext>(ctx) != nullptr) {
+    return std::make_shared<
+        iannotator::importers::Dxxwjz3pProject2DBImporter>();
+  }
+
+  if (std::dynamic_pointer_cast<Dxxwjz2ImportContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::importers::Dxxwjz2Folder2DBImporter>();
+  }
+
+  if (std::dynamic_pointer_cast<Dxxwjz3ImportContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::importers::Dxxwjz3Folder2DBImporter>();
   }
 
   return nullptr;

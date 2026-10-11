@@ -168,6 +168,16 @@ pipeline {
             sh 'cd $BUILDDIR && ctest -R "UTEST_ZlibController\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_ZlibController.junit.xml'
           }
         }
+        stage('UTEST_Dxxwjz2pProject2DBImporter') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_Dxxwjz2pProject2DBImporter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_Dxxwjz2pProject2DBImporter.junit.xml'
+          }
+        }
+        stage('UTEST_Dxxwjz2Folder2DBImporter') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_Dxxwjz2Folder2DBImporter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_Dxxwjz2Folder2DBImporter.junit.xml'
+          }
+        }
       }
       post { always { junit "$BUILDDIR/$BDJUNITOUT/UTEST_*.xml" } }
     }

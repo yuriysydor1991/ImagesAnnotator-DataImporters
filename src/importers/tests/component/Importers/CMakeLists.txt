@@ -12,6 +12,8 @@ target_link_libraries(
   CTEST_Importers
   GTest::gtest_main GTest::gmock
   ${PROJECT_LIBRARY_NAME}
+  # the darknetxx documents the test compresses itself
+  ZLIB::ZLIB
 )
 
 include(GoogleTest)

@@ -21,7 +21,7 @@ target_include_directories(
 
 target_link_libraries(
   UTEST_LibFactory
-  GTest::gtest_main GTest::gmock
+  GTest::gtest_main GTest::gmock ZLIB::ZLIB
   ${IMAGES_ANNOTATOR_DATA_DRIVERS_TARGET} ${IADI_OPENCV_TEST_LIBS}
 )
 

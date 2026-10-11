@@ -38,6 +38,10 @@
 #include "ImportersAPI.h"
 #include "contexts/CocoImportContext.h"
 #include "contexts/CreateMLImportContext.h"
+#include "contexts/Dxxwjz2ImportContext.h"
+#include "contexts/Dxxwjz2pImportContext.h"
+#include "contexts/Dxxwjz3ImportContext.h"
+#include "contexts/Dxxwjz3pImportContext.h"
 #include "contexts/PascalVocImportContext.h"
 #include "contexts/PlainTxtImportContext.h"
 #include "contexts/PyTorchImportContext.h"
@@ -168,6 +172,42 @@ class IADI_API IADataImportersFacade
    * @return Returns a new PyTorchImportContext class instance.
    */
   static PyTorchImportContextPtr create_pytorch_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * darknetxx dxxwjz2p training project layout, the project file of the
+   * annotations of the images.
+   *
+   * @return Returns a new Dxxwjz2pImportContext class instance.
+   */
+  static Dxxwjz2pImportContextPtr create_dxxwjz2p_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * darknetxx dxxwjz3p training project layout, the project file of the
+   * annotations of the images.
+   *
+   * @return Returns a new Dxxwjz3pImportContext class instance.
+   */
+  static Dxxwjz3pImportContextPtr create_dxxwjz3p_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * darknetxx training directory layout, the YOLO v4 one carrying the dxxwjz2
+   * network to train.
+   *
+   * @return Returns a new Dxxwjz2ImportContext class instance.
+   */
+  static Dxxwjz2ImportContextPtr create_dxxwjz2_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * darknetxx training directory layout, the YOLO v4 one carrying the dxxwjz3
+   * network to train.
+   *
+   * @return Returns a new Dxxwjz3ImportContext class instance.
+   */
+  static Dxxwjz3ImportContextPtr create_dxxwjz3_library_context();
 
   /**
    * @brief Creates the default library implementation.
