@@ -33,7 +33,7 @@
 #include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters015
+namespace ImagesAnnotatorDataImporters016
 {
 
 /**
@@ -56,6 +56,6 @@ class IADI_API PlainTxtImportContext : public IADataImportersContext
 using PlainTxtImportContextPtr =
     PlainTxtImportContext::PlainTxtImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters015
+}  // namespace ImagesAnnotatorDataImporters016
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_PLAINTXTIMPORTCONTEXT_CLASS_H

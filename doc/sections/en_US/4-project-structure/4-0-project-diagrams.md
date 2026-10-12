@@ -6,8 +6,8 @@ The class diagram of the `lib` component - the installable interface, the implem
 
 Five groups are drawn:
 
-- `ImagesAnnotatorDataDrivers013` - the database the importers fill and the records they build (`IAnnotationsDB`, `ImageRecord`), owned by the dependency;
-- `ImagesAnnotatorDataImporters015` - everything installed from [src/lib/facade/public](/src/lib/facade/public): `IADataImportersFacade`, `IADataImportersLib`, `IADataImportersContext` with its thirteen layout descendants, `IImporter` and the consumer implemented `IImageSizeFacility`;
+- `ImagesAnnotatorDataDrivers014` - the database the importers fill and the records they build (`IAnnotationsDB`, `ImageRecord`), owned by the dependency;
+- `ImagesAnnotatorDataImporters016` - everything installed from [src/lib/facade/public](/src/lib/facade/public): `IADataImportersFacade`, `IADataImportersLib`, `IADataImportersContext` with its thirteen layout descendants, `IImporter` and the consumer implemented `IImageSizeFacility`;
 - the implementation, whose symbols stay inside the shared object: `LibMain`, `LibFactory`, the thirteen importers sharing the `Folder2DBImporter` base - with the `JsonDescriptor2DBImporter` and the `UltralyticsFolder2DBImporter` halves the layout families of them share on top of it, and the two darknetxx training directory importers extending the YOLO v4 one beside the two training project ones, all four reading their dxxwjz files through the `DxxwjzFileReader` - and the `OpenCVImageSizer` a build which found OpenCV ships;
 - the document readers, hidden just as much: `IJsonParser` with `JsonParser` and the `JsonValue` tree behind it, and `IXmlParser` with `XmlParser` and `XmlNode`, which the descriptor layouts are read through, and the `JsonMembersPicker` which reads the darknetxx documents a piece at a time;
 - [src/zlib](/src/zlib) - the `ZlibController` of the cpp-app-template the `DxxwjzFileReader` decompresses the gzip dxxwjz files with, in the `iadi0zlibi` namespace of this library.

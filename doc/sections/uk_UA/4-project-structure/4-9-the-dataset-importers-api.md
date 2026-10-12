@@ -1,14 +1,14 @@
 ## API імпортерів наборів даних
 
-Увесь інтерфейс бібліотеки оголошено заголовними файлами під [src/lib/facade/public](/src/lib/facade/public); вони встановлюються до піддиректорії `include/ImagesAnnotatorDataImporters-0.15` обраного префікса встановлення. Ніщо інше не залишає спільного обʼєкта: кожен клас реалізації лишається за абстрактними інтерфейсами, описаними тут.
+Увесь інтерфейс бібліотеки оголошено заголовними файлами під [src/lib/facade/public](/src/lib/facade/public); вони встановлюються до піддиректорії `include/ImagesAnnotatorDataImporters-0.16` обраного префікса встановлення. Ніщо інше не залишає спільного обʼєкта: кожен клас реалізації лишається за абстрактними інтерфейсами, описаними тут.
 
-Усі встановлювані оголошення живуть у просторі імен `ImagesAnnotatorDataImporters015`. Назва несе мажорний і мінорний номери версії бібліотеки (`0.15` дає суфікс `015`), тож дві версії бібліотеки можуть співіснувати в одній одиниці трансляції. Створіть для неї псевдонім один раз у власному коді:
+Усі встановлювані оголошення живуть у просторі імен `ImagesAnnotatorDataImporters016`. Назва несе мажорний і мінорний номери версії бібліотеки (`0.16` дає суфікс `016`), тож дві версії бібліотеки можуть співіснувати в одній одиниці трансляції. Створіть для неї псевдонім один раз у власному коді:
 
 ```cpp
-namespace iadi = ImagesAnnotatorDataImporters015;
+namespace iadi = ImagesAnnotatorDataImporters016;
 ```
 
-Записи, які будують імпортери, тут не визначені. Вони походять із бібліотеки [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git), простір імен інтерфейсу якої - `ImagesAnnotatorDataDrivers013` (нижче з псевдонімом `iadd`). Див. підрозділ [Залежність від драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) щодо збіркової частини цієї залежності.
+Записи, які будують імпортери, тут не визначені. Вони походять із бібліотеки [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git), простір імен інтерфейсу якої - `ImagesAnnotatorDataDrivers014` (нижче з псевдонімом `iadd`). Див. підрозділ [Залежність від драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) щодо збіркової частини цієї залежності.
 
 ### Встановлювані заголовні файли
 
@@ -71,7 +71,7 @@ class Dxxwjz3ImportContext : public IADataImportersContext;
 | Методи доступу | Напрямок | Значення |
 | --- | --- | --- |
 | `get_import_path()`, `set_import_path()` | вх. | директорія-джерело імпорту, `std::string`, обовʼязкова |
-| `get_db()`, `set_db()` | вх.-вих. | база даних анотацій, до якої зливаються відновлені записи, `ImagesAnnotatorDataDrivers013::IAnnotationsDBPtr`, обовʼязкова |
+| `get_db()`, `set_db()` | вх.-вих. | база даних анотацій, до якої зливаються відновлені записи, `ImagesAnnotatorDataDrivers014::IAnnotationsDBPtr`, обовʼязкова |
 | `get_image_sizer()`, `set_image_sizer()` | вх. | засіб вимірювання зображень, `IImageSizeFacilityPtr`. Обовʼязковий для розкладок, які без нього неможливо прочитати, якщо бібліотеку не зібрано з OpenCV |
 | `get_importer()`, `set_importer()` | вих. | екземпляр імпортера, який виконав останній `perform_import`, `IImporterPtr` |
 | `get_imported_records()`, `set_imported_records()` | вих. | скільки записів зображень останній імпорт відновив і передав до бази даних, `std::size_t` |
@@ -148,14 +148,14 @@ virtual IImageSizeFacilityPtr clone() = 0;
 Програма нижче читає назад навчальну директорію YOLO v4 і записує відновлені анотації як файл проекту ImagesAnnotator через бібліотеку драйверів даних. Див. розділ [Використання бібліотеки у власному проекті](/doc/sections/uk_UA/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) щодо CMake-частини.
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.13/IADataDriversFacade.h>
-#include <ImagesAnnotatorDataImporters-0.15/IADataImportersFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.14/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataImporters-0.16/IADataImportersFacade.h>
 
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers013;
-namespace iadi = ImagesAnnotatorDataImporters015;
+namespace iadd = ImagesAnnotatorDataDrivers014;
+namespace iadi = ImagesAnnotatorDataImporters016;
 
 int main(int argc, char** argv)
 {
@@ -210,12 +210,12 @@ int main(int argc, char** argv)
 Ескіз нижче підключає такий читач до графічних процедур, які проект-споживач уже має - підставте власні виклики декодування замість `my_imaging`:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.15/IImageSizeFacility.h>
+#include <ImagesAnnotatorDataImporters-0.16/IImageSizeFacility.h>
 
 #include <memory>
 #include <string>
 
-namespace iadi = ImagesAnnotatorDataImporters015;
+namespace iadi = ImagesAnnotatorDataImporters016;
 
 class MySizer : public iadi::IImageSizeFacility
 {

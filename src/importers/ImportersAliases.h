@@ -28,9 +28,9 @@
 #ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IMPORTERSALIASES_H
 #define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IMPORTERSALIASES_H
 
-#include <ImagesAnnotatorDataDrivers-0.13/IAnnotationsDB.h>
-#include <ImagesAnnotatorDataDrivers-0.13/ImageRecord.h>
-#include <ImagesAnnotatorDataDrivers-0.13/ImageRecordRect.h>
+#include <ImagesAnnotatorDataDrivers-0.14/IAnnotationsDB.h>
+#include <ImagesAnnotatorDataDrivers-0.14/ImageRecord.h>
+#include <ImagesAnnotatorDataDrivers-0.14/ImageRecordRect.h>
 
 #include "IADataImportersContext.h"
 #include "IImageSizeFacility.h"
@@ -42,7 +42,7 @@
  *
  * This is the implementation side of the library: nothing declared under it is
  * installed - a consuming project only ever sees the
- * ImagesAnnotatorDataImporters015 interfaces. The namespace root is the one the
+ * ImagesAnnotatorDataImporters016 interfaces. The namespace root is the one the
  * sibling exporters library carries, so the two halves of the pair read alike
  * inside the ImagesAnnotator application they both came out of.
  */
@@ -54,21 +54,21 @@ namespace iannotator::importers
  * names into the implementation namespace, so that the importers code refers
  * to them unqualified.
  */
-using ImagesAnnotatorDataImporters015::IADataImportersContext;
-using ImagesAnnotatorDataImporters015::IADataImportersContextPtr;
-using ImagesAnnotatorDataImporters015::IImageSizeFacility;
-using ImagesAnnotatorDataImporters015::IImageSizeFacilityPtr;
-using ImagesAnnotatorDataImporters015::IImporter;
-using ImagesAnnotatorDataImporters015::IImporterPtr;
+using ImagesAnnotatorDataImporters016::IADataImportersContext;
+using ImagesAnnotatorDataImporters016::IADataImportersContextPtr;
+using ImagesAnnotatorDataImporters016::IImageSizeFacility;
+using ImagesAnnotatorDataImporters016::IImageSizeFacilityPtr;
+using ImagesAnnotatorDataImporters016::IImporter;
+using ImagesAnnotatorDataImporters016::IImporterPtr;
 
-using ImagesAnnotatorDataDrivers013::IAnnotationsDB;
-using ImagesAnnotatorDataDrivers013::IAnnotationsDBPtr;
-using ImagesAnnotatorDataDrivers013::ImageRecord;
-using ImagesAnnotatorDataDrivers013::ImageRecordPtr;
-using ImagesAnnotatorDataDrivers013::ImageRecordRect;
-using ImagesAnnotatorDataDrivers013::ImageRecordRectPtr;
-using ImagesAnnotatorDataDrivers013::ImageRecordRectSet;
-using ImagesAnnotatorDataDrivers013::ImageRecordsSet;
+using ImagesAnnotatorDataDrivers014::IAnnotationsDB;
+using ImagesAnnotatorDataDrivers014::IAnnotationsDBPtr;
+using ImagesAnnotatorDataDrivers014::ImageRecord;
+using ImagesAnnotatorDataDrivers014::ImageRecordPtr;
+using ImagesAnnotatorDataDrivers014::ImageRecordRect;
+using ImagesAnnotatorDataDrivers014::ImageRecordRectPtr;
+using ImagesAnnotatorDataDrivers014::ImageRecordRectSet;
+using ImagesAnnotatorDataDrivers014::ImageRecordsSet;
 
 }  // namespace iannotator::importers
 

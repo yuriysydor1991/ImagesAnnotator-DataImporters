@@ -39,7 +39,7 @@ cmake -S . -B build -DENABLE_OPENCV=ON
 `IADataImportersFacade::create_image_sizer()` видає той самий читач або `nullptr` у збірці без OpenCV. Це і є спосіб дізнатись, чи має збірка читач:
 
 ```cpp
-namespace iadi = ImagesAnnotatorDataImporters015;
+namespace iadi = ImagesAnnotatorDataImporters016;
 
 auto ctx = iadi::IADataImportersFacade::create_yolo4_library_context();
 ctx->set_import_path("/tmp/yolo-dataset");

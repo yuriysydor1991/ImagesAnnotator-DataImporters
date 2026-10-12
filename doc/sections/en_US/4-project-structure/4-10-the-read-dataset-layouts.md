@@ -235,7 +235,7 @@ The `file_name` of an image is taken relative to the first of these directories 
 
 ```json
 {
-"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.13.0"},
+"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.14.0"},
 "licenses": [],
 "images": [
   {"id": 1, "file_name": "street.png", "width": 640, "height": 400},

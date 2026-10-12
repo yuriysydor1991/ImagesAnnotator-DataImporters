@@ -35,7 +35,7 @@
 #include "src/lib/libmain/LibFactory.h"
 #include "src/log/log.h"
 
-namespace ImagesAnnotatorDataImporters015
+namespace ImagesAnnotatorDataImporters016
 {
 
 PlainTxtImportContextPtr
@@ -212,4 +212,4 @@ void IADataImportersFacade::accept_real_logger(
   LOG_INIT_REAL_LOGGER(realLogger);
 }
 
-}  // namespace ImagesAnnotatorDataImporters015
+}  // namespace ImagesAnnotatorDataImporters016

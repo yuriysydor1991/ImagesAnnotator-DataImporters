@@ -32,32 +32,32 @@ class LibFactorySynthParent
 {
  public:
   using IADataImportersLibPtr =
-      ImagesAnnotatorDataImporters015::IADataImportersLibPtr;
+      ImagesAnnotatorDataImporters016::IADataImportersLibPtr;
   using IADataImportersContextPtr =
-      ImagesAnnotatorDataImporters015::IADataImportersContextPtr;
+      ImagesAnnotatorDataImporters016::IADataImportersContextPtr;
   using IADataImportersContext =
-      ImagesAnnotatorDataImporters015::IADataImportersContext;
+      ImagesAnnotatorDataImporters016::IADataImportersContext;
   using PlainTxtImportContextPtr =
-      ImagesAnnotatorDataImporters015::PlainTxtImportContextPtr;
+      ImagesAnnotatorDataImporters016::PlainTxtImportContextPtr;
   using Yolo4ImportContextPtr =
-      ImagesAnnotatorDataImporters015::Yolo4ImportContextPtr;
+      ImagesAnnotatorDataImporters016::Yolo4ImportContextPtr;
   using PyTorchImportContextPtr =
-      ImagesAnnotatorDataImporters015::PyTorchImportContextPtr;
+      ImagesAnnotatorDataImporters016::PyTorchImportContextPtr;
   using UltralyticsDetectImportContextPtr =
-      ImagesAnnotatorDataImporters015::UltralyticsDetectImportContextPtr;
+      ImagesAnnotatorDataImporters016::UltralyticsDetectImportContextPtr;
   using UltralyticsObbImportContextPtr =
-      ImagesAnnotatorDataImporters015::UltralyticsObbImportContextPtr;
+      ImagesAnnotatorDataImporters016::UltralyticsObbImportContextPtr;
   using UltralyticsSegmentImportContextPtr =
-      ImagesAnnotatorDataImporters015::UltralyticsSegmentImportContextPtr;
+      ImagesAnnotatorDataImporters016::UltralyticsSegmentImportContextPtr;
   using CocoImportContextPtr =
-      ImagesAnnotatorDataImporters015::CocoImportContextPtr;
+      ImagesAnnotatorDataImporters016::CocoImportContextPtr;
   using PascalVocImportContextPtr =
-      ImagesAnnotatorDataImporters015::PascalVocImportContextPtr;
+      ImagesAnnotatorDataImporters016::PascalVocImportContextPtr;
   using CreateMLImportContextPtr =
-      ImagesAnnotatorDataImporters015::CreateMLImportContextPtr;
-  using IImporterPtr = ImagesAnnotatorDataImporters015::IImporterPtr;
+      ImagesAnnotatorDataImporters016::CreateMLImportContextPtr;
+  using IImporterPtr = ImagesAnnotatorDataImporters016::IImporterPtr;
   using IImageSizeFacilityPtr =
-      ImagesAnnotatorDataImporters015::IImageSizeFacilityPtr;
+      ImagesAnnotatorDataImporters016::IImageSizeFacilityPtr;
 
   virtual ~LibFactorySynthParent() = default;
   LibFactorySynthParent() = default;

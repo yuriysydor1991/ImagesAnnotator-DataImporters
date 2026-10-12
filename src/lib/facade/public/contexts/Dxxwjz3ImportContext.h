@@ -33,7 +33,7 @@
 #include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters015
+namespace ImagesAnnotatorDataImporters016
 {
 
 /**
@@ -59,6 +59,6 @@ class IADI_API Dxxwjz3ImportContext : public IADataImportersContext
 
 using Dxxwjz3ImportContextPtr = Dxxwjz3ImportContext::Dxxwjz3ImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters015
+}  // namespace ImagesAnnotatorDataImporters016
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_DXXWJZ3IMPORTCONTEXT_CLASS_H

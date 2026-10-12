@@ -11,12 +11,12 @@ cmake_minimum_required(VERSION 3.13)
 # template-project-data-drivers-linker module.
 
 set(
-  IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE "ImagesAnnotatorDataDrivers-0.13"
+  IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE "ImagesAnnotatorDataDrivers-0.14"
   CACHE STRING
   "The CMake package name of the ImagesAnnotator data drivers library to build against"
 )
 
-# No version is requested on purpose: the 0.13.0 release of the data drivers
+# No version is requested on purpose: the 0.14.0 release of the data drivers
 # library installs its package Config file without the companion
 # <package>ConfigVersion.cmake, so a versioned find_package() would never
 # match it. The package name already carries the major and the minor version.
