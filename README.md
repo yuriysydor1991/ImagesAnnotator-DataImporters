@@ -28,7 +28,7 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 - **Robust over a partial dataset** - a malformed line, an image file the dataset names but does not hold, a label naming an unknown class, a picture that cannot be measured: each is logged and skipped, the import run itself carries on.
 - **No image codec of its own** - the layouts which do not store their rectangles in the pixels of their image ask the consuming project to measure the pictures through the `IImageSizeFacility` interface, over whatever imaging stack that project already links. A build which found OpenCV ships such a reader itself, so a consumer with no imaging stack still gets those imports. The plain text, the COCO, the Pascal VOC and the Create ML layouts need no measurement at all.
 - **No JSON or XML dependency either** - the two descriptor formats are read by the library own document readers under [src/parsers](/src/parsers), exactly as the sibling exporters library writes those very descriptors without one. Nothing is linked for them, and nothing of either reader reaches the installed interface.
-- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.14` major and minor pair, so two minor releases install side by side.
+- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.15` major and minor pair, so two minor releases install side by side.
 
 # Usage example
 
@@ -41,21 +41,21 @@ project(MyTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataImporters-0.14 REQUIRED)
+find_package(ImagesAnnotatorDataImporters-0.15 REQUIRED)
 
 add_executable(mytool main.cpp)
-target_link_libraries(mytool ImagesAnnotatorDataImporters-0.14::ImagesAnnotatorDataImporters-0.14)
+target_link_libraries(mytool ImagesAnnotatorDataImporters-0.15::ImagesAnnotatorDataImporters-0.15)
 ```
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
-#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.13/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataImporters-0.15/IADataImportersFacade.h>
 
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers012;
-namespace iadi = ImagesAnnotatorDataImporters014;
+namespace iadd = ImagesAnnotatorDataDrivers013;
+namespace iadi = ImagesAnnotatorDataImporters015;
 
 int main(int argc, char** argv)
 {
@@ -89,9 +89,9 @@ int main(int argc, char** argv)
 }
 ```
 
-The `ImagesAnnotatorDataImporters014` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
+The `ImagesAnnotatorDataImporters015` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
 
-Both `#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>` and a plain `#include <IADataImportersFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: `IImporter.h` and `ImportersAPI.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
+Both `#include <ImagesAnnotatorDataImporters-0.15/IADataImportersFacade.h>` and a plain `#include <IADataImportersFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: `IImporter.h` and `ImportersAPI.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
 
 The program above reads the YOLO v4 layout, whose rectangles are stored divided by the size of their image, so it needs a library built with OpenCV. Give an `IImageSizeFacility` of your own to `ctx->set_image_sizer()` otherwise, or start from the plain text layout, which needs none.
 
@@ -105,7 +105,7 @@ More on the API and on the read datasets is in the [dataset importers API](/doc/
 | `ENABLE_ZLIB` | [zlib](https://zlib.net/) | it decompresses the gzip [darknetxx](https://github.com/yuriysydor1991/darknetxx) dxxwjz files the darknetxx layouts read |
 | `ENABLE_OPENCV` | [OpenCV](https://opencv.org/) | optional: with it the library ships an image size reader of its own, so that a consumer with no imaging stack still gets the layouts which need one |
 
-The data drivers library and the zlib are **mandatory**. The data drivers library has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its database type. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
+The data drivers library and the zlib are **mandatory**. The data drivers library has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.13 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its database type. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
 
 The zlib is first probed system wide and, when it is not found, is pulled by the CMake `FetchContent`. It is linked **privately**: no public header exposes a zlib type. The library reaches it through the `ZlibController` of [src/zlib](/src/zlib), the zlib controller component of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `appZlib` branch in the adaptation the darknetxx made of it, whose gzip file stream reads the files of the hundreds of megabytes a chunk at a time - see the [enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md) section.
 

@@ -4,7 +4,7 @@
 - записи зображень, їхні прямокутники й імена анотацій - через споріднену
 бібліотеку
 [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git),
-типи якої живуть у просторі імен `ImagesAnnotatorDataDrivers012`.
+типи якої живуть у просторі імен `ImagesAnnotatorDataDrivers013`.
 `IADataImportersContext` тримає отриманий з неї `IAnnotationsDBPtr`, до якого зливаються
 відновлені записи, тому залежність є обовʼязковою: без неї проект не
 конфігурується.
@@ -23,13 +23,13 @@ find_package(${IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE} REQUIRED CONFIG)
 всередині дерева сирців, могли лінкуватись з імпортованою ціллю напряму. Модуль
 також складає імʼя імпортованої цілі у змінну
 `IMAGES_ANNOTATOR_DATA_DRIVERS_TARGET`, яка за замовчуванням розгортається у
-`ImagesAnnotatorDataDrivers-0.12::ImagesAnnotatorDataDrivers-0.12`.
+`ImagesAnnotatorDataDrivers-0.13::ImagesAnnotatorDataDrivers-0.13`.
 
 ### Cache-змінна IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE
 
 Імʼя пакунка не зашите у код. Воно міститься у cache-змінній
 `IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE`, значення якої за замовчуванням -
-`ImagesAnnotatorDataDrivers-0.12`, тобто імʼя, яке несе типове встановлення
+`ImagesAnnotatorDataDrivers-0.13`, тобто імʼя, яке несе типове встановлення
 драйверів даних, адже той проект постачається з `LIB_INCLUDE_MINOR_IN_NAME=ON`
 так само як і цей. Заміни його, якщо будуєшся проти встановлення, складові імені
 якого були змінені, наприклад сконфігурованого з `LIB_INCLUDE_MINOR_IN_NAME=OFF`
@@ -42,18 +42,18 @@ cmake -S . -B build \
 ```
 
 Імʼя імпортованої цілі слідує за заміненим імʼям пакунка автоматично. А от рядки
-`#include <ImagesAnnotatorDataDrivers-0.12/...>` у сирцях - ні: вони дослівно
+`#include <ImagesAnnotatorDataDrivers-0.13/...>` у сирцях - ні: вони дослівно
 вказують субдиректорію заголовків типового встановлення, тому встановлення з
 іншим імʼям потребує, щоб його директорія заголовків була досяжна за тим самим
 написанням.
 
 ### Чому версія не запитується
 
-Виклик `find_package` навмисно не запитує версію. Випуск 0.12.0 бібліотеки
+Виклик `find_package` навмисно не запитує версію. Випуск 0.13.0 бібліотеки
 драйверів даних встановлює свій файл пакунка `Config.cmake` без супутнього
 `<package>ConfigVersion.cmake`, а `find_package` читає версію лише з того
 супутнього файлу, тож будь-який запит із версією не збігся б із цілком справним
-встановленням. Мажорну і мінорну версії вже несе саме імʼя пакунка (`...-0.12`),
+встановленням. Мажорну і мінорну версії вже несе саме імʼя пакунка (`...-0.13`),
 і саме це тримає несумісні випуски окремо.
 
 ### Самостійна побудова і встановлення драйверів даних
@@ -88,7 +88,7 @@ cmake --build build -j$(nproc)
 
 ```
 CMake Error: Could not find a package configuration file provided by
-"ImagesAnnotatorDataDrivers-0.12"
+"ImagesAnnotatorDataDrivers-0.13"
 ```
 
 ### Чому залежність лінкується як PUBLIC

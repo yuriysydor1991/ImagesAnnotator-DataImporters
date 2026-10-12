@@ -28,7 +28,7 @@
 #ifndef IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSCONTEXT_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSCONTEXT_CLASS_H
 
-#include <ImagesAnnotatorDataDrivers-0.12/IAnnotationsDB.h>
+#include <ImagesAnnotatorDataDrivers-0.13/IAnnotationsDB.h>
 
 #include <cstddef>
 #include <memory>
@@ -38,7 +38,7 @@
 #include "IImporter.h"
 #include "ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters014
+namespace ImagesAnnotatorDataImporters015
 {
 
 /**
@@ -66,7 +66,7 @@ class IADI_API IADataImportersContext
 {
  public:
   using IADataImportersContextPtr = std::shared_ptr<IADataImportersContext>;
-  using IAnnotationsDBPtr = ImagesAnnotatorDataDrivers012::IAnnotationsDBPtr;
+  using IAnnotationsDBPtr = ImagesAnnotatorDataDrivers013::IAnnotationsDBPtr;
 
   virtual ~IADataImportersContext() = default;
   IADataImportersContext() = default;
@@ -78,7 +78,7 @@ class IADI_API IADataImportersContext
   /// @brief In-out: the annotations database the recovered records are merged
   /// into, mandatory. An already held record is kept as it is, so importing
   /// one and the same dataset twice adds it once. Obtain an empty one from
-  /// ImagesAnnotatorDataDrivers012::IADataDriversFacade::create_annotations_db(),
+  /// ImagesAnnotatorDataDrivers013::IADataDriversFacade::create_annotations_db(),
   /// or hand over the database of the project being edited to import into it.
   const IAnnotationsDBPtr& get_db() const;
   void set_db(const IAnnotationsDBPtr& newDb);
@@ -113,6 +113,6 @@ class IADI_API IADataImportersContext
 using IADataImportersContextPtr =
     IADataImportersContext::IADataImportersContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters014
+}  // namespace ImagesAnnotatorDataImporters015
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_IADATAIMPORTERSCONTEXT_CLASS_H

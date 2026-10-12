@@ -19,9 +19,9 @@
 </style>
 <rect width="1500" height="1993" fill="#ffffff"/>
 <rect x="20" y="20" width="1460" height="150" rx="4" fill="#eeeeee" stroke="#8a8a8a" stroke-width="1.5"/>
-<text x="32" y="40" class="pkg">ImagesAnnotatorDataDrivers012 (dependency)</text>
+<text x="32" y="40" class="pkg">ImagesAnnotatorDataDrivers013 (dependency)</text>
 <rect x="20" y="190" width="1460" height="589" rx="4" fill="#ffffff" stroke="#8a8a8a" stroke-width="1.5"/>
-<text x="32" y="210" class="pkg">ImagesAnnotatorDataImporters014 (installed interface)</text>
+<text x="32" y="210" class="pkg">ImagesAnnotatorDataImporters015 (installed interface)</text>
 <rect x="20" y="799" width="1460" height="782" rx="4" fill="#f8f8f8" stroke="#8a8a8a" stroke-width="1.5"/>
 <text x="70" y="819" class="pkg">Implementation (hidden symbols)</text>
 <rect x="20" y="1625" width="1076" height="348" rx="4" fill="#f8f8f8" stroke="#8a8a8a" stroke-width="1.5"/>

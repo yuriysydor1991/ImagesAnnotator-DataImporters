@@ -33,7 +33,7 @@
 #include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters014
+namespace ImagesAnnotatorDataImporters015
 {
 
 /**
@@ -56,6 +56,6 @@ class IADI_API Yolo4ImportContext : public IADataImportersContext
 
 using Yolo4ImportContextPtr = Yolo4ImportContext::Yolo4ImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters014
+}  // namespace ImagesAnnotatorDataImporters015
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_YOLO4IMPORTCONTEXT_CLASS_H

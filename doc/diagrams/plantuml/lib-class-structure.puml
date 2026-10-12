@@ -1,6 +1,6 @@
 @startuml
 
-package "ImagesAnnotatorDataDrivers012 (dependency)" #EEEEEE {
+package "ImagesAnnotatorDataDrivers013 (dependency)" #EEEEEE {
   abstract class "IAnnotationsDB" as IDB {
     +{abstract} void add_images_db(const ImageRecordsSet& andb)
     +{abstract} ImageRecordsSet& get_images_db()
@@ -15,7 +15,7 @@ package "ImagesAnnotatorDataDrivers012 (dependency)" #EEEEEE {
   }
 }
 
-package "ImagesAnnotatorDataImporters014 (installed interface)" {
+package "ImagesAnnotatorDataImporters015 (installed interface)" {
   abstract class IImporter {
     +{abstract} bool import_db(IADataImportersContextPtr ictx)
   }

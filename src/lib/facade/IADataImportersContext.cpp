@@ -31,7 +31,7 @@
 #include <memory>
 #include <string>
 
-namespace ImagesAnnotatorDataImporters014
+namespace ImagesAnnotatorDataImporters015
 {
 
 const std::string& IADataImportersContext::get_import_path() const
@@ -86,4 +86,4 @@ void IADataImportersContext::set_imported_records(const std::size_t& newCount)
   importedRecords = newCount;
 }
 
-}  // namespace ImagesAnnotatorDataImporters014
+}  // namespace ImagesAnnotatorDataImporters015

@@ -1,6 +1,6 @@
 # Using the library in your project
 
-The library is meant to be consumed by other projects: it produces no executable of its own, only the `libImagesAnnotatorDataImporters-0.14.so` shared object with its installable headers and a CMake package. This section describes what a downstream project has to do to build against it.
+The library is meant to be consumed by other projects: it produces no executable of its own, only the `libImagesAnnotatorDataImporters-0.15.so` shared object with its installable headers and a CMake package. This section describes what a downstream project has to do to build against it.
 
 ## What has to be installed first
 
@@ -12,9 +12,9 @@ Two things have to be installed before a consumer may be configured:
 The install puts the following into the chosen prefix:
 
 ```
-<prefix>/include/ImagesAnnotatorDataImporters-0.14/     the public headers
-<prefix>/lib/libImagesAnnotatorDataImporters-0.14.so    the shared object, soname .so.0
-<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.14/   the CMake package files
+<prefix>/include/ImagesAnnotatorDataImporters-0.15/     the public headers
+<prefix>/lib/libImagesAnnotatorDataImporters-0.15.so    the shared object, soname .so.0
+<prefix>/lib/cmake/ImagesAnnotatorDataImporters-0.15/   the CMake package files
 ```
 
 ## Finding the package with CMake
@@ -27,17 +27,17 @@ project(MyImportingTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataImporters-0.14 0.14 REQUIRED)
+find_package(ImagesAnnotatorDataImporters-0.15 0.15 REQUIRED)
 
 add_executable(my-importing-tool main.cpp)
 
 target_link_libraries(
   my-importing-tool
-  PRIVATE ImagesAnnotatorDataImporters-0.14::ImagesAnnotatorDataImporters-0.14
+  PRIVATE ImagesAnnotatorDataImporters-0.15::ImagesAnnotatorDataImporters-0.15
 )
 ```
 
-Both the package name and the imported target carry the library major and minor version, so a future release may be installed side by side with this one. The version request is matched against the installed `ImagesAnnotatorDataImporters-0.14ConfigVersion.cmake` file with the `SameMajorVersion` compatibility rule.
+Both the package name and the imported target carry the library major and minor version, so a future release may be installed side by side with this one. The version request is matched against the installed `ImagesAnnotatorDataImporters-0.15ConfigVersion.cmake` file with the `SameMajorVersion` compatibility rule.
 
 The installed package configuration file, generated from [src/lib/cmake/ImportersLibraryConfig.cmake.in](/src/lib/cmake/ImportersLibraryConfig.cmake.in), calls `find_dependency()` on the data drivers package before it reads the exported targets. The data drivers library is linked `PUBLIC` because the installable headers of this library name its database and record types, so linking the target above brings the data drivers include path and shared object along with it. A separate `find_package()` for the data drivers is not needed in a consumer, although calling one does no harm.
 
@@ -58,7 +58,7 @@ The very same variable is what this library itself needs at its own configure ti
 Two include roots are exported, so both spellings compile:
 
 ```cpp
-#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>  // recommended
+#include <ImagesAnnotatorDataImporters-0.15/IADataImportersFacade.h>  // recommended
 #include <IADataImportersFacade.h>                                    // also works
 ```
 
@@ -71,13 +71,13 @@ Prefer the prefixed one. Header names such as `IImporter.h` and `ImportersAPI.h`
 The interface namespaces of both libraries carry their major and minor version numbers. Alias them once and the version bump stays a one line change:
 
 ```cpp
-namespace iadd = ImagesAnnotatorDataDrivers012;
-namespace iadi = ImagesAnnotatorDataImporters014;
+namespace iadd = ImagesAnnotatorDataDrivers013;
+namespace iadi = ImagesAnnotatorDataImporters015;
 ```
 
 ## What your project has to supply
 
-- **The database.** `IADataImportersContext::set_db()` takes an `ImagesAnnotatorDataDrivers012::IAnnotationsDBPtr` - the destination the recovered records are merged into. An empty one comes from `iadd::IADataDriversFacade::create_annotations_db()`; hand over the one of `iadd::IADataDriversFacade::open_annotations_db("project.json")` instead to import **into** an existing project, and the import appends the images that project does not hold yet. Either way the database is what stores the result, through its own `store_db()`.
+- **The database.** `IADataImportersContext::set_db()` takes an `ImagesAnnotatorDataDrivers013::IAnnotationsDBPtr` - the destination the recovered records are merged into. An empty one comes from `iadd::IADataDriversFacade::create_annotations_db()`; hand over the one of `iadd::IADataDriversFacade::open_annotations_db("project.json")` instead to import **into** an existing project, and the import appends the images that project does not hold yet. Either way the database is what stores the result, through its own `store_db()`.
 - **The source path.** `IADataImportersContext::set_import_path()` has to name an existing directory holding the dataset of the layout the context stands for - or, for the two darknetxx training projects, `Dxxwjz2pImportContext` and `Dxxwjz3pImportContext`, the project file itself as well, since the darknetxx keeps a whole training project in one file. Nothing there is written to: an import is a read only pass.
 - **An image size reader, for seven of the thirteen layouts.** The YOLO v4 layout, the two darknetxx training directories which extend it and the three Ultralytics YOLO ones store their boxes divided by the size of their image, and the PyTorch Vision one stores an annotation as the cropped image itself, so none of the seven can be read back without measuring the pictures - and the library decodes no image format itself. Implement `IImageSizeFacility` over the imaging stack your project already links and pass the instance in through `IADataImportersContext::set_image_sizer()`. A library built with OpenCV ships a reader of its own and fills an empty slot with it, so this is only mandatory for a consumer of a build without OpenCV, or for one that wants its own measuring. The [The dataset importers API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-importers-api.md) subsection carries an implementation sketch, and [Enabling the OpenCV image size reader](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-size-reader.md) covers the built-in one. The plain text, the COCO, the Pascal VOC, the Create ML and the two darknetxx training project layouts need no reader at all - the plain text and the Create ML ones hold their rectangles in the image own pixels, and the rest carry the image dimensions in their own documents.
 
@@ -86,14 +86,14 @@ namespace iadi = ImagesAnnotatorDataImporters014;
 The `main.cpp` below reads a plain text dataset back and stores it as a project file, through the single shot `IADataImportersLib::perform_import` entry point:
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
-#include <ImagesAnnotatorDataImporters-0.14/IADataImportersFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.13/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataImporters-0.15/IADataImportersFacade.h>
 
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers012;
-namespace iadi = ImagesAnnotatorDataImporters014;
+namespace iadd = ImagesAnnotatorDataDrivers013;
+namespace iadi = ImagesAnnotatorDataImporters015;
 
 int main()
 {

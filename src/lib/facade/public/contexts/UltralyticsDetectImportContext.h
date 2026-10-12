@@ -33,7 +33,7 @@
 #include "../IADataImportersContext.h"
 #include "../ImportersAPI.h"
 
-namespace ImagesAnnotatorDataImporters014
+namespace ImagesAnnotatorDataImporters015
 {
 
 /**
@@ -59,6 +59,6 @@ class IADI_API UltralyticsDetectImportContext : public IADataImportersContext
 using UltralyticsDetectImportContextPtr =
     UltralyticsDetectImportContext::UltralyticsDetectImportContextPtr;
 
-}  // namespace ImagesAnnotatorDataImporters014
+}  // namespace ImagesAnnotatorDataImporters015
 
 #endif  // IMAGES_ANNOTATOR_DATA_IMPORTERS_PROJECT_ULTRALYTICSDETECTIMPORTCONTEXT_CLASS_H

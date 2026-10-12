@@ -235,7 +235,7 @@ import_path/
 
 ```json
 {
-"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.12.0"},
+"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.13.0"},
 "licenses": [],
 "images": [
   {"id": 1, "file_name": "street.png", "width": 640, "height": 400},
