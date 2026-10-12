@@ -24,7 +24,9 @@ Finally, execute the `cpack` command inside the project build directory:
 cpack
 ```
 
-The package file should be generated inside the project build root directory. For example, if project name wasn't changed and it's version is 0.16.0 so the package name may look like `ImagesAnnotatorDataImporters-0.16.0-Linux.deb`.
+The package file should be generated inside the project build root directory. For example, if project name wasn't changed and it's version is 0.16.0 so the package name may look like `ImagesAnnotatorDataImporters-0.16.0-amd64.deb`.
+
+The package name ends with the destination CPU architecture, the one of the package `Architecture` field as well. The `TEMPLATE_PROJECT_DEB_PACKAGE_ARCHITECTURE` cache variable holds it (default: the `dpkg --print-architecture` output, e.g. `amd64` or `arm64`), so override it when cross compiling the project or packaging it on a host without the `dpkg`.
 
 The `CPACK_DEBIAN_PACKAGE_SHLIBDEPS` option is set to `ON`, so `dpkg-shlibdeps` reads the run time dependencies of the produced `libImagesAnnotatorDataImporters-0.16.so` out of the binary itself - the zlib and the `ImagesAnnotatorDataDrivers` shared objects it links, and the OpenCV ones when the build found them, end up in the package `Depends` field without any distribution package name being spelled out in the CMake files.
 
