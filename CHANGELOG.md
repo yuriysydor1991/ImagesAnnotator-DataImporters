@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **The packages are named after their destination CPU architecture**, the way the packagers of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) are since 2026-10-12, rather than after the system alone, which the default file name of CPack carries and which tells an `amd64` package from an `arm64` one in nothing: on an `amd64` system the DEB package is `ImagesAnnotatorDataImporters-<version>-amd64.deb` instead of `ImagesAnnotatorDataImporters-<version>-Linux.deb`, the RPM one ends with `-x86_64.rpm` instead of `-Linux.rpm`, the FreeBSD pkg one with `-amd64.pkg` instead of `-FreeBSD.pkg` and the WIX MSI installer with `-x64.msi` instead of `-win64.msi`. The DEB architecture is the new `TEMPLATE_PROJECT_DEB_PACKAGE_ARCHITECTURE` cache variable (default: the `dpkg --print-architecture` output), which the `Architecture` field of the package carries as well: the `CPACK_DEB_PACKAGE_ARCHITECTURE` the DEB enabler set to `amd64` is no CPack variable, so that field has been the `dpkg` answer all along and stays the same. The MSI one is the new `TEMPLATE_PROJECT_WIX_ARCHITECTURE` (default: `x64` for a 64-bit build, `x86` otherwise), which the WIX generator gets as its `CPACK_WIX_ARCHITECTURE` too, the RPM `TEMPLATE_PROJECT_RPM_PACKAGE_ARCHITECTURE` defaults to the `CMAKE_SYSTEM_PROCESSOR` instead of a fixed `x86_64`, and the FreeBSD one is the `CMAKE_SYSTEM_PROCESSOR`. See [Enabling DEB package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-10-enabling-DEB-package-generation-with-cpack.md), [Enabling WIX MSI package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-21-enabling-WIX-MSI-package-generation-with-cpack.md) and [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md).
+
 ## [0.15.0] - 2026-10-12
 
 ### Added
